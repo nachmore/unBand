@@ -6,7 +6,9 @@
         MinHeight="425" MinWidth="700"
         Height="425" Width="700"
         BorderThickness="0"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Loaded="MetroWindow_Loaded"
+        Unloaded="MetroWindow_Unloaded">
 
     <Grid>
 
