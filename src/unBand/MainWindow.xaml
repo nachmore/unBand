@@ -2,7 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="MainWindow" Height="400" Width="700"
+        Title="MainWindow"
+        MinHeight="425" MinWidth="700"
+        Height="425" Width="700"
         BorderThickness="0"
         WindowStartupLocation="CenterScreen">
 
