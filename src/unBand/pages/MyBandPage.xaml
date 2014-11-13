@@ -6,7 +6,7 @@
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:local="clr-namespace:unBand"
              xmlns:BandControls="clr-namespace:unBand.Controls"
-             mc:Ignorable="d" d:DesignWidth="300" Height="264">
+             mc:Ignorable="d" Height="332" Width="529">
 
     <Grid>
         <Grid Visibility="{Binding IsConnected, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true">
@@ -14,14 +14,35 @@
         </Grid>
 
         <Grid Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}">
-            
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="120"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="35"></RowDefinition>
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            
-            <BandControls:BandMeTile Grid.Row="0" MouseUp="BandMeTile_MouseUp"></BandControls:BandMeTile>
-            
+
+            <BandControls:BandMeTile Grid.Row="0" MouseUp="BandMeTile_MouseUp" Height="Auto" Margin="0,9,-20,9" Width="Auto"></BandControls:BandMeTile>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBlock FontSize="20">Your Band (</TextBlock>
+                <TextBlock FontSize="20" FontWeight="Bold" Text="{Binding Properties.DeviceName}"></TextBlock>
+                <TextBlock FontSize="20">)</TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2">
+
+                <TextBlock TextWrapping="Wrap">
+                    <Run FontWeight="Bold">Welcome to unBand!</Run>
+                    <LineBreak/><LineBreak/>
+                    This is an unofficial tool for Band enthusiasts that lets you customize your band and access the data that the band has in ways that may not be available through the official app.
+                    <LineBreak/><LineBreak/>
+                    Select a category on the area to get started.
+                    <LineBreak/><LineBreak/>
+                    <Hyperlink FontSize="20" NavigateUri="http://unband.nachmore.com" RequestNavigate="Hyperlink_RequestNavigate">Report an issue / Request a Feature / Send Feedback</Hyperlink>
+                </TextBlock>
+
+            </StackPanel>
+
         </Grid>
     </Grid>
 </UserControl>

@@ -96,7 +96,7 @@ namespace unBand.BandHelpers
             EphemerisCoverageDates = await _client.GetGpsEphemerisCoverageDatesFromDeviceAsync();
             LogVersion = await _client.GetLogVersionAsync();
             MaxStrappCount = await _client.GetMaxStrappCountAsync();
-
+            
             PendingDeviceDataBytes = await _client.GetPendingDeviceDataBytesAsync();
             // var j = await _client.GetPendingLocalDataBytesAsync(); NullException
             RunningAppType = (await _client.GetRunningAppAsync()).ToString();
