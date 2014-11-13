@@ -1,0 +1,30 @@
+﻿<Controls:MetroWindow x:Class="unBand.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        Title="MainWindow" Height="400" Width="700"
+        BorderThickness="0"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="46"></ColumnDefinition>
+            <ColumnDefinition Width="471*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Background="{DynamicResource AccentColorBrush}" Grid.Column="0">
+            <Button Style="{DynamicResource MenuImageButton}" ToolTip="My Band" Click="ButtonMyBand_Click" x:Name="test">
+                <Image Source="/assets/icons/band.png" Height="24" Width="24"></Image>
+            </Button>
+            <Button Style="{DynamicResource MenuImageButton}" ToolTip="Sensors" Click="ButtonTheme_Click">
+                <Image Source="/assets/icons/theme.png" Height="36" Width="36"></Image>
+            </Button>
+            <Button Style="{DynamicResource MenuImageButton}" ToolTip="Sensors" Click="ButtonSensors_Click">
+                <Image Source="/assets/icons/sensors.png" Height="36" Width="36"></Image>
+            </Button>
+        </StackPanel>
+
+        <Controls:TransitioningContentControl x:Name="PageContent" Transition="Left" Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Top" />
+    </Grid>
+</Controls:MetroWindow>
