@@ -38,12 +38,24 @@ namespace unBand.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AgreedToAnalytics {
+        public bool AgreedToTelemetry {
             get {
-                return ((bool)(this["AgreedToAnalytics"]));
+                return ((bool)(this["AgreedToTelemetry"]));
             }
             set {
-                this["AgreedToAnalytics"] = value;
+                this["AgreedToTelemetry"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00000000-0000-0000-0000-000000000000")]
+        public global::System.Guid Device {
+            get {
+                return ((global::System.Guid)(this["Device"]));
+            }
+            set {
+                this["Device"] = value;
             }
         }
     }

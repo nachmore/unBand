@@ -5,8 +5,11 @@
     <Setting Name="AgreedToFirstRunWarning" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="AgreedToAnalytics" Type="System.Boolean" Scope="User">
+    <Setting Name="AgreedToTelemetry" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Device" Type="System.Guid" Scope="User">
+      <Value Profile="(Default)">00000000-0000-0000-0000-000000000000</Value>
     </Setting>
   </Settings>
 </SettingsFile>

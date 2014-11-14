@@ -43,6 +43,7 @@ namespace unBand.pages
 
             if (dialog.ShowDialog() == true)
             {
+                Telemetry.Client.TrackEvent(Telemetry.Events.ChangeBackground);
                 _band.Theme.SetBackground(dialog.FileName);
             }
         }

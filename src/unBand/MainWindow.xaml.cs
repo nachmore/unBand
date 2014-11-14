@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using unBand.pages;
 using MahApps.Metro.Controls.Dialogs;
 using System.Diagnostics;
+using Microsoft.ApplicationInsights;
 
 namespace unBand
 {
@@ -27,6 +28,8 @@ namespace unBand
         public MainWindow()
         {
             InitializeComponent();
+
+            Telemetry.Client.TrackEvent(Telemetry.Events.AppLaunch);
         }
 
         private async void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -35,14 +38,16 @@ namespace unBand
             {
                 if (!await AgreeToFirstRunWarning())
                 {
+                    Telemetry.Client.TrackEvent(Telemetry.Events.DeclinedFirstRunWarning);
                     Application.Current.Shutdown();
                 }
             }
 
-            if (!Properties.Settings.Default.AgreedToAnalytics)
+            if (!Properties.Settings.Default.AgreedToTelemetry)
             {
-                if (!await AgreeToAnalytics())
+                if (!await AgreeToTelemetry())
                 {
+                    Telemetry.Client.TrackEvent(Telemetry.Events.DeclinedTelemetry);
                     Application.Current.Shutdown();
                 }
             }
@@ -69,7 +74,7 @@ namespace unBand
             return false;
         }
 
-        private async Task<bool> AgreeToAnalytics()
+        private async Task<bool> AgreeToTelemetry()
         {
             var dialogSettings = new MetroDialogSettings(); 
             dialogSettings.AffirmativeButtonText = "I agree";
@@ -81,7 +86,7 @@ namespace unBand
 
             if (dialogResult == MessageDialogResult.Affirmative)
             {
-                Properties.Settings.Default.AgreedToAnalytics = true;
+                Properties.Settings.Default.AgreedToTelemetry = true;
                 return true;
             }
 
