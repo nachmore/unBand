@@ -30,8 +30,17 @@ namespace unBand
                 Client.Context.Session.IsFirst = true;
             }
 
-            Client.Context.Device.Id = props.Device.ToString();
-            Client.Context.Session.Id = Guid.NewGuid().ToString();
+            Client.Context.Device.Id              = props.Device.ToString();
+            Client.Context.Session.Id             = Guid.NewGuid().ToString();
+            Client.Context.Device.OperatingSystem = GetOS();
+            Client.Context.Device.Language        = System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
+            Client.Context.Component.Version      = About.Current.Version;
+        }
+
+        private static string GetOS()
+        {
+            return Environment.OSVersion.VersionString + "(" +
+                (Environment.Is64BitOperatingSystem ? "x64" : "x86") + ")";
         }
 
         /// <summary>
