@@ -153,7 +153,12 @@ namespace unBand.BandHelpers
         {
             // TODO: would be great to manage state for this at a global level so that we could tell on disconnect
             //       that some sensors were still subscribed to (as opposed to just saying "we're subscribed")
-            _client.SensorUnsubscribe(SensorType.BatteryGauge);
+            try
+            {
+                _client.SensorUnsubscribe(SensorType.BatteryGauge);
+            }
+            catch (Exception)
+            { } // this will throw if the user disconnected their band from the machine before exiting
         }
 
         void _client_BatteryUpdated(object sender, BatteryUpdatedEventArgs e)
