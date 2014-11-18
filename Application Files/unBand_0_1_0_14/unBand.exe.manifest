@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="unBand.exe" version="0.1.0.8" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="unBand.exe" version="0.1.0.14" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
     <assemblyIdentity name="unBand" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
@@ -62,18 +62,6 @@
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
         <dsig:DigestValue>pj8Q/odQG59XcAfGeDKgrfWTzM3XadUYlm/820cOS2E=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.Cargo.Client.Desktop8.dll" size="478208">
-      <assemblyIdentity name="Microsoft.Cargo.Client.Desktop8" version="1.3.1106.2" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>gu6h2hhK3Bo2vkEuTRfArZpsaEygHu6Cc381nv1rocA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -162,14 +150,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="unBand.exe" size="66560">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="unBand.exe" size="67072">
       <assemblyIdentity name="unBand" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>eJaTotx5pqxHVhlP3dxdIWkkGqjhMQsCGyTSbuL2BNk=</dsig:DigestValue>
+        <dsig:DigestValue>ApIeHDga1ivoOjn3kxeFtzualygRF29DeqPH1iYF7oc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -377,6 +365,15 @@
       </hash>
     </dependentAssembly>
   </dependency>
+  <file name="ApplicationInsights.config" size="752">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>xOakIwQXHWxLxpYfdHEY+Xk0o9T8SqCtP0+0u/Zrr5c=</dsig:DigestValue>
+    </hash>
+  </file>
   <file name="unBand.exe.config" size="1210">
     <hash>
       <dsig:Transforms>
