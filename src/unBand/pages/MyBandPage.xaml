@@ -38,7 +38,7 @@
                     <LineBreak/><LineBreak/>
                     Select a category on the area to get started.
                     <LineBreak/><LineBreak/>
-                    <Hyperlink FontSize="20" NavigateUri="http://unband.nachmore.com" RequestNavigate="Hyperlink_RequestNavigate">Report an issue / Request a Feature / Send Feedback</Hyperlink>
+                    <Hyperlink FontSize="20" NavigateUri="https://github.com/nachmore/unBand/issues" RequestNavigate="Hyperlink_RequestNavigate">Report an issue / Request a Feature / Send Feedback</Hyperlink>
                 </TextBlock>
 
             </StackPanel>

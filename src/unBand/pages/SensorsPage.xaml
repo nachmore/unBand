@@ -8,6 +8,6 @@
 
     <Grid>
         <TextBlock TextWrapping="Wrap" Visibility="{Binding IsConnected, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}">No Microsoft Band connected! Connect your Band to your computer with the USB charging cable.</TextBlock>
-        <TextBlock TextWrapping="Wrap" Text="{Binding Properties.Test}"></TextBlock>
+        <TextBlock TextWrapping="Wrap">Coming soon...</TextBlock>
     </Grid>
 </UserControl>
