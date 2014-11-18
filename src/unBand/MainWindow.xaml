@@ -10,7 +10,10 @@
         Unloaded="MetroWindow_Unloaded"
         BorderBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="1"
-        ResizeMode="CanResizeWithGrip">
+        ResizeMode="CanResizeWithGrip"
+        ShowIconOnTitleBar="False"
+        WindowButtonCommandsOverlayBehavior="Always"
+        Icon="assets/icons/band.png">
 
     <Grid>
 

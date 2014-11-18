@@ -67,7 +67,7 @@ namespace unBand
         private async void FindBand()
         {
             var progressDialog = await this.ShowProgressAsync("Searching for your Band", "If your Band is on your hand, now is the time to plug it in!");
-
+            
             BandManager.Start();
 
             //TODO: consider an event specifically for ConnectionStateChanged so that we aren't constantly filtering
