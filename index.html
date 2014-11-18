@@ -22,7 +22,7 @@
           <h2 id="project_tagline">Unleash Your Band!</h2>
 
             <section id="downloads">
-              <a id="installnow" href="https://cdn.rawgit.com/nachmore/unBand/clickonce/unBand.application">Install Now</a>
+              <a id="installnow" href="https://raw.githubusercontent.com/nachmore/unband/clickonce/setup.exe">Install Now</a>
             </section>
         </header>
     </div>
@@ -33,10 +33,9 @@
       
       <h3 id="warning">Release Status: Early Beta</h3>
       
-      <h3>
-      <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to unBand</h3>
+      <h3><a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to unBand</h3>
 
-      <p>We all love our <a href="http://www.microsoft.com/microsoft-band/">Microsoft Bands</a> but that doesn't mean they couldn't do more! There's a bunch of functionality locked away in the bands that hasn't been unlocked yet
+      <p>We all love our <a href="http://www.microsoft.com/microsoft-band/">Microsoft Bands</a> but that doesn't mean they couldn't do more! There's a bunch of functionality locked away in the bands that isn't exposed to us Band wearers
       and we aim to help you unlock it. Also, it's fun to play around and push new tech to do fun things beyond what is already available through the officially supported apps!</p>
 
       <h3>Features</h3>
@@ -55,7 +54,22 @@
         <li>Pull more general info from the device</li>
         <li>Dunno - <a href="https://github.com/nachmore/unBand/issues">suggest something!</a></li>
       </ol>
-        
+
+      <h3><a class="anchor" href="#faq" aria-hidden="true"><span class="octicon octicon-link"></span></a>FAQ</h3>
+
+      <ol>
+        <li>
+          <p class="faq_question">App Crashes on Start</p>
+          <p>Make sure to install the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=44579">Microsoft Band Sync app for Windows</a></p>
+        </li>
+        <li>
+          <p class="faq_question">App Still Crashes on Start</p>
+          <p>Even though you have the Sync app installed, unBand still crashes. This is likely due to us not being able to find the Sync app.</p>
+          <p>To solve this, copy <code>Microsoft.Cargo.Client.Desktop8.dll</code> to <code>c:\Program Files(x86)\Microsoft Band Sync</code>.</p>
+          <p>You can also copy it to the same directory as unBand, search for it under <code>%userprofile%\AppData\Local\Apps\2.0</code></p>
+          <p>Yup, we're going to work on a better solution...</p>
+        </li>
+      </ol>
 
       <h3>Bugs / Features / Bugs</h3>
       <p>This is early software, meant for those happy to play around and have software crash on them. If you have any feedback / feature erquests / are a designer who wants to design this thing then <a href="https://github.com/nachmore/unBand/issues">Open an Issue</a>.
