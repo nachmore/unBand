@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -102,7 +103,22 @@ namespace unBand.BandHelpers
 
         public static void Create()
         {
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
             Instance = new BandManager();
+        }
+
+        static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            if (args.Name.StartsWith("Microsoft.Cargo.Client.Desktop8"))
+            {
+                // there are dependencies (primarily Newtonsoft.Json) but we don't use those yet.
+                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+
+                return Assembly.LoadFrom(@"C:\Program Files (x86)\Microsoft Band Sync\Microsoft.Cargo.Client.Desktop8.dll"); 
+            }
+
+            return null;
         }
 
         public static void Start() 
