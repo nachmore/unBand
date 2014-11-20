@@ -150,6 +150,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BandHelpers\BandLogger.cs" />
+    <Compile Include="pages\LogOutputPage.xaml.cs">
+      <DependentUpon>LogOutputPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Telemetry.cs" />
     <Compile Include="About.cs" />
     <Page Include="Controls\BandColorSelector.xaml">
@@ -185,6 +189,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="pages\LogOutputPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="pages\ThemePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

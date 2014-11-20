@@ -97,6 +97,8 @@ namespace unBand.BandHelpers
             }
         }
 
+        public BandLogger Log { get { return BandLogger.Instance; } }
+
         private BandManager()
         {
         }
@@ -169,7 +171,8 @@ namespace unBand.BandHelpers
 
                 Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
                 {
-                // TODO: support more than one device?
+                    // TODO: support more than one device?
+                    InitializeCargoLogging();
                     CargoClient = await CargoClient.CreateAsync(_deviceInfo);
                 
                     IsConnected = true;
@@ -180,6 +183,13 @@ namespace unBand.BandHelpers
                     Sensors = new BandSensors(CargoClient);
                 }));
             }
+        }
+
+        private void InitializeCargoLogging()
+        {
+            // get log instance
+            var field = typeof(Logger).GetField("traceListenerInternal", BindingFlags.Static | BindingFlags.NonPublic);
+            field.SetValue(null, BandLogger.Instance);
         }
         
         #region INotifyPropertyChanged

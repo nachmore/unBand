@@ -150,5 +150,10 @@ namespace unBand
         {
             Properties.Settings.Default.Save();
         }
+
+        private void ButtonLog_Click(object sender, RoutedEventArgs e)
+        {
+            PageContent.Content = new LogOutputPage();
+        }
     }
 }
