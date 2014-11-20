@@ -30,10 +30,13 @@ namespace unBand
                 Client.Context.Session.IsFirst = true;
             }
 
+            
+            // DeviceID is initialized by the framework (see config file) but it includes the actual computer name
+            // which I consider PII (not to mention that it is not guaranteed to be unique)
             Client.Context.Device.Id              = props.Device.ToString();
-            Client.Context.Session.Id             = Guid.NewGuid().ToString();
-            Client.Context.Device.OperatingSystem = GetOS();
-            Client.Context.Device.Language        = System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
+            Client.Context.Device.OperatingSystem = GetOS(); 
+            
+            Client.Context.Session.Id = Guid.NewGuid().ToString();
             Client.Context.Component.Version      = About.Current.Version;
         }
 
