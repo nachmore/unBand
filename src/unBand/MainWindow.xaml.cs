@@ -155,5 +155,10 @@ namespace unBand
         {
             PageContent.Content = new LogOutputPage();
         }
+
+        private void ButtonTiles_Click(object sender, RoutedEventArgs e)
+        {
+            PageContent.Content = new TilesPage();
+        }
     }
 }

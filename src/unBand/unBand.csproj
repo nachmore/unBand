@@ -151,6 +151,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BandHelpers\BandLogger.cs" />
+    <Compile Include="BandHelpers\BandTiles.cs" />
+    <Compile Include="pages\TilesPage.xaml.cs">
+      <DependentUpon>TilesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="pages\LogOutputPage.xaml.cs">
       <DependentUpon>LogOutputPage.xaml</DependentUpon>
     </Compile>
@@ -189,6 +193,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="pages\TilesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="pages\LogOutputPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -229,6 +237,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="assets\icons\tiles.png" />
     <Resource Include="assets\icons\log.png" />
     <Resource Include="band.ico" />
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -32,6 +32,9 @@
             <Button Style="{DynamicResource MenuImageButton}" ToolTip="Sensors" Click="ButtonSensors_Click">
                 <Image Source="/assets/icons/sensors.png" Height="36" Width="36"></Image>
             </Button>
+            <Button Style="{DynamicResource MenuImageButton}" ToolTip="Device Log" Click="ButtonTiles_Click">
+                <Image Source="/assets/icons/tiles.png" Height="36" Width="36"></Image>
+            </Button>
             <Button Style="{DynamicResource MenuImageButton}" ToolTip="Device Log" Click="ButtonLog_Click">
                 <Image Source="/assets/icons/log.png" Height="36" Width="36"></Image>
             </Button>

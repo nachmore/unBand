@@ -31,6 +31,7 @@ namespace unBand.BandHelpers
         private BandProperties _properties;
         private BandTheme _theme;
         private BandSensors _sensors;
+        private BandTiles _tiles;
 
         public bool IsConnected
         {
@@ -92,6 +93,19 @@ namespace unBand.BandHelpers
                 if (_sensors != value)
                 {
                     _sensors = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public BandTiles Tiles
+        {
+            get { return _tiles; }
+            set
+            {
+                if (_tiles != value)
+                {
+                    _tiles = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -181,6 +195,7 @@ namespace unBand.BandHelpers
                     Properties = new BandProperties(CargoClient);
                     Theme = new BandTheme(CargoClient);
                     Sensors = new BandSensors(CargoClient);
+                    Tiles = new BandTiles(CargoClient);
                 }));
             }
         }
