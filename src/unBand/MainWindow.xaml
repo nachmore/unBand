@@ -33,7 +33,7 @@
                 <Image Source="/assets/icons/sensors.png" Height="36" Width="36"></Image>
             </Button>
             <Button Style="{DynamicResource MenuImageButton}" ToolTip="Device Log" Click="ButtonLog_Click">
-                <Image Source="/assets/icons/sensors.png" Height="36" Width="36"></Image>
+                <Image Source="/assets/icons/log.png" Height="36" Width="36"></Image>
             </Button>
         </StackPanel>
 
