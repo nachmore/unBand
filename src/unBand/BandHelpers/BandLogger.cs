@@ -42,7 +42,9 @@ namespace unBand.BandHelpers
         {
             string log = DateTime.Now + ": " + level.ToString() + ": " + String.Format(message, args);
 
-            System.Diagnostics.Debug.WriteLine(level.ToString() + ": " + String.Format(message, args));
+            //System.Diagnostics.Debug.WriteLine(level.ToString() + ": " + String.Format(message, args));
+
+            // TODO: add option to collapse log if the last log message is identical to the current one
 
             // Current will be null when shutting down
             if (Application.Current != null)
