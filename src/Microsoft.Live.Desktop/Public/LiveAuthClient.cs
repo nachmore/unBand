@@ -157,7 +157,7 @@ namespace Microsoft.Live
             string locale = null;
             string state = null;
             DisplayType display = DisplayType.WinDesktop;
-            ThemeType theme = ThemeType.Win7;
+            ThemeType theme = ThemeType.Win8;
             string redirectUrl = LiveAuthUtility.BuildDesktopRedirectUrl();
 
             if (options != null)

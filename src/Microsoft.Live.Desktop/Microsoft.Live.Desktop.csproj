@@ -34,15 +34,20 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthResult.cs" />
     <Compile Include="Common\Source\Public\LiveAuthException.cs">
       <Link>Public\LiveAuthException.cs</Link>
     </Compile>
@@ -186,6 +191,9 @@
     <Compile Include="Internal\ResourceHelper.cs">
       <Link>Internal\ResourceHelper.cs</Link>
     </Compile>
+    <Compile Include="LiveAuthWindow.xaml.cs">
+      <DependentUpon>LiveAuthWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Resources.Designer.cs">
       <Link>Internal\Resources.Designer.cs</Link>
       <AutoGen>True</AutoGen>
@@ -216,6 +224,17 @@
       <SubType>Designer</SubType>
       <CustomToolNamespace>Microsoft.Live</CustomToolNamespace>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="LiveAuthWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Internal\Operations\" />
+    <Folder Include="Internal\Serialization\" />
+    <Folder Include="Internal\Utilities\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -119,7 +119,7 @@ namespace Microsoft.Live
         /// </summary>
         public string GetLoginUrl(IEnumerable<string> scopes, string redirectUrl, DisplayType display, ThemeType theme, string locale, string state)
         {
-            return LiveAuthUtility.BuildAuthorizeUrl(this.clientId, redirectUrl, scopes, ResponseType.Code, display, theme, locale, state);
+            return LiveAuthUtility.BuildAuthorizeUrl(this.clientId, redirectUrl, scopes, ResponseType.Token, display, theme, locale, state);
         }
 
         internal bool CanRefreshToken
