@@ -152,6 +152,9 @@
     </ApplicationDefinition>
     <Compile Include="BandHelpers\BandLogger.cs" />
     <Compile Include="BandHelpers\BandTiles.cs" />
+    <Compile Include="pages\ActivityLogPage.xaml.cs">
+      <DependentUpon>ActivityLogPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="pages\TilesPage.xaml.cs">
       <DependentUpon>TilesPage.xaml</DependentUpon>
     </Compile>
@@ -193,6 +196,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="pages\ActivityLogPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="pages\TilesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
