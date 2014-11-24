@@ -325,6 +325,10 @@
       <Project>{5c8c880f-fb9b-40ca-955d-b460e7b3af6d}</Project>
       <Name>Microsoft.Live.Desktop</Name>
     </ProjectReference>
+    <ProjectReference Include="..\unBand.Cloud\unBand.Cloud.csproj">
+      <Project>{c65bd296-f5e1-400e-886e-bc3def6476ef}</Project>
+      <Name>unBand.Cloud</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using unBand.BandHelpers;
+using unBand.Cloud;
 
 namespace unBand.pages
 {
@@ -35,20 +36,9 @@ namespace unBand.pages
 
             DataContext = _band;
 
-            var liveAuthClient = new LiveAuthClient("000000004811DB42");
 
-            string startUrl = liveAuthClient.GetLoginUrl(new List<string>() {"service::prodkds.dns-cargo.com::MBI_SSL"});
-            
-            var authForm = new LiveAuthWindow(
-                startUrl,
-                this.OnAuthCompleted);
-
-            authForm.Show();
-        }
-
-        private void OnAuthCompleted(AuthResult result)
-        {
-            System.Diagnostics.Debug.WriteLine(result);
+            var cloud = new BandCloudClient();
+            cloud.Login();
         }
 
     }
