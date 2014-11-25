@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BandCloudClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Events\SleepEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Live.Desktop\Microsoft.Live.Desktop.csproj">

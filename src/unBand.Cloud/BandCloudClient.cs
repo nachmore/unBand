@@ -3,6 +3,7 @@ using Microsoft.Live.Desktop;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,12 +23,25 @@ namespace unBand.Cloud
         public DateTime Expires { get; internal set; }
     }
 
+    /// <summary>
+    /// Event detail types. If you use the wrong combination (for example
+    /// MapPoints on sleep) you'll get a nice response from the web 
+    /// service that will tell you which one is wrong.
+    /// </summary>
+    public enum EventExpandType
+    {
+        Sequences,
+        MapPoints,
+        Info
+    }
+
     public class BandCloudClient
     {
         private const string LOGIN_HOST_URL = "https://prodkds.dns-cargo.com";
         private const string LOGIN_URL = "/api/v1/user";
-        private const string EVENTS_URL = "/v1/Events";
-        private const string EVENTS_TOP_100_URL = "/v1/Events(eventType='None')?$top=100";
+        private const string EVENTS_URL = "v1/Events";
+        private const string EVENTS_TOP_100_URL = "v1/Events(eventType='None')?$top=100";
+        private const string GET_EVENT_URL = "v1/Events(EventId='{0}',selectedSplitDistance=100000)?$expand={1}";
 
         private LiveAuthTokens _tokens;
         private BandCloudAuthentication _cloudAuthentication;
@@ -77,6 +91,7 @@ namespace unBand.Cloud
             }
 
             GetEvents();
+            var sleepEvent = await GetEvent<SleepEvent>("2519855612794630827", new EventExpandType[] {EventExpandType.Info});
         }
 
         public async void GetEvents()
@@ -84,9 +99,20 @@ namespace unBand.Cloud
             var response = await AuthenticatedRequest(EVENTS_TOP_100_URL);
         }
 
+        public async Task<T> GetEvent<T>(string ID, EventExpandType[] expanders)
+        {
+            var expandParam = string.Join(",", expanders);
+
+            var response = await AuthenticatedRequest(string.Format(GET_EVENT_URL, ID, expandParam));
+
+            var converter = TypeDescriptor.GetConverter(typeof(T));
+            return (T)converter.ConvertFromInvariantString(response);
+        }
+
         private async Task<string> AuthenticatedRequest(string relativeUrl)
         {
-            var request = HttpWebRequest.Create(_cloudAuthentication.EndPoint + relativeUrl);
+            string url = _cloudAuthentication.EndPoint + relativeUrl;
+            var request = HttpWebRequest.Create(url);
             request.Headers.Add("Authorization", _cloudAuthentication.AuthorizationHeader);
 
             using (var response = await request.GetResponseAsync())
