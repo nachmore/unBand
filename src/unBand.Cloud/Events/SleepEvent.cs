@@ -8,7 +8,7 @@ using System.Text;
 
 namespace unBand.Cloud
 {
-    public class SleepInfoEvent
+    public class SleepInfoSegment
     {
         public DateTime TimeOfDay { get; set;}
         public string DayClassification { get; set; }
@@ -23,14 +23,14 @@ namespace unBand.Cloud
         public string TotalDistance { get; set; } // unclear why this is a string, but it is defined as a string in the JSON
         public int ItCal { get; set; }
 
-        internal static SleepInfoEvent FromDynamic(dynamic rawEvent)
+        internal static SleepInfoSegment FromDynamic(dynamic rawEvent)
         {
-            var rv = new SleepInfoEvent();
+            var rv = new SleepInfoSegment();
 
             rv.TimeOfDay = TimeZone.CurrentTimeZone.ToLocalTime(rawEvent.TimeOfDay.Value);
             rv.DayClassification = rawEvent.DayClassification;
             rv.ActivityLevel = rawEvent.ActivityLevel;
-            rv.StepsTaken = rawEvent.StepsTaken;        
+            rv.StepsTaken = rawEvent.StepsTaken;
             rv.CaloriesBurned = rawEvent.CaloriesBurned;
             rv.UvExposure = rawEvent.UvExposure;
             rv.Location = rawEvent.Location;
@@ -46,16 +46,11 @@ namespace unBand.Cloud
 
     public class SleepEventConverter : TypeConverter 
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            return (typeof(string) == sourceType);
-        }
-
         public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
         {
-            if (value is string) 
+            if (value is JObject) 
             {
-                return SleepEvent.FromJson((string)value);
+                return new SleepEvent((JObject)value);
             }
 
             return null;
@@ -63,37 +58,33 @@ namespace unBand.Cloud
     }
 
     [TypeConverter(typeof(SleepEventConverter))]
-    public class SleepEvent
+    public class SleepEvent : BandEventBase
     {
 
-        public List<SleepInfoEvent> Segments { get; private set; }
+        public List<SleepInfoSegment> Segments { get; private set; }
 
-        public SleepEvent()
+        public SleepEvent(JObject json)
+            : base(json)
         {
-            Segments = new List<SleepInfoEvent>();
+            Segments = new List<SleepInfoSegment>();
+            InitFromDynamic((dynamic)json);
         }
 
-        public static implicit operator SleepEvent(string json)
+        public override void DownloadAllData()
         {
-            return SleepEvent.FromJson(json);
+
         }
 
-        public static SleepEvent FromJson(string json)
+        /// <summary>
+        /// Creates a SleepEvent object that is intialized from the summary JSON returned by GetEvents()
+        ///  
+        /// To fill in detailed information about this event a call to DownloadAllData() is required.
+        /// </summary>
+        /// <param name="rawEvent"></param>
+        /// <returns></returns>
+        private void InitFromDynamic(dynamic rawEvent)
         {
-            dynamic parsed = JObject.Parse(json);
 
-            var rv = new SleepEvent();
-
-            if (parsed.value != null && parsed.value[0].Info != null)
-            {
-                foreach (object rawEvent in parsed.value[0].Info)
-                {
-                    rv.Segments.Add(SleepInfoEvent.FromDynamic(rawEvent));
-                }
-            }
-
-            return rv;
         }
-
     }
 }

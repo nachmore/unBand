@@ -1,6 +1,7 @@
 ﻿using Microsoft.Live;
 using Microsoft.Live.Desktop;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,24 +24,12 @@ namespace unBand.Cloud
         public DateTime Expires { get; internal set; }
     }
 
-    /// <summary>
-    /// Event detail types. If you use the wrong combination (for example
-    /// MapPoints on sleep) you'll get a nice response from the web 
-    /// service that will tell you which one is wrong.
-    /// </summary>
-    public enum EventExpandType
-    {
-        Sequences,
-        MapPoints,
-        Info
-    }
-
     public class BandCloudClient
     {
         private const string LOGIN_HOST_URL = "https://prodkds.dns-cargo.com";
         private const string LOGIN_URL = "/api/v1/user";
         private const string EVENTS_URL = "v1/Events";
-        private const string EVENTS_TOP_100_URL = "v1/Events(eventType='None')?$top=100";
+        private const string EVENTS_TOP_100_URL = "v1/Events(eventType='None')?$top={0}";
         private const string GET_EVENT_URL = "v1/Events(EventId='{0}',selectedSplitDistance=100000)?$expand={1}";
 
         private LiveAuthTokens _tokens;
@@ -91,15 +80,31 @@ namespace unBand.Cloud
             }
 
             GetEvents();
-            var sleepEvent = await GetEvent<SleepEvent>("2519855612794630827", new EventExpandType[] {EventExpandType.Info});
+            var sleepEvent = await GetEvent<SleepEvent>("2519855612794630827", new BandEventExpandType[] {BandEventExpandType.Info});
         }
 
-        public async void GetEvents()
+        /// <summary>
+        /// Get the top X events
+        /// </summary>
+        /// <param name="topCount"></param>
+        public async Task<List<BandEventBase>> GetEvents(int topCount = 100)
         {
-            var response = await AuthenticatedRequest(EVENTS_TOP_100_URL);
+            var response = await AuthenticatedRequest(string.Format(EVENTS_TOP_100_URL, topCount));
+
+            var rv = new List<BandEventBase>();
+
+            dynamic json = JObject.Parse(response);
+
+            foreach (var rawBandEvent in json.value)
+            {
+                var bandEvent = BandEventBase.FromDynamic(rawBandEvent);
+                rv.Add(bandEvent);
+            }
+
+            return rv;
         }
 
-        public async Task<T> GetEvent<T>(string ID, EventExpandType[] expanders)
+        public async Task<T> GetEvent<T>(string ID, BandEventExpandType[] expanders)
         {
             var expandParam = string.Join(",", expanders);
 

@@ -49,6 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BandCloudClient.cs" />
+    <Compile Include="BandCloudTypes.cs" />
+    <Compile Include="Events\BandEventBase.cs" />
+    <Compile Include="Events\UserWorkoutEvent.cs" />
+    <Compile Include="Events\UserGuidedWorkoutEvent.cs" />
+    <Compile Include="Events\RunEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Events\SleepEvent.cs" />
   </ItemGroup>

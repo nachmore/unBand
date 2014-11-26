@@ -1,0 +1,69 @@
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace unBand.Cloud
+{
+    public abstract class BandEventBase
+    {
+        // common Properties
+        public string EventID { get; set; }
+        public string Duration { get; set; }
+        public string ParentEventId { get; set; }
+        public string Name { get; set; }
+        public int DeliveryID { get; set; }
+        public BandEventType EventType { get; set; }
+        public DateTime StartTime { get; set; }
+        public int CaloriesBurned { get; set; }
+        public DateTime DayId { get; set; }
+        public FeelingType Feeling { get; set; }
+        public HeartRateSummary HeartRate { get; set; }
+        public int Flags { get; set; } // unclear what this means
+            
+        public BandEventBase(JObject json)
+        {
+            dynamic eventSummary = (dynamic)json;
+
+            EventID        = eventSummary.EventID;
+            Duration       = eventSummary.Duration;
+            ParentEventId  = eventSummary.ParentEventId;
+            Name           = eventSummary.Name;
+            DeliveryID     = eventSummary.DeliveryID;
+            EventType      = eventSummary.EventType;
+            StartTime      = eventSummary.StartTime;
+            CaloriesBurned = eventSummary.CaloriesBurned;
+            DayId          = eventSummary.DayId;
+            Feeling        = eventSummary.Feeling;
+            HeartRate      = new HeartRateSummary((int)eventSummary.AverageHeartRate, (int)eventSummary.LowestHeartRate, (int)eventSummary.PeakHeartRate);
+            Flags          = eventSummary.Flags;
+        }
+
+        private static Dictionary<string, Type> _knownEventTypes = new Dictionary<string, Type>()
+        {
+            {"Microsoft.Khronos.Cloud.Ods.Data.Entities.SleepEventDTO", typeof(SleepEvent)},
+            {"Microsoft.Khronos.Cloud.Ods.Data.Entities.UserRunEventDTO", typeof(RunEvent)},
+            {"Microsoft.Khronos.Cloud.Ods.Data.Entities.UserGuidedWorkoutEventDTO", typeof(UserGuidedWorkoutEvent)},
+            {"Microsoft.Khronos.Cloud.Ods.Data.Entities.UserWorkoutEventDTO", typeof(UserWorkoutEvent)}
+        };
+
+        internal static BandEventBase FromDynamic(dynamic rawBandEvent)
+        {
+            // annoying, but couldn't find a nicer way to get a property that has a .
+            string type = ((dynamic)((JObject)rawBandEvent).GetValue("odata.type")).Value;
+
+            if (!_knownEventTypes.ContainsKey(type))
+            {
+                throw new KeyNotFoundException("Unknown event type: " + type);
+            }
+
+            var converter = TypeDescriptor.GetConverter(_knownEventTypes[type]);
+            return converter.ConvertFrom(rawBandEvent);
+        }
+
+        public abstract void DownloadAllData();
+    }
+}
