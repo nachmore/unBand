@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace unBand.Cloud
 {
     // TODO: there should be some kind of way to convey login erros
-    public delegate void BandCloudAuthComplete(LiveAuthTokens tokens);
+    public delegate void BandCloudAuthComplete();
 
     public struct LiveAuthTokens
     {
@@ -34,6 +34,8 @@ namespace unBand.Cloud
 
         private LiveAuthTokens _tokens;
         private BandCloudAuthentication _cloudAuthentication;
+
+        public event BandCloudAuthComplete AuthenticationCompleted;
 
         public BandCloudClient() { }
 
@@ -79,8 +81,8 @@ namespace unBand.Cloud
                 _cloudAuthentication.AuthorizationHeader = response.Headers["Authorization"];
             }
 
-            GetEvents();
-            var sleepEvent = await GetEvent<SleepEvent>("2519855612794630827", new BandEventExpandType[] {BandEventExpandType.Info});
+            if (AuthenticationCompleted != null)
+                AuthenticationCompleted();
         }
 
         /// <summary>

@@ -5,12 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:local="clr-namespace:unBand"
-             mc:Ignorable="d">
+             mc:Ignorable="d" Width="400" Height="400">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
+        
+        <ListBox Grid.Row="0" ItemsSource="{Binding Events}"></ListBox>
+            
     </Grid>
 </UserControl>
