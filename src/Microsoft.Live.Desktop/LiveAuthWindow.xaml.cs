@@ -48,6 +48,9 @@ namespace Microsoft.Live.Desktop
                     _callback(new AuthResult(e.Uri));
                 }
             }
+
+            // close the window when auth is completed
+            this.Close();
         }
         
     }
