@@ -43,14 +43,14 @@ namespace Microsoft.Live.Desktop
         {
             if (e.Uri.ToString().StartsWith(END_URL))
             {
+                // close the window since auth is complete
+                this.Close();
+
                 if (_callback != null)
                 {
                     _callback(new AuthResult(e.Uri));
                 }
             }
-
-            // close the window when auth is completed
-            this.Close();
         }
         
     }
