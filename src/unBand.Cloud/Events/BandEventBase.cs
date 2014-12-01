@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 
 namespace unBand.Cloud
 {
+    public delegate void EventDataDownloadedEventHandler(BandEventBase bandEvent);
+
     public abstract class BandEventBase
     {
+        public event EventDataDownloadedEventHandler EventDataDownloaded;
+
         // common Properties
         public string EventID { get; set; }
         public string Duration { get; set; }
