@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using unBand.BandHelpers;
 using unBand.Cloud;
+using unBand.CloudHelpers;
 
 namespace unBand.pages
 {
@@ -38,23 +39,7 @@ namespace unBand.pages
 
             _band = BandManager.Instance;
 
-            Init();
+            this.DataContext = BandCloudManager.Instance;
         }
-
-        private async void Init()
-        {
-            // TODO: for now, we're doing everything internally should move to some kind of wrapped view model
-            _cloud = new BandCloudClient();
-            _cloud.AuthenticationCompleted += cloud_AuthenticationCompleted;
-            _cloud.Login();
-        }
-
-        internal async void cloud_AuthenticationCompleted()
-        {
-            Events = await _cloud.GetEvents();
-
-            DataContext = this;
-        }
-
     }
 }
