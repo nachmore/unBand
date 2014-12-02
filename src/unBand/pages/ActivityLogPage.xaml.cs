@@ -28,8 +28,6 @@ namespace unBand.pages
     {
 
         private BandManager _band;
-        private BandCloudClient _cloud;
-
 
         public List<BandEventBase> Events { get; set; }
 
@@ -41,5 +39,21 @@ namespace unBand.pages
 
             this.DataContext = BandCloudManager.Instance;
         }
+
+        private void btnExportLast100_Click(object sender, RoutedEventArgs e)
+        {
+            ExportEvents(100);
+        }
+
+        private void btnExportAll_Click(object sender, RoutedEventArgs e)
+        {
+            ExportEvents();            
+        }
+
+        private void ExportEvents(int? count = null)
+        {
+            BandCloudManager.Instance.ExportEvents(@"c:\temp\out.csv", count);
+        }
+
     }
 }

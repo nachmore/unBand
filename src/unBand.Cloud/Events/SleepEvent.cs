@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace unBand.Cloud
 {
@@ -70,7 +71,7 @@ namespace unBand.Cloud
             InitFromDynamic((dynamic)json);
         }
 
-        public override void DownloadAllData()
+        public override async Task DownloadAllData()
         {
 
         }
@@ -85,6 +86,11 @@ namespace unBand.Cloud
         private void InitFromDynamic(dynamic rawEvent)
         {
 
+        }
+
+        public override string ToCSV()
+        {
+            throw new NotImplementedException();
         }
     }
 }

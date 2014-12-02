@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using unBand.Cloud;
 
@@ -39,9 +40,9 @@ namespace unBand.CloudHelpers
             Event.EventDataDownloaded -= Event_EventDataDownloaded;
         }
 
-        public void Load()
+        public async Task Load()
         {
-            Event.DownloadAllData();
+            await Event.DownloadAllData();
         }
 
         void Event_EventDataDownloaded(BandEventBase bandEvent)

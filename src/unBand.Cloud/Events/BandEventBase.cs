@@ -68,6 +68,8 @@ namespace unBand.Cloud
             return converter.ConvertFrom(rawBandEvent);
         }
 
-        public abstract void DownloadAllData();
+        public abstract Task DownloadAllData();
+
+        public abstract string ToCSV();
     }
 }

@@ -9,10 +9,16 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <ListBox Grid.Row="0" ItemsSource="{Binding Events}"></ListBox>
+        <StackPanel Orientation="Horizontal">
+            <Button Margin="5" Content="Export Last 100 Activities" Click="btnExportLast100_Click"></Button>
+            <Button Margin="5" Content="Export All Activities" Click="btnExportAll_Click"/>
+        </StackPanel>
+        
+        <ListBox Grid.Row="1" ItemsSource="{Binding Events}"></ListBox>
             
     </Grid>
 </UserControl>
