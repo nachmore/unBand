@@ -158,6 +158,8 @@
     <Compile Include="BandHelpers\BandTiles.cs" />
     <Compile Include="CloudHelpers\BandEventViewModel.cs" />
     <Compile Include="CloudHelpers\BandCloudManager.cs" />
+    <Compile Include="CloudHelpers\CSVExporter.cs" />
+    <Compile Include="CloudHelpers\CloudDataExporter.cs" />
     <Compile Include="pages\ActivityLogPage.xaml.cs">
       <DependentUpon>ActivityLogPage.xaml</DependentUpon>
     </Compile>

@@ -78,7 +78,7 @@ namespace unBand.CloudHelpers
             }
         }
 
-        internal async Task ExportEvents(string fileName, int? count, IProgress<BandCloudExportProgress> progress)
+        internal async Task ExportEventsSummary(string fileName, int? count, IProgress<BandCloudExportProgress> progress)
         {
             // TODO: Still need to find a better way to load events incrementally
             if (count == null)
@@ -90,10 +90,10 @@ namespace unBand.CloudHelpers
             }
 
             // we have now downloaded the correct number of events, export them
-            await ExportEvents(Events.Take(Events.Count > (int)count ? (int)count : Events.Count), progress);
+            await ExportEventsSummary(Events.Take(Events.Count > (int)count ? (int)count : Events.Count), progress);
         }
 
-        private async Task ExportEvents(IEnumerable<BandEventViewModel> bandEvents, IProgress<BandCloudExportProgress> progress)
+        private async Task ExportEventsSummary(IEnumerable<BandEventViewModel> bandEvents, IProgress<BandCloudExportProgress> progress)
         {
             // TODO: set more logical initial capacity?
             var csv = new StringBuilder(500000);
@@ -107,14 +107,18 @@ namespace unBand.CloudHelpers
             {
                 // TODO: I hate this pattern. I should be able to just tell the CloudClient to download all of the data for my event,
                 //       or tell the event to download the data itself
-                var data = await _cloud.GetFullEventData(bandEvent.Event.EventID, bandEvent.Event.Expanders);
-                bandEvent.Event.InitFullEventData(data);
+                // TODO: This fits ExportsEventsFull, not Summary
+                //var data = await _cloud.GetFullEventData(bandEvent.Event.EventID, bandEvent.Event.Expanders);
+                //bandEvent.Event.InitFullEventData(data);
 
-                dataToDump.Add(bandEvent.Event.GetRawSummary());
+                dataToDump.Add(bandEvent.Event.DumpBasicEventData());
 
                 progressReport.ExportedEventsCount++;
                 progress.Report(progressReport);
             }
+
+            CloudDataExporter exporter = new CSVExporter();
+            exporter.ExportToFile(dataToDump, @"c:\temp\out.csv");
 
             //TODO: dump data
             System.Diagnostics.Debug.WriteLine(dataToDump.Count);

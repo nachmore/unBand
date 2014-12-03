@@ -61,7 +61,7 @@ namespace unBand.pages
 
             var progressIndicator = new Progress<BandCloudExportProgress>(ReportProgress);
 
-            await BandCloudManager.Instance.ExportEvents(@"c:\temp\out.csv", count, progressIndicator);
+            await BandCloudManager.Instance.ExportEventsSummary(@"c:\temp\out.csv", count, progressIndicator);
 
             _progressDialog.CloseAsync();
         }
@@ -69,6 +69,11 @@ namespace unBand.pages
         void ReportProgress(BandCloudExportProgress value)
         {
             _progressDialog.SetProgress(value.ExportedEventsCount / value.TotalEventsToExport);
+        }
+
+        private void btnExport_Click(object sender, RoutedEventArgs e)
+        {
+            ExportEvents();
         }
     }
 }

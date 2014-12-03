@@ -77,8 +77,7 @@ namespace unBand.Cloud
         /// 
         /// Useful when you want to dump this to a file.
         /// </summary>
-        /// <returns></returns>
-        public virtual Dictionary<string, string> GetRawSummary()
+        public virtual Dictionary<string, string> DumpBasicEventData()
         {
             return new Dictionary<string, string>()
             {
@@ -98,6 +97,10 @@ namespace unBand.Cloud
             };
         }
 
-        //public abstract Dictionary<string, string> GetRawSummary().
+        public virtual Dictionary<string, string> DumpFullEventData()
+        {
+            return null;
+        }
+
     }
 }

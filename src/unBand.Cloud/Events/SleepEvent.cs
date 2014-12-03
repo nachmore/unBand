@@ -102,9 +102,9 @@ namespace unBand.Cloud
         }
 
         
-        public override Dictionary<string, string> GetRawSummary()
+        public override Dictionary<string, string> DumpBasicEventData()
         {
-            var rv = new Dictionary<string, string>(base.GetRawSummary());
+            var rv = new Dictionary<string, string>(base.DumpBasicEventData());
 
             rv.Add("Awake Time", AwakeTime.ToString());
             rv.Add("Sleep Time", SleepTime.ToString());

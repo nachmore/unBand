@@ -55,9 +55,9 @@ namespace unBand.Cloud
 
         }
 
-        public override Dictionary<string, string> GetRawSummary()
+        public override Dictionary<string, string> DumpBasicEventData()
         {
-            return base.GetRawSummary();
+            return base.DumpBasicEventData();
         }
 
         public override void InitFullEventData(JObject json)
