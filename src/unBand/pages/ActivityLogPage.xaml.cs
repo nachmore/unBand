@@ -6,7 +6,9 @@ using Microsoft.Live.Desktop;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,7 +29,7 @@ namespace unBand.pages
     /// <summary>
     /// Interaction logic for MyBandPage.xaml
     /// </summary>
-    public partial class ActivityLogPage : UserControl
+    public partial class ActivityLogPage : UserControl, INotifyPropertyChanged
     {
 
         private BandManager _band;
@@ -35,9 +37,35 @@ namespace unBand.pages
 
         public List<BandEventBase> Events { get; set; }
 
+        public Dictionary<string, CloudDataExporter> Exporters { get { return _exporters; } }
+
+        private Dictionary<string, CloudDataExporter> _exporters = new Dictionary<string, CloudDataExporter>()
+        {
+            {"CSV", new CSVExporter()},
+            {"Excel", null}
+        };
+
+        private KeyValuePair<string, CloudDataExporter> _exporter;
+        public KeyValuePair<string, CloudDataExporter> Exporter
+        {
+            get { return _exporter; }
+            set
+            {
+                if (!value.Equals(_exporter))
+                {
+                    _exporter = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public ActivityLogPage()
         {
             InitializeComponent();
+
+            // set the default exporter
+            // TODO: Restore last used
+            Exporter = Exporters.First(); 
 
             _band = BandManager.Instance;
 
@@ -56,10 +84,16 @@ namespace unBand.pages
 
         private async void ExportEvents(int? count = null)
         {
+            if (_exporter.Value == null)
+            {
+                MessageBox.Show("Coming soon...");
+                return;
+            }
+
             var saveDialog = new SaveFileDialog();
             saveDialog.AddExtension = true;
             saveDialog.FileName = "band_export.csv";
-            saveDialog.DefaultExt = ".csv";
+            saveDialog.DefaultExt = _exporter.Value.DefaultExt;
 
             var result = saveDialog.ShowDialog();
 
@@ -71,7 +105,7 @@ namespace unBand.pages
 
                 var progressIndicator = new Progress<BandCloudExportProgress>(ReportProgress);
 
-                await BandCloudManager.Instance.ExportEventsSummary(saveDialog.FileName, count, progressIndicator);
+                await BandCloudManager.Instance.ExportEventsSummary(count, _exporter.Value, saveDialog.FileName, progressIndicator);
 
                 _progressDialog.CloseAsync();
             }
@@ -87,5 +121,23 @@ namespace unBand.pages
         {
             ExportEvents();
         }
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                }));
+            }
+        }
+
+        #endregion
+
     }
 }

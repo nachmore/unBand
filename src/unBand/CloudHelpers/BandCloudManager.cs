@@ -78,8 +78,8 @@ namespace unBand.CloudHelpers
                 Events.Add(new BandEventViewModel(cloudEvent));
             }
         }
-
-        internal async Task ExportEventsSummary(string fileName, int? count, IProgress<BandCloudExportProgress> progress)
+        
+        public async Task ExportEventsSummary(int? count, CloudDataExporter exporter, string fileName, Progress<BandCloudExportProgress> progress)
         {
             // TODO: Still need to find a better way to load events incrementally
             if (count == null)
@@ -95,10 +95,10 @@ namespace unBand.CloudHelpers
             
             // we have now downloaded the correct number of events, export them
             // Note: Take will take min(Events.Count, count)
-            await ExportEventsSummary(Events.Take((int)count), fileName, progress);
+            await ExportEventsSummary(Events.Take((int)count), exporter, fileName, progress);
         }
 
-        private async Task ExportEventsSummary(IEnumerable<BandEventViewModel> bandEvents, string fileName, IProgress<BandCloudExportProgress> progress)
+        private async Task ExportEventsSummary(IEnumerable<BandEventViewModel> bandEvents, CloudDataExporter exporter, string fileName, IProgress<BandCloudExportProgress> progress)
         {
             // TODO: set more logical initial capacity?
             var csv = new StringBuilder(500000);
@@ -124,7 +124,6 @@ namespace unBand.CloudHelpers
                 await Task.Yield(); // since we need to update progress, make sure to yield for a bit
             }
 
-            CloudDataExporter exporter = new CSVExporter();
             exporter.ExportToFile(dataToDump, fileName);
 
             //TODO: dump data

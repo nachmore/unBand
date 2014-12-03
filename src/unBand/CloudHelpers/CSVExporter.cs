@@ -9,6 +9,8 @@ namespace unBand.CloudHelpers
 {
     public class CSVExporter : CloudDataExporter
     {
+        public override string DefaultExt { get { return ".csv"; } }
+
         public override void ExportToFile(List<Dictionary<string, object>> data, string filename)
         {
             var sb = new StringBuilder(500000);

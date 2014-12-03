@@ -8,8 +8,10 @@ namespace unBand.CloudHelpers
 {
     public abstract class CloudDataExporter
     {
-        public abstract void ExportToFile(List<Dictionary<string, object>> data, string filename);
+        public abstract string DefaultExt { get; }
 
+        public abstract void ExportToFile(List<Dictionary<string, object>> data, string filename);
+        
         /// <summary>
         /// Returns a list of the unique fields across all items in the dictionary.
         /// 
