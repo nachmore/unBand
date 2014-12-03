@@ -156,8 +156,10 @@
     </ApplicationDefinition>
     <Compile Include="BandHelpers\BandLogger.cs" />
     <Compile Include="BandHelpers\BandTiles.cs" />
+    <Compile Include="OppositeBoolConverter.cs" />
     <Compile Include="CloudHelpers\BandEventViewModel.cs" />
     <Compile Include="CloudHelpers\BandCloudManager.cs" />
+    <Compile Include="CloudHelpers\CloudDataExporterSettings.cs" />
     <Compile Include="CloudHelpers\CSVExporter.cs" />
     <Compile Include="CloudHelpers\CloudDataExporter.cs" />
     <Compile Include="pages\ActivityLogPage.xaml.cs">

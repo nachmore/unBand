@@ -59,13 +59,29 @@ namespace unBand.pages
             }
         }
 
+        private CloudDataExporterSettings _exportSettings;
+        public CloudDataExporterSettings ExportSettings
+        {
+            get { return _exportSettings; }
+            set
+            {
+                if (_exportSettings != value)
+                {
+                    _exportSettings = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public ActivityLogPage()
         {
             InitializeComponent();
 
             // set the default exporter
             // TODO: Restore last used
-            Exporter = Exporters.First(); 
+            Exporter = Exporters.First();
+            
+            ExportSettings = new CloudDataExporterSettings();
 
             _band = BandManager.Instance;
 
@@ -113,7 +129,6 @@ namespace unBand.pages
 
         void ReportProgress(BandCloudExportProgress value)
         {
-            System.Diagnostics.Debug.WriteLine("Export Progress: " + ((double)(value.ExportedEventsCount) / value.TotalEventsToExport) * 100 + "%");
             _progressDialog.SetProgress(((double)(value.ExportedEventsCount) / value.TotalEventsToExport));
         }
 

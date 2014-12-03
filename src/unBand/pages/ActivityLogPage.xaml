@@ -14,7 +14,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" DataContext="{Binding ElementName=this}">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
@@ -23,22 +23,22 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0">
-                <CheckBox Margin="5">Steps</CheckBox>
-                <CheckBox Margin="5">Sleep</CheckBox>
-                <CheckBox Margin="5">Workouts</CheckBox>
-                <CheckBox Margin="5">Runs</CheckBox>
+                <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.ExportSteps}">Steps</CheckBox>
+                <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.ExportSleep}">Sleep</CheckBox>
+                <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.ExportWorkouts}">Workouts</CheckBox>
+                <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.ExportRuns}">Runs</CheckBox>
             </StackPanel>
 
             <StackPanel Grid.Column="1">
                 <TextBlock Margin="5" TextWrapping="Wrap">We're working on date ranges, but in the meanwhile you can:</TextBlock>
-                <RadioButton Margin="5">Export Last 100 Activities</RadioButton>
-                <RadioButton Margin="5">Export All</RadioButton>
+                <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll, Mode=OneWay, Converter={StaticResource OppositeBoolConverter}}">Export Last 100 Activities</RadioButton>
+                <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll}">Export All</RadioButton>
             </StackPanel>
 
             <StackPanel Grid.Column="2">
                 <StackPanel Margin="5" Orientation="Horizontal">
                     <TextBlock Height="15">Format:</TextBlock>
-                    <ComboBox Margin="5" HorizontalAlignment="Left" x:Name="cmbFormat" ItemsSource="{Binding ElementName=this, Path=Exporters}" DisplayMemberPath="Key" SelectedValue="{Binding ElementName=this, Path=Exporter}" Width="70">
+                    <ComboBox Margin="5" HorizontalAlignment="Left" x:Name="cmbFormat" ItemsSource="{Binding Path=Exporters}" DisplayMemberPath="Key" SelectedValue="{Binding ElementName=this, Path=Exporter}" Width="70">
                     </ComboBox>
                 </StackPanel>
                 <Button Margin="10" Click="btnExport_Click">Export</Button>
