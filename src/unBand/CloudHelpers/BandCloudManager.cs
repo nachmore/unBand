@@ -13,6 +13,7 @@ namespace unBand.CloudHelpers
 {
     public class BandCloudExportProgress
     {
+        public string StatusMessage { get; set; }
         public int TotalEventsToExport { get; set; }
         public int ExportedEventsCount { get; set; }
     }
@@ -68,7 +69,7 @@ namespace unBand.CloudHelpers
         /// TODO: Find a way to load events within a range instead of just from the top
         /// </summary>
         /// <param name="top"></param>
-        private async void LoadEvents(int top = 100)
+        private async Task LoadEvents(int top = 100)
         {
             var events = await _cloud.GetEvents(top);
 
@@ -86,14 +87,18 @@ namespace unBand.CloudHelpers
 
             if (Events.Count < count)
             {
-                LoadEvents((int)count);
-            }
+                // clear out our existing events, since they're going to be replaced
+                Events.Clear();
 
+                await LoadEvents((int)count);
+            }
+            
             // we have now downloaded the correct number of events, export them
-            await ExportEventsSummary(Events.Take(Events.Count > (int)count ? (int)count : Events.Count), progress);
+            // Note: Take will take min(Events.Count, count)
+            await ExportEventsSummary(Events.Take((int)count), fileName, progress);
         }
 
-        private async Task ExportEventsSummary(IEnumerable<BandEventViewModel> bandEvents, IProgress<BandCloudExportProgress> progress)
+        private async Task ExportEventsSummary(IEnumerable<BandEventViewModel> bandEvents, string fileName, IProgress<BandCloudExportProgress> progress)
         {
             // TODO: set more logical initial capacity?
             var csv = new StringBuilder(500000);
@@ -115,10 +120,12 @@ namespace unBand.CloudHelpers
 
                 progressReport.ExportedEventsCount++;
                 progress.Report(progressReport);
+                
+                await Task.Yield(); // since we need to update progress, make sure to yield for a bit
             }
 
             CloudDataExporter exporter = new CSVExporter();
-            exporter.ExportToFile(dataToDump, @"c:\temp\out.csv");
+            exporter.ExportToFile(dataToDump, fileName);
 
             //TODO: dump data
             System.Diagnostics.Debug.WriteLine(dataToDump.Count);

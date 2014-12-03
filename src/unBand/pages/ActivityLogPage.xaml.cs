@@ -3,6 +3,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Cargo.Client;
 using Microsoft.Live;
 using Microsoft.Live.Desktop;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,20 +56,31 @@ namespace unBand.pages
 
         private async void ExportEvents(int? count = null)
         {
-            _progressDialog = await ((MetroWindow)(Window.GetWindow(this))).ShowProgressAsync("Exporting Data", "...");
-            _progressDialog.SetCancelable(true); // TODO: this needs to be implemented. No event?
-            _progressDialog.SetProgress(0);
+            var saveDialog = new SaveFileDialog();
+            saveDialog.AddExtension = true;
+            saveDialog.FileName = "band_export.csv";
+            saveDialog.DefaultExt = ".csv";
 
-            var progressIndicator = new Progress<BandCloudExportProgress>(ReportProgress);
+            var result = saveDialog.ShowDialog();
 
-            await BandCloudManager.Instance.ExportEventsSummary(@"c:\temp\out.csv", count, progressIndicator);
+            if (result == true)
+            {
+                _progressDialog = await ((MetroWindow)(Window.GetWindow(this))).ShowProgressAsync("Exporting Data", "...");
+                _progressDialog.SetCancelable(true); // TODO: this needs to be implemented. No event?
+                _progressDialog.SetProgress(0);
 
-            _progressDialog.CloseAsync();
+                var progressIndicator = new Progress<BandCloudExportProgress>(ReportProgress);
+
+                await BandCloudManager.Instance.ExportEventsSummary(saveDialog.FileName, count, progressIndicator);
+
+                _progressDialog.CloseAsync();
+            }
         }
 
         void ReportProgress(BandCloudExportProgress value)
         {
-            _progressDialog.SetProgress(value.ExportedEventsCount / value.TotalEventsToExport);
+            System.Diagnostics.Debug.WriteLine("Export Progress: " + ((double)(value.ExportedEventsCount) / value.TotalEventsToExport) * 100 + "%");
+            _progressDialog.SetProgress(((double)(value.ExportedEventsCount) / value.TotalEventsToExport));
         }
 
         private void btnExport_Click(object sender, RoutedEventArgs e)
