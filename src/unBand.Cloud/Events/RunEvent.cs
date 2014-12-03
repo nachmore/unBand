@@ -55,7 +55,7 @@ namespace unBand.Cloud
 
         }
 
-        public override Dictionary<string, string> DumpBasicEventData()
+        public override Dictionary<string, object> DumpBasicEventData()
         {
             return base.DumpBasicEventData();
         }

@@ -77,23 +77,23 @@ namespace unBand.Cloud
         /// 
         /// Useful when you want to dump this to a file.
         /// </summary>
-        public virtual Dictionary<string, string> DumpBasicEventData()
+        public virtual Dictionary<string, object> DumpBasicEventData()
         {
-            return new Dictionary<string, string>()
+            return new Dictionary<string, object>()
             {
                 {"EventID", EventID},
                 {"Duration", Duration},
                 {"Parent Event Id", ParentEventId},
                 {"Name", Name},
-                {"DeliveryID", DeliveryID.ToString()},
-                {"EventType", EventType.ToString()},
-                {"StartTime", StartTime.ToString()},
-                {"CaloriesBurned", CaloriesBurned.ToString()},
-                {"DayId", DayId.ToString()},
-                {"Feeling", Feeling.ToString()},
-                {"Average Heart Rate", HeartRate.Average.ToString()},
-                {"Lowest Heart Rate", HeartRate.Lowest.ToString()},
-                {"Peak Heart Rate", HeartRate.Peak.ToString()},
+                {"DeliveryID", DeliveryID},
+                {"EventType", EventType},
+                {"StartTime", StartTime},
+                {"CaloriesBurned", CaloriesBurned},
+                {"DayId", DayId},
+                {"Feeling", Feeling},
+                {"Average Heart Rate", HeartRate.Average},
+                {"Lowest Heart Rate", HeartRate.Lowest},
+                {"Peak Heart Rate", HeartRate.Peak},
             };
         }
 

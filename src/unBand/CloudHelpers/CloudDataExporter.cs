@@ -8,7 +8,7 @@ namespace unBand.CloudHelpers
 {
     public abstract class CloudDataExporter
     {
-        public abstract void ExportToFile(List<Dictionary<string, string>> data, string filename);
+        public abstract void ExportToFile(List<Dictionary<string, object>> data, string filename);
 
         /// <summary>
         /// Returns a list of the unique fields across all items in the dictionary.
@@ -18,7 +18,7 @@ namespace unBand.CloudHelpers
         /// (so we need to add blanks in the correct spots)
         /// </summary>
         /// <param name="data"></param>
-        internal List<string> GetUnifiedFields(List<Dictionary<string, string>> data)
+        internal List<string> GetUnifiedFields(List<Dictionary<string, object>> data)
         {
             // and this, my friends, is why I'm not the biggest linq fan. Essentially this:
             // 1. selects all keys

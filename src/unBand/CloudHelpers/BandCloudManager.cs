@@ -102,7 +102,7 @@ namespace unBand.CloudHelpers
         {
             // TODO: set more logical initial capacity?
             var csv = new StringBuilder(500000);
-            var dataToDump = new List<Dictionary<string, string>>(100);
+            var dataToDump = new List<Dictionary<string, object>>(100);
 
             var progressReport = new BandCloudExportProgress() { TotalEventsToExport = bandEvents.Count()};
 

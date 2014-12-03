@@ -9,7 +9,7 @@ namespace unBand.CloudHelpers
 {
     public class CSVExporter : CloudDataExporter
     {
-        public override void ExportToFile(List<Dictionary<string, string>> data, string filename)
+        public override void ExportToFile(List<Dictionary<string, object>> data, string filename)
         {
             var sb = new StringBuilder(500000);
             var fields = GetUnifiedFields(data);
@@ -24,7 +24,7 @@ namespace unBand.CloudHelpers
                 {
                     if (item.Keys.Contains(field))
                     {
-                        sb.Append(item[field]);
+                        sb.Append(item[field].ToString());
                     }
                     sb.Append(",");
                 }
