@@ -26,8 +26,9 @@ namespace unBand.CloudHelpers
                 {
                     if (item.Keys.Contains(field))
                     {
-                        sb.Append(item[field].ToString());
+                        sb.Append((item[field] == null ? "" : item[field].ToString()));
                     }
+
                     sb.Append(",");
                 }
                 sb.Append("\n");
