@@ -1,4 +1,6 @@
-﻿using Microsoft.Cargo.Client;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Cargo.Client;
 using Microsoft.Live;
 using Microsoft.Live.Desktop;
 using System;
@@ -28,6 +30,7 @@ namespace unBand.pages
     {
 
         private BandManager _band;
+        ProgressDialogController _progressDialog;
 
         public List<BandEventBase> Events { get; set; }
 
@@ -50,10 +53,22 @@ namespace unBand.pages
             ExportEvents();            
         }
 
-        private void ExportEvents(int? count = null)
+        private async void ExportEvents(int? count = null)
         {
-            BandCloudManager.Instance.ExportEvents(@"c:\temp\out.csv", count);
+            _progressDialog = await ((MetroWindow)(Window.GetWindow(this))).ShowProgressAsync("Exporting Data", "...");
+            _progressDialog.SetCancelable(true); // TODO: this needs to be implemented. No event?
+            _progressDialog.SetProgress(0);
+
+            var progressIndicator = new Progress<BandCloudExportProgress>(ReportProgress);
+
+            await BandCloudManager.Instance.ExportEvents(@"c:\temp\out.csv", count, progressIndicator);
+
+            _progressDialog.CloseAsync();
         }
 
+        void ReportProgress(BandCloudExportProgress value)
+        {
+            _progressDialog.SetProgress(value.ExportedEventsCount / value.TotalEventsToExport);
+        }
     }
 }

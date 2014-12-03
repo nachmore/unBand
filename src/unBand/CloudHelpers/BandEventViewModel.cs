@@ -40,11 +40,6 @@ namespace unBand.CloudHelpers
             Event.EventDataDownloaded -= Event_EventDataDownloaded;
         }
 
-        public async Task Load()
-        {
-            await Event.DownloadAllData();
-        }
-
         void Event_EventDataDownloaded(BandEventBase bandEvent)
         {
             Loaded = true;

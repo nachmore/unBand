@@ -61,6 +61,10 @@ namespace unBand.Cloud
     [TypeConverter(typeof(SleepEventConverter))]
     public class SleepEvent : BandEventBase
     {
+        public override BandEventExpandType[] Expanders
+        {
+            get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences }; }
+        }
 
         public List<SleepInfoSegment> Segments { get; private set; }
 
@@ -68,29 +72,55 @@ namespace unBand.Cloud
             : base(json)
         {
             Segments = new List<SleepInfoSegment>();
-            InitFromDynamic((dynamic)json);
+            InitBasicEventData((dynamic)json);
         }
 
-        public override async Task DownloadAllData()
-        {
-
-        }
+        public int AwakeTime { get; private set; }
+        public int SleepTime { get; private set; }
+        public int NumberOfWakeups { get; private set; }
+        public int TimeToFallAsleep { get; private set; }
+        public int SleepEfficiencyPercentage { get; private set; }
+        public int SleepRecoveryIndex { get; private set; }
+        public int RestingHeartRate { get; private set; }
 
         /// <summary>
         /// Creates a SleepEvent object that is intialized from the summary JSON returned by GetEvents()
         ///  
         /// To fill in detailed information about this event a call to DownloadAllData() is required.
         /// </summary>
-        /// <param name="rawEvent"></param>
+        /// <param name="basicData"></param>
         /// <returns></returns>
-        private void InitFromDynamic(dynamic rawEvent)
+        private void InitBasicEventData(dynamic basicData)
         {
-
+            AwakeTime                 = basicData.AwakeTime;
+            SleepTime                 = basicData.SleepTime;
+            NumberOfWakeups           = basicData.NumberOfWakeups;
+            TimeToFallAsleep          = basicData.TimeToFallAsleep;
+            SleepEfficiencyPercentage = basicData.SleepEfficiencyPercentage;
+            SleepRecoveryIndex        = basicData.SleepRecoveryIndex;
+            RestingHeartRate          = basicData.RestingHeartRate;
         }
 
-        public override string ToCSV()
+        
+        public override Dictionary<string, string> GetRawSummary()
         {
-            throw new NotImplementedException();
+            var rv = new Dictionary<string, string>(base.GetRawSummary());
+
+            rv.Add("Awake Time", AwakeTime.ToString());
+            rv.Add("Sleep Time", SleepTime.ToString());
+            rv.Add("Number of Wakeups", NumberOfWakeups.ToString());
+            rv.Add("Time to Fall Asleep", TimeToFallAsleep.ToString());
+            rv.Add("Sleep Efficiency Percentage", SleepEfficiencyPercentage.ToString());
+            rv.Add("Sleep Recovery Index", SleepRecoveryIndex.ToString());
+
+            return rv;
+        }
+
+        public override void InitFullEventData(JObject json)
+        {
+            dynamic fullData = (dynamic)json;
+
+            System.Diagnostics.Debug.WriteLine(fullData.ToString());
         }
     }
 }

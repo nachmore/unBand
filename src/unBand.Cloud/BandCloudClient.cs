@@ -39,11 +39,6 @@ namespace unBand.Cloud
 
         public BandCloudClient() { }
 
-        public BandCloudClient(LiveAuthTokens tokens)
-        {
-            _tokens = tokens;
-        }
-
         public void Login()
         {
             var liveAuthClient = new LiveAuthClient("000000004811DB42");
@@ -106,14 +101,13 @@ namespace unBand.Cloud
             return rv;
         }
 
-        public async Task<T> GetEvent<T>(string ID, BandEventExpandType[] expanders)
+        public async Task<JObject> GetFullEventData(string ID, BandEventExpandType[] expanders)
         {
             var expandParam = string.Join(",", expanders);
 
             var response = await AuthenticatedRequest(string.Format(GET_EVENT_URL, ID, expandParam));
 
-            var converter = TypeDescriptor.GetConverter(typeof(T));
-            return (T)converter.ConvertFromInvariantString(response);
+            return JObject.Parse(response);
         }
 
         private async Task<string> AuthenticatedRequest(string relativeUrl)

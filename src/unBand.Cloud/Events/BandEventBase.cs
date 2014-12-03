@@ -14,6 +14,8 @@ namespace unBand.Cloud
     {
         public event EventDataDownloadedEventHandler EventDataDownloaded;
 
+        public abstract BandEventExpandType[] Expanders { get; }
+
         // common Properties
         public string EventID { get; set; }
         public string Duration { get; set; }
@@ -32,7 +34,7 @@ namespace unBand.Cloud
         {
             dynamic eventSummary = (dynamic)json;
 
-            EventID        = eventSummary.EventID;
+            EventID        = eventSummary.EventId;
             Duration       = eventSummary.Duration;
             ParentEventId  = eventSummary.ParentEventId;
             Name           = eventSummary.Name;
@@ -68,8 +70,34 @@ namespace unBand.Cloud
             return converter.ConvertFrom(rawBandEvent);
         }
 
-        public abstract Task DownloadAllData();
+        public abstract void InitFullEventData(JObject json);
 
-        public abstract string ToCSV();
+        /// <summary>
+        /// Returns a Dictionary with the raw field-value for this object
+        /// 
+        /// Useful when you want to dump this to a file.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Dictionary<string, string> GetRawSummary()
+        {
+            return new Dictionary<string, string>()
+            {
+                {"EventID", EventID},
+                {"Duration", Duration},
+                {"Parent Event Id", ParentEventId},
+                {"Name", Name},
+                {"DeliveryID", DeliveryID.ToString()},
+                {"EventType", EventType.ToString()},
+                {"StartTime", StartTime.ToString()},
+                {"CaloriesBurned", CaloriesBurned.ToString()},
+                {"DayId", DayId.ToString()},
+                {"Feeling", Feeling.ToString()},
+                {"Average Heart Rate", HeartRate.Average.ToString()},
+                {"Lowest Heart Rate", HeartRate.Lowest.ToString()},
+                {"Peak Heart Rate", HeartRate.Peak.ToString()},
+            };
+        }
+
+        //public abstract Dictionary<string, string> GetRawSummary().
     }
 }

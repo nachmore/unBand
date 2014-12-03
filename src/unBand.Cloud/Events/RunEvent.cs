@@ -30,6 +30,11 @@ namespace unBand.Cloud
     public class RunEvent : BandEventBase
     {
 
+        public override BandEventExpandType[] Expanders
+        {
+            get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences, BandEventExpandType.MapPoints }; }
+        }
+
         public List<RunInfoSegment> Segments { get; private set; }
 
         public RunEvent(JObject json) : base(json)
@@ -37,13 +42,6 @@ namespace unBand.Cloud
             Segments = new List<RunInfoSegment>();
             InitFromDynamic((dynamic)json);
         }
-
-        public override async Task DownloadAllData()
-        {
-
-        }
-
-
 
         /// <summary>
         /// Creates a SleepEvent object that is intialized from the summary JSON returned by GetEvents()
@@ -57,9 +55,15 @@ namespace unBand.Cloud
 
         }
 
-        public override string ToCSV()
+        public override Dictionary<string, string> GetRawSummary()
         {
-            throw new NotImplementedException();
+            return base.GetRawSummary();
         }
+
+        public override void InitFullEventData(JObject json)
+        {
+            
+        }
+
     }
 }

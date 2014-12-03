@@ -29,6 +29,11 @@ namespace unBand.Cloud
     [TypeConverter(typeof(UserWorkoutEventConverter))]
     public class UserWorkoutEvent : BandEventBase
     {
+        public override BandEventExpandType[] Expanders
+        {
+            get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences }; }
+        }
+
         public List<UserWorkoutInfoSegment> Segments { get; private set; }
 
         public UserWorkoutEvent(JObject json)
@@ -36,11 +41,6 @@ namespace unBand.Cloud
         {
             Segments = new List<UserWorkoutInfoSegment>();
             InitFromDynamic((dynamic)json);
-        }
-
-        public override async Task DownloadAllData()
-        {
-
         }
 
         /// <summary>
@@ -55,7 +55,12 @@ namespace unBand.Cloud
 
         }
 
-        public override string ToCSV()
+        public override Dictionary<string, string> GetRawSummary()
+        {
+            return base.GetRawSummary();
+        }
+
+        public override void InitFullEventData(JObject json)
         {
             throw new NotImplementedException();
         }
