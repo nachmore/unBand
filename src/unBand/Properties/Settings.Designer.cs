@@ -58,5 +58,16 @@ namespace unBand.Properties {
                 this["Device"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::unBand.CloudHelpers.CloudDataExporterSettings ExportSettings {
+            get {
+                return ((global::unBand.CloudHelpers.CloudDataExporterSettings)(this["ExportSettings"]));
+            }
+            set {
+                this["ExportSettings"] = value;
+            }
+        }
     }
 }

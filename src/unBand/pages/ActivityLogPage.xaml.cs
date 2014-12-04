@@ -81,12 +81,27 @@ namespace unBand.pages
             // set the default exporter
             // TODO: Restore last used
             Exporter = Exporters.First();
-            
-            ExportSettings = new CloudDataExporterSettings();
+
+            LoadExportSettings();
 
             _band = BandManager.Instance;
 
             this.DataContext = BandCloudManager.Instance;
+        }
+
+        private void LoadExportSettings()
+        {
+            ExportSettings = new CloudDataExporterSettings();
+
+            ExportSettings = (Properties.Settings.Default.ExportSettings != null ? 
+                                Properties.Settings.Default.ExportSettings :
+                                new CloudDataExporterSettings());
+        }
+
+        private void SaveExportSettings()
+        {
+            Properties.Settings.Default.ExportSettings = ExportSettings;
+            Properties.Settings.Default.Save();
         }
 
         private void btnExportLast100_Click(object sender, RoutedEventArgs e)
@@ -132,6 +147,8 @@ namespace unBand.pages
                 {
                     Process.Start(saveDialog.FileName);                    
                 }
+
+                SaveExportSettings();
             }
         }
 

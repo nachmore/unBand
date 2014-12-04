@@ -11,5 +11,8 @@
     <Setting Name="Device" Type="System.Guid" Scope="User">
       <Value Profile="(Default)">00000000-0000-0000-0000-000000000000</Value>
     </Setting>
+    <Setting Name="ExportSettings" Type="unBand.CloudHelpers.CloudDataExporterSettings" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
