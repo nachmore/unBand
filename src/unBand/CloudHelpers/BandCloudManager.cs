@@ -81,6 +81,8 @@ namespace unBand.CloudHelpers
         
         public async Task ExportEventsSummary(int? count, CloudDataExporter exporter, string fileName, Progress<BandCloudExportProgress> progress)
         {
+            var settings = exporter.Settings;
+
             // TODO: Still need to find a better way to load events incrementally
             if (count == null)
                 count = 10000000; // suitably large number to encompass "everything".
@@ -95,7 +97,17 @@ namespace unBand.CloudHelpers
             
             // we have now downloaded the correct number of events, export them
             // Note: Take will take min(Events.Count, count)
-            await ExportEventsSummary(Events.Take((int)count), exporter, fileName, progress);
+            await ExportEventsSummary(
+                Events
+                    .Where(e =>
+                        {
+                            return (settings.IncludeRuns     &&  e.Event.EventType == BandEventType.Running)  ||
+                                   (settings.IncludeSleep    &&  e.Event.EventType == BandEventType.Sleeping) ||
+                                   (settings.IncludeWorkouts && (e.Event.EventType == BandEventType.GuidedWorkout || e.Event.EventType == BandEventType.Workout));
+                        }
+                    )
+                    .Take((int)count), exporter, fileName, progress
+            );
         }
 
         private async Task ExportEventsSummary(IEnumerable<BandEventViewModel> bandEvents, CloudDataExporter exporter, string fileName, IProgress<BandCloudExportProgress> progress)
