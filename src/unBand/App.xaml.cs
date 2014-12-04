@@ -17,5 +17,10 @@ namespace unBand
         {
             unBand.Properties.Settings.Default.Save();
         }
+
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            Telemetry.Client.TrackException(e.Exception);
+        }
     }
 }
