@@ -19,7 +19,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="225"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0">
@@ -38,10 +38,11 @@
             <StackPanel Grid.Column="2">
                 <StackPanel Margin="5" Orientation="Horizontal">
                     <TextBlock Height="15">Format:</TextBlock>
-                    <ComboBox Margin="5" HorizontalAlignment="Left" x:Name="cmbFormat" ItemsSource="{Binding Path=Exporters}" DisplayMemberPath="Key" SelectedValue="{Binding ElementName=this, Path=Exporter}" Width="70">
+                    <ComboBox Margin="5,0,5,0" HorizontalAlignment="Left" x:Name="cmbFormat" ItemsSource="{Binding Path=Exporters}" DisplayMemberPath="Key" SelectedValue="{Binding ElementName=this, Path=Exporter}" Width="70">
                     </ComboBox>
                 </StackPanel>
                 <CheckBox Margin="5" IsChecked="{Binding ExportSettings.OpenFileAfterExport}">Open file when finished</CheckBox>
+                <CheckBox Margin="5" IsChecked="{Binding ExportSettings.ConvertDateTimeToLocal}">Convert UTC dates to local time</CheckBox>
                 <Button Margin="10" Click="btnExport_Click">Export</Button>
             </StackPanel>
 

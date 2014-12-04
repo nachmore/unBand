@@ -26,7 +26,7 @@ namespace unBand.CloudHelpers
                 {
                     if (item.Keys.Contains(field))
                     {
-                        sb.Append((item[field] == null ? "" : item[field].ToString()));
+                        sb.Append(PrepareValue(item[field]));
                     }
 
                     sb.Append(",");
@@ -35,6 +35,17 @@ namespace unBand.CloudHelpers
             }
 
             File.WriteAllText(filename, sb.ToString());
+        }
+
+        private string PrepareValue(object value)
+        {
+            if (value is DateTime && Settings.ConvertDateTimeToLocal) 
+            {
+                var dt = (DateTime)value;
+                return dt.ToLocalTime().ToString();
+            } 
+
+            return (value == null ? "" : value.ToString());
         }
     }
 }
