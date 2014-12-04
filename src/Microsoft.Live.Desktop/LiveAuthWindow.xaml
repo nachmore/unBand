@@ -1,8 +1,10 @@
 ﻿<Window x:Class="Microsoft.Live.Desktop.LiveAuthWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Loaded="Window_Loaded"
-        Title="Microsoft Account Login" Height="300" Width="300">
+        Title="Microsoft Account Login" 
+        MinHeight="510" MinWidth="385"
+        Height="510" Width="385"
+        >
     <WebBrowser x:Name="browser" Navigated="browser_Navigated">
         
     </WebBrowser>

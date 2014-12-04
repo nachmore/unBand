@@ -44,12 +44,17 @@ namespace unBand.Cloud
             var liveAuthClient = new LiveAuthClient("000000004811DB42");
 
             string startUrl = liveAuthClient.GetLoginUrl(new List<string>() { "service::prodkds.dns-cargo.com::MBI_SSL" });
-
+            
             var authForm = new LiveAuthWindow(
                 startUrl,
-                this.OnLiveAuthCompleted);
+                this.OnLiveAuthCompleted,
+                "Login to the Microsoft Account associated with your Band"
+            );
 
-            authForm.Show();
+            // to logout: 
+            //authForm.LogOut(liveAuthClient.GetLogoutUrl());
+
+            authForm.Login();
         }
 
         private async void OnLiveAuthCompleted(AuthResult result)

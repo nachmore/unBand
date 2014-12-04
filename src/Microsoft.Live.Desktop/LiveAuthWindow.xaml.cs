@@ -26,17 +26,15 @@ namespace Microsoft.Live.Desktop
         private string _url;
         private AuthCompletedCallback _callback;
 
-        public LiveAuthWindow(string url, AuthCompletedCallback callback)
+        public LiveAuthWindow(string url, AuthCompletedCallback callback, string title = null)
         {
             InitializeComponent();
 
+            if (title != null)
+                Title = title;
+
             _url = url;
             _callback = callback;
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            browser.Navigate(_url);
         }
 
         private void browser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
@@ -51,7 +49,21 @@ namespace Microsoft.Live.Desktop
                     _callback(new AuthResult(e.Uri));
                 }
             }
+            else
+            {
+                // show the window since we now need user input
+                this.Show();
+            }
         }
-        
+
+        public void Login()
+        {
+            browser.Navigate(_url);
+        }
+
+        public void LogOut(string url)
+        {
+            browser.Navigate(url);
+        }
     }
 }
