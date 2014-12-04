@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -121,14 +122,22 @@ namespace unBand.pages
 
                 var progressIndicator = new Progress<BandCloudExportProgress>(ReportProgress);
 
+                _exporter.Value.Settings = ExportSettings;
+
                 await BandCloudManager.Instance.ExportEventsSummary(count, _exporter.Value, saveDialog.FileName, progressIndicator);
 
                 _progressDialog.CloseAsync();
+
+                if (ExportSettings.OpenFileAfterExport)
+                {
+                    Process.Start(saveDialog.FileName);                    
+                }
             }
         }
 
         void ReportProgress(BandCloudExportProgress value)
         {
+            // TODO: handle 0 events to export
             _progressDialog.SetProgress(((double)(value.ExportedEventsCount) / value.TotalEventsToExport));
         }
 

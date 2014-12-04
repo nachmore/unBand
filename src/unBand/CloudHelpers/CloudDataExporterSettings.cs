@@ -12,13 +12,13 @@ namespace unBand.CloudHelpers
     /// <summary>
     /// For now none of the properties call NotifyPropertyChanged as they are driven by the UI
     /// </summary>
+    [Serializable()]
     public class CloudDataExporterSettings : INotifyPropertyChanged
     {
-        public bool ExportSteps { get; set; }
-
-        public bool ExportWorkouts { get; set; }
-        public bool ExportSleep { get; set; }
-        public bool ExportRuns { get; set; }
+        public bool IncludeSteps { get; set; }
+        public bool IncludeWorkouts { get; set; }
+        public bool IncludeSleep { get; set; }
+        public bool IncludeRuns { get; set; }
 
         /// <summary>
         /// If true, overrides ExportCount
@@ -27,7 +27,11 @@ namespace unBand.CloudHelpers
         public int ExportCount { get; set; }
         
         public bool ConvertDateTimeToLocal { get; set; }
-        
+
+        public bool OpenFileAfterExport { get; set; }
+
+        public static 
+
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
