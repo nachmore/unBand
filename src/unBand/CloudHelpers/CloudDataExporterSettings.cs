@@ -30,7 +30,21 @@ namespace unBand.CloudHelpers
 
         public bool OpenFileAfterExport { get; set; }
 
-        public static 
+        public CloudDataExporterSettings()
+        {
+            // set up default
+            IncludeRuns = true;
+            IncludeSleep = true;
+            IncludeSteps = true;
+            IncludeWorkouts = true;
+
+            ExportAll = true;
+            ExportCount = 100;
+
+            ConvertDateTimeToLocal = true;
+
+            OpenFileAfterExport = true;
+        }
 
         #region INotifyPropertyChanged
 
