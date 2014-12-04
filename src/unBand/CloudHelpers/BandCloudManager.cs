@@ -27,14 +27,14 @@ namespace unBand.CloudHelpers
 
         public static BandCloudManager Instance
         {
-            get 
+            get
             {
                 if (_instance == null)
                 {
                     _instance = new BandCloudManager();
                 }
 
-                return _instance; 
+                return _instance;
             }
             set
             {
@@ -46,7 +46,25 @@ namespace unBand.CloudHelpers
 
         private BandCloudClient _cloud;
 
+        // TODO: this event needs to convey success or failure
+        public event BandCloudAuthComplete AuthenticationCompleted;
+
         public ObservableCollection<BandEventViewModel> Events { get; set; }
+
+        private bool _isLoggedIn;
+
+        public bool IsLoggedIn
+        {
+            get { return _isLoggedIn; }
+            set
+            {
+                if (_isLoggedIn != value)
+                {
+                    _isLoggedIn = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         private BandCloudManager()
         {
@@ -54,7 +72,14 @@ namespace unBand.CloudHelpers
 
             _cloud = new BandCloudClient();
             _cloud.AuthenticationCompleted += _cloud_AuthenticationCompleted;
-            _cloud.Login();
+
+            Login();
+        }
+
+        public void Login() 
+        {
+            if (!IsLoggedIn)
+                _cloud.Login();
         }
 
         /// <summary>
@@ -62,7 +87,10 @@ namespace unBand.CloudHelpers
         /// </summary>
         void _cloud_AuthenticationCompleted()
         {
-            LoadEvents();
+            IsLoggedIn = true;
+
+            if (AuthenticationCompleted != null)
+                AuthenticationCompleted();
         }
 
         /// <summary>
@@ -73,12 +101,12 @@ namespace unBand.CloudHelpers
         {
             var events = await _cloud.GetEvents(top);
 
-            foreach (var cloudEvent in events) 
+            foreach (var cloudEvent in events)
             {
                 Events.Add(new BandEventViewModel(cloudEvent));
             }
         }
-        
+
         public async Task ExportEventsSummary(int? count, CloudDataExporter exporter, string fileName, Progress<BandCloudExportProgress> progress)
         {
             var settings = exporter.Settings;
@@ -94,15 +122,15 @@ namespace unBand.CloudHelpers
 
                 await LoadEvents((int)count);
             }
-            
+
             // we have now downloaded the correct number of events, export them
             // Note: Take will take min(Events.Count, count)
             await ExportEventsSummary(
                 Events
                     .Where(e =>
                         {
-                            return (settings.IncludeRuns     &&  e.Event.EventType == BandEventType.Running)  ||
-                                   (settings.IncludeSleep    &&  e.Event.EventType == BandEventType.Sleeping) ||
+                            return (settings.IncludeRuns && e.Event.EventType == BandEventType.Running) ||
+                                   (settings.IncludeSleep && e.Event.EventType == BandEventType.Sleeping) ||
                                    (settings.IncludeWorkouts && (e.Event.EventType == BandEventType.GuidedWorkout || e.Event.EventType == BandEventType.Workout));
                         }
                     )
@@ -116,7 +144,7 @@ namespace unBand.CloudHelpers
             var csv = new StringBuilder(500000);
             var dataToDump = new List<Dictionary<string, object>>(100);
 
-            var progressReport = new BandCloudExportProgress() { TotalEventsToExport = bandEvents.Count()};
+            var progressReport = new BandCloudExportProgress() { TotalEventsToExport = bandEvents.Count() };
 
             progress.Report(progressReport);
 
@@ -132,7 +160,7 @@ namespace unBand.CloudHelpers
 
                 progressReport.ExportedEventsCount++;
                 progress.Report(progressReport);
-                
+
                 await Task.Yield(); // since we need to update progress, make sure to yield for a bit
             }
 
