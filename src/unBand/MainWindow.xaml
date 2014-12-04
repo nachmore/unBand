@@ -36,7 +36,7 @@
                 <Image Source="/assets/icons/tiles.png" Height="36" Width="36"></Image>
             </Button>
             <Button Style="{DynamicResource MenuImageButton}" ToolTip="Activity Data" Click="ButtonActivityLog_Click">
-                <Image Source="/assets/icons/log.png" Height="36" Width="36"></Image>
+                <Image Source="/assets/icons/export.png" Height="36" Width="36"></Image>
             </Button>
             <Button Style="{DynamicResource MenuImageButton}" ToolTip="Device Log" Click="ButtonLog_Click">
                 <Image Source="/assets/icons/log.png" Height="36" Width="36"></Image>
