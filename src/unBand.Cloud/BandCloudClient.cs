@@ -39,28 +39,42 @@ namespace unBand.Cloud
 
         public BandCloudClient() { }
 
+        // TODO: REMOVE Login() / Logout() / OnLiveAuthCompleted() / etc. from this library, as they should not take a dependency
+        //       specifically on the Desktop Live ID library
         public void Login()
         {
             var liveAuthClient = new LiveAuthClient("000000004811DB42");
 
             string startUrl = liveAuthClient.GetLoginUrl(new List<string>() { "service::prodkds.dns-cargo.com::MBI_SSL" });
-            
+
             var authForm = new LiveAuthWindow(
                 startUrl,
                 this.OnLiveAuthCompleted,
                 "Login to the Microsoft Account associated with your Band"
             );
 
-            // to logout: 
-            //authForm.LogOut(liveAuthClient.GetLogoutUrl());
-
             authForm.Login();
+        }
+
+        public void Logout()
+        {
+            var liveAuthClient = new LiveAuthClient("000000004811DB42");
+
+            string logoutUrl = liveAuthClient.GetLogoutUrl();
+
+            var authForm = new LiveAuthWindow(
+                logoutUrl,
+                this.OnLiveAuthCompleted,
+                "Logout"
+            );
+
+            authForm.LogOut(logoutUrl);
         }
 
         private async void OnLiveAuthCompleted(AuthResult result)
         {
-            _tokens = new LiveAuthTokens() 
-            { 
+            _tokens = new LiveAuthTokens()
+            {
                 AccessToken = result.AccessToken,
                 RefreshToken = result.RefreshToken,
                 Expires = result.Expires
@@ -125,7 +139,8 @@ namespace unBand.Cloud
             {
                 using (var stream = response.GetResponseStream())
                 {
-                    using (var reader = new StreamReader(stream)) {
+                    using (var reader = new StreamReader(stream))
+                    {
                         var responseText = await reader.ReadToEndAsync();
 
                         return responseText;
@@ -140,9 +155,9 @@ namespace unBand.Cloud
 
     public class BandCloudAuthentication
     {
-        public Guid RegisteredUserId {get; set; }
+        public Guid RegisteredUserId { get; set; }
         public DateTime CreatedOn { get; set; }
-        public DateTime LastModifiedOn { get; set; }        
+        public DateTime LastModifiedOn { get; set; }
         public DateTime LastUserUpdateOn { get; set; }
         public string EndPoint { get; set; }
         public string FUSEndPoint { get; set; }
