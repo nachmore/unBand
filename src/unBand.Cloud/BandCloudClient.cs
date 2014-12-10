@@ -30,6 +30,7 @@ namespace unBand.Cloud
         private const string LOGIN_URL = "/api/v1/user";
         private const string EVENTS_URL = "v1/Events";
         private const string EVENTS_TOP_100_URL = "v1/Events(eventType='None')?$top={0}";
+        private const string GET_EVENTS_URL = "v1/Events(eventType='None')?";
         private const string GET_EVENT_URL = "v1/Events(EventId='{0}',selectedSplitDistance=100000)?$expand={1}";
 
         private LiveAuthTokens _tokens;
@@ -99,13 +100,46 @@ namespace unBand.Cloud
                 AuthenticationCompleted();
         }
 
-        /// <summary>
-        /// Get the top X events
-        /// </summary>
-        /// <param name="topCount"></param>
-        public async Task<List<BandEventBase>> GetEvents(int topCount = 100)
+        private string GenerateEventsQuery(int? topCount = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            var response = await AuthenticatedRequest(string.Format(EVENTS_TOP_100_URL, topCount));
+            var query = new ODataQuery();
+
+            if (topCount != null)
+                query.TopItemCount = (int)topCount;
+
+            if (startDate != null)
+            {
+                if (endDate != null)
+                {
+                    ODataOperator op1, op2;
+
+                    if (startDate > endDate)
+                    {
+                        op1 = ODataOperator.le;
+                        op2 = ODataOperator.ge;
+                    }
+                    else
+                    {
+                        op1 = ODataOperator.ge;
+                        op2 = ODataOperator.le;
+                    }
+
+                    query.AddFilter("StartTime", op1, (DateTime)startDate);
+                    query.AddFilter("EndTime", op2, (DateTime)endDate);
+                }
+                else // only StartDate is specified
+                {
+                    query.AddFilter("StartTime", ODataOperator.le, (DateTime)startDate);
+                }
+            }
+
+            return query.GenerateQuery();
+        }
+
+        public async Task<List<BandEventBase>> GetEvents(int? topCount = null, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            var url = GET_EVENTS_URL + GenerateEventsQuery(topCount, startDate, endDate);
+            var response = await AuthenticatedRequest(url);
 
             var rv = new List<BandEventBase>();
 
