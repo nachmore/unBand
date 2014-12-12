@@ -27,7 +27,7 @@ namespace unBand.Cloud
     }
 
     [TypeConverter(typeof(UserWorkoutEventConverter))]
-    public class UserWorkoutEvent : BandEventBase
+    public class UserWorkoutEvent : BandExerciseEventBase
     {
         public override BandEventExpandType[] Expanders
         {
@@ -36,23 +36,11 @@ namespace unBand.Cloud
 
         public List<UserWorkoutInfoSegment> Segments { get; private set; }
 
-        public UserWorkoutEvent(JObject json)
-            : base(json)
+        public UserWorkoutEvent(JObject json) : base(json)
         {
             Segments = new List<UserWorkoutInfoSegment>();
-            InitFromDynamic((dynamic)json);
-        }
 
-        /// <summary>
-        /// Creates a SleepEvent object that is intialized from the summary JSON returned by GetEvents()
-        ///  
-        /// To fill in detailed information about this event a call to DownloadAllData() is required.
-        /// </summary>
-        /// <param name="rawEvent"></param>
-        /// <returns></returns>
-        private void InitFromDynamic(dynamic rawEvent)
-        {
-
+            dynamic eventSummary = (dynamic)json;
         }
 
         public override Dictionary<string, object> DumpBasicEventData()

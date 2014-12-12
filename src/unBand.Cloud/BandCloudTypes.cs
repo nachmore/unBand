@@ -31,17 +31,18 @@ namespace unBand.Cloud
         Unknown,
     }
 
-    public struct HeartRateZones
+    public class HeartRateZones
     {
         public int Under { get; set; }
         public int Aerobic { get; set; }
+        public int Anaerobic { get; set; }
         public int FitnessZone { get; set; }
         public int HealthyHeart { get; set; }
         public int RedLine { get; set; }
         public int Over { get; set; }
     }
 
-    public struct HeartRateSummary
+    public class HeartRateSummary
     {
         public int Average { get; set; }
         public int Lowest { get; set; }
@@ -52,11 +53,13 @@ namespace unBand.Cloud
         public int RecoveryHeartRate2Minute { get; set; }
         public HeartRateZones Zones { get; set; }
 
-        public HeartRateSummary(int average, int low, int peak) : this()
+        public HeartRateSummary(int average, int low, int peak)
         {
             Average = average;
             Lowest = low;
             Peak = peak;
+
+            Zones = new HeartRateZones();
         }
     }
 }

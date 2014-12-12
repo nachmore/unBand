@@ -61,6 +61,14 @@ namespace unBand.Cloud
     [TypeConverter(typeof(SleepEventConverter))]
     public class SleepEvent : BandEventBase
     {
+        public int AwakeTime { get; private set; }
+        public int SleepTime { get; private set; }
+        public int NumberOfWakeups { get; private set; }
+        public int TimeToFallAsleep { get; private set; }
+        public int SleepEfficiencyPercentage { get; private set; }
+        public int SleepRecoveryIndex { get; private set; }
+        public int RestingHeartRate { get; private set; }
+
         public override BandEventExpandType[] Expanders
         {
             get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences }; }
@@ -72,35 +80,17 @@ namespace unBand.Cloud
             : base(json)
         {
             Segments = new List<SleepInfoSegment>();
-            InitBasicEventData((dynamic)json);
+            
+            dynamic eventSummary = (dynamic)json;
+
+            AwakeTime                 = eventSummary.AwakeTime;
+            SleepTime                 = eventSummary.SleepTime;
+            NumberOfWakeups           = eventSummary.NumberOfWakeups;
+            TimeToFallAsleep          = eventSummary.TimeToFallAsleep;
+            SleepEfficiencyPercentage = eventSummary.SleepEfficiencyPercentage;
+            SleepRecoveryIndex        = eventSummary.SleepRecoveryIndex;
+            RestingHeartRate          = eventSummary.RestingHeartRate;
         }
-
-        public int AwakeTime { get; private set; }
-        public int SleepTime { get; private set; }
-        public int NumberOfWakeups { get; private set; }
-        public int TimeToFallAsleep { get; private set; }
-        public int SleepEfficiencyPercentage { get; private set; }
-        public int SleepRecoveryIndex { get; private set; }
-        public int RestingHeartRate { get; private set; }
-
-        /// <summary>
-        /// Creates a SleepEvent object that is intialized from the summary JSON returned by GetEvents()
-        ///  
-        /// To fill in detailed information about this event a call to DownloadAllData() is required.
-        /// </summary>
-        /// <param name="basicData"></param>
-        /// <returns></returns>
-        private void InitBasicEventData(dynamic basicData)
-        {
-            AwakeTime                 = basicData.AwakeTime;
-            SleepTime                 = basicData.SleepTime;
-            NumberOfWakeups           = basicData.NumberOfWakeups;
-            TimeToFallAsleep          = basicData.TimeToFallAsleep;
-            SleepEfficiencyPercentage = basicData.SleepEfficiencyPercentage;
-            SleepRecoveryIndex        = basicData.SleepRecoveryIndex;
-            RestingHeartRate          = basicData.RestingHeartRate;
-        }
-
         
         public override Dictionary<string, object> DumpBasicEventData()
         {

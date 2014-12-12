@@ -27,7 +27,7 @@ namespace unBand.Cloud
     }
 
     [TypeConverter(typeof(RunEventConverter))]
-    public class RunEvent : BandEventBase
+    public class RunEvent : BandExerciseEventBase
     {
 
         public override BandEventExpandType[] Expanders
@@ -37,27 +37,33 @@ namespace unBand.Cloud
 
         public List<RunInfoSegment> Segments { get; private set; }
 
+        public int TotalDistance { get; set; }
+        public int ActualDistance { get; set; }
+        public int WayPointDistance { get; set; }
+        public int Pace { get; set; }
+
         public RunEvent(JObject json) : base(json)
         {
             Segments = new List<RunInfoSegment>();
-            InitFromDynamic((dynamic)json);
-        }
+            
+            dynamic eventSummary = (dynamic)json;
 
-        /// <summary>
-        /// Creates a SleepEvent object that is intialized from the summary JSON returned by GetEvents()
-        ///  
-        /// To fill in detailed information about this event a call to DownloadAllData() is required.
-        /// </summary>
-        /// <param name="rawEvent"></param>
-        /// <returns></returns>
-        private void InitFromDynamic(dynamic rawEvent)
-        {
-
+            TotalDistance     = eventSummary.TotalDistance;
+            ActualDistance    = eventSummary.ActualDistance;
+            WayPointDistance  = eventSummary.WayPointDistance;
+            Pace              = eventSummary.Pace;
         }
 
         public override Dictionary<string, object> DumpBasicEventData()
         {
-            return base.DumpBasicEventData();
+            var rv = new Dictionary<string, object>(base.DumpBasicEventData());
+
+            rv.Add("Total Distance (cm)", TotalDistance.ToString());
+            rv.Add("Actual Distance (cm)", ActualDistance.ToString());
+            rv.Add("WayPoint Distance (cm)", WayPointDistance.ToString());
+            rv.Add("Pace", Pace.ToString());
+
+            return rv;
         }
 
         public override void InitFullEventData(JObject json)

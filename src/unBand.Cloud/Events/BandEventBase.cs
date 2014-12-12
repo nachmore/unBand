@@ -65,7 +65,7 @@ namespace unBand.Cloud
             {
                 throw new KeyNotFoundException("Unknown event type: " + type);
             }
-
+            
             var converter = TypeDescriptor.GetConverter(_knownEventTypes[type]);
             return converter.ConvertFrom(rawBandEvent);
         }
