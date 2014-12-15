@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="unBand.pages.AboutPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel>
+        
+        <StackPanel Orientation="Horizontal">
+            <Image VerticalAlignment="Center" Source="/band.ico" Height="32" Width="32" Stretch="Uniform"></Image>
+            <TextBlock VerticalAlignment="Bottom">
+                <Run FontSize="30">unBand&#160;&#160;&#160;&#160;</Run><Run></Run>
+                Version <Run Text="{Binding Version, Mode=OneTime}"></Run>
+            </TextBlock>
+        </StackPanel>
+    
+        <ScrollViewer Margin="0,20,0,0">
+            <StackPanel>
+                <TextBlock FontWeight="Bold" FontSize="14">Changelog</TextBlock>
+                
+                <TextBlock FontWeight="Bold" Margin="0,10,0,0">v0.5 - Dec 15, 2014</TextBlock>
+                <TextBlock TextWrapping="Wrap">
+                    • You can now export your data summaries from the cloud<LineBreak/>
+                    • Backgrounds are now set without a Blue tint<LineBreak/>
+                    • You can reorganize your tiles within the app<LineBreak/>
+                    • Device communication logs (not generally that useful unless you're debugging something specific)<LineBreak/>
+                </TextBlock>
+
+                <TextBlock FontWeight="Bold" Margin="0,10,0,0">v0.1 - Initial Release - Nov 18, 2014</TextBlock>
+                <TextBlock TextWrapping="Wrap">
+                    • Initial release, with support for setting backgrounds and various Band colors<LineBreak/>
+                </TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+
+    </StackPanel>
+</UserControl>

@@ -141,6 +141,11 @@ namespace unBand
         {
             PageContent.Content = new ActivityLogPage();
         }
+
+        private void ButtonAbout_Click(object sender, RoutedEventArgs e)
+        {
+            PageContent.Content = new AboutPage();
+        }
         
     }
 }

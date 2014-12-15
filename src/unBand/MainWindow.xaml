@@ -15,6 +15,12 @@
         WindowButtonCommandsOverlayBehavior="Always"
         Icon="assets/icons/band.png">
 
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="about" Click="ButtonAbout_Click" />
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
     <Grid>
 
         <Grid.ColumnDefinitions>

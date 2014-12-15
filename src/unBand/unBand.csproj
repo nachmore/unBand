@@ -165,6 +165,9 @@
     <Compile Include="CloudHelpers\CloudDataExporterSettings.cs" />
     <Compile Include="CloudHelpers\CSVExporter.cs" />
     <Compile Include="CloudHelpers\CloudDataExporter.cs" />
+    <Compile Include="pages\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="pages\ActivityLogPage.xaml.cs">
       <DependentUpon>ActivityLogPage.xaml</DependentUpon>
     </Compile>
@@ -213,6 +216,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="pages\AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="pages\ActivityLogPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
