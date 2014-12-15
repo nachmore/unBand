@@ -58,34 +58,7 @@ namespace unBand
                 }
             }
 
-
-            FindBand();
-
             ButtonMyBand_Click(null, null);
-        }
-
-        private async void FindBand()
-        {
-            var progressDialog = await this.ShowProgressAsync("Searching for your Band", "If your Band is on your hand, now is the time to plug it in!");
-            
-            BandManager.Start();
-            progressDialog.CloseAsync();
-            //TODO: consider an event specifically for ConnectionStateChanged so that we aren't constantly filtering
-            //      every single property change
-            BandManager.Instance.PropertyChanged += async (s, e) =>
-            {
-                if (e.PropertyName == "IsConnected")
-                {
-                    if (BandManager.Instance.IsConnected)
-                    {
-                        await progressDialog.CloseAsync();
-                    }
-                    else
-                    {
-                        progressDialog = await this.ShowProgressAsync("Band lost!", "Oops, looks like your Band disconnected from your computer.\n\nWhile you work on plugging it back in we'll continue to search for it...");
-                    }
-                }
-            };
         }
 
         private async Task<bool> AgreeToFirstRunWarning()

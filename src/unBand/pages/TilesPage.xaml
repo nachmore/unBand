@@ -4,31 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:BandControls="clr-namespace:unBand.Controls"
              xmlns:local="clr-namespace:unBand"
-             mc:Ignorable="d">
+             mc:Ignorable="d" Height="330" Width="529">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="40"/>
-        </Grid.RowDefinitions>
-        
-        <ListBox Grid.Row="0" ItemsSource="{Binding Tiles.Strip}" AllowDrop="True" Drop="ListBox_Drop" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding TileImage}"></Image>
-                        <TextBlock Text="{Binding Name}"></TextBlock>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <BandControls:WaitingForBand Visibility="{Binding IsConnected, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true"></BandControls:WaitingForBand>
 
-        <Button Grid.Row="1" Margin="5,5,5,5" Content="Save to Band" Click="ButtonSave_Click"></Button>
+        <Grid Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <ListBox Grid.Row="0" ItemsSource="{Binding Tiles.Strip}" AllowDrop="True" Drop="ListBox_Drop" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding TileImage}"></Image>
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Button Grid.Row="1" Margin="5,5,5,5" Content="Save to Band" Click="ButtonSave_Click"></Button>
+        </Grid>
     </Grid>
 </UserControl>

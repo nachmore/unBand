@@ -156,6 +156,9 @@
     </ApplicationDefinition>
     <Compile Include="BandHelpers\BandLogger.cs" />
     <Compile Include="BandHelpers\BandTiles.cs" />
+    <Compile Include="Controls\WaitingForBand.xaml.cs">
+      <DependentUpon>WaitingForBand.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OppositeBoolConverter.cs" />
     <Compile Include="CloudHelpers\BandEventViewModel.cs" />
     <Compile Include="CloudHelpers\BandCloudManager.cs" />
@@ -178,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\BandMeTile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WaitingForBand.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

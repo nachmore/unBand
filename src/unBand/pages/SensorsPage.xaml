@@ -4,10 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-             mc:Ignorable="d" d:DesignWidth="300" Height="264">
+             xmlns:BandControls="clr-namespace:unBand.Controls"
+             xmlns:local="clr-namespace:unBand"
+             mc:Ignorable="d" Height="330" Width="529">
 
     <Grid>
-        <TextBlock TextWrapping="Wrap" Visibility="{Binding IsConnected, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}">No Microsoft Band connected! Connect your Band to your computer with the USB charging cable.</TextBlock>
-        <TextBlock TextWrapping="Wrap">Coming soon...</TextBlock>
+        <BandControls:WaitingForBand Visibility="{Binding IsConnected, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true"></BandControls:WaitingForBand>
+
+        <Grid Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}">
+
+            <TextBlock TextWrapping="Wrap">Coming soon...</TextBlock>
+        </Grid>
     </Grid>
 </UserControl>

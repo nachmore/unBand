@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="unBand.Controls.WaitingForBand"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid>
+
+        <StackPanel Margin="0,25,0,0">
+            <TextBlock FontSize="24">Searching for your Band...</TextBlock>
+            <TextBlock FontSize="16" Margin="0,10,0,0" TextWrapping="Wrap">If you're Band is on your hand now is the time to plug it in! Alternatively, you can still export your data without your Band.</TextBlock>
+        </StackPanel>
+        <Controls:ProgressRing IsActive="True" Margin="120,200,120,70"></Controls:ProgressRing>
+    </Grid>
+</UserControl>

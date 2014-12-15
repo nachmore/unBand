@@ -6,12 +6,10 @@
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:local="clr-namespace:unBand"
              xmlns:BandControls="clr-namespace:unBand.Controls"
-             mc:Ignorable="d" Height="332" Width="529">
+             mc:Ignorable="d" Height="330" Width="529">
 
     <Grid>
-        <Grid Visibility="{Binding IsConnected, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true">
-            <TextBlock TextWrapping="Wrap">No Microsoft Band connected! Connect your Band to your computer with the USB charging cable.</TextBlock>
-        </Grid>
+        <BandControls:WaitingForBand Visibility="{Binding IsConnected, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true"></BandControls:WaitingForBand>
 
         <Grid Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}">
 
