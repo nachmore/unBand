@@ -8,7 +8,7 @@
              xmlns:BandControls="clr-namespace:unBand.Controls"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:Themes="clr-namespace:Xceed.Wpf.Toolkit.Themes;assembly=Xceed.Wpf.Toolkit" x:Class="unBand.pages.ThemePage"
-             mc:Ignorable="d" Height="330" Width="529">
+             mc:Ignorable="d" Height="400" Width="600">
 
     <Grid>
         <BandControls:WaitingForBand Visibility="{Binding IsConnected, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true"></BandControls:WaitingForBand>
@@ -32,33 +32,36 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition MaxHeight="35"></RowDefinition>
+                    <RowDefinition MaxHeight="51"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="51"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="51"></RowDefinition>
+                </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="0" HorizontalAlignment="Left">
-                    <TextBlock Margin="0,0,0,5"><Run Text="Background"/></TextBlock>
-                    <Image Source="{Binding Theme.Background}" Height="51" Width="155" MouseUp="Background_MouseUp" />
+                <TextBlock Grid.Column="0" Grid.Row="0" TextWrapping="Wrap">Background (for best results use a 310x102 image)</TextBlock>
+                <Image Source="{Binding Theme.Background}" Grid.Column="0" Grid.Row="1" Height="51" Width="155" MouseUp="Background_MouseUp" />
 
-                    <TextBlock Margin="0,10,0,5"><Run Text="Tapped Item Color"/></TextBlock>
-                    <BandControls:BandColorSelector Background="{Binding Theme.LowlightColor}" Tag="LowlightColor"></BandControls:BandColorSelector>
+                <TextBlock Grid.Column="1" Grid.Row="0"><Run Text="Tapped Item Color"/></TextBlock>
+                <BandControls:BandColorSelector Grid.Column="1" Grid.Row="1" Background="{Binding Theme.LowlightColor}" Tag="LowlightColor"></BandControls:BandColorSelector>
                     
-                    <TextBlock Margin="0,10,0,5"><Run Text="&quot;Muted&quot; Color (unused?)"/></TextBlock>
-                    <BandControls:BandColorSelector Background="{Binding Theme.MutedColor}" Tag="MutedColor"></BandControls:BandColorSelector>
-                </StackPanel>
+                <TextBlock Grid.Column="2" Grid.Row="0"><Run Text="&quot;Muted&quot; Color (unused?)"/></TextBlock>
+                <BandControls:BandColorSelector Grid.Column="2" Grid.Row="1" Background="{Binding Theme.MutedColor}" Tag="MutedColor"></BandControls:BandColorSelector>
 
-                <StackPanel Grid.Column="1" HorizontalAlignment="Left">
-                    <TextBlock Margin="0,0,0,5"><Run Text="Base Color"/></TextBlock>
-                    <BandControls:BandColorSelector Background="{Binding Theme.BaseColor}" Tag="BaseColor"></BandControls:BandColorSelector>
-                    
-                    <TextBlock Margin="0,10,0,5"><Run Text="Secondary Text Color"/></TextBlock>
-                    <BandControls:BandColorSelector Background="{Binding Theme.SecondaryTextColor}" Tag="SecondaryTextColor"></BandControls:BandColorSelector>
-                </StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="2" Margin="0,5,0,0"><Run Text="Base Color"/></TextBlock>
+                <BandControls:BandColorSelector Grid.Column="0" Grid.Row="3" Background="{Binding Theme.BaseColor}" Tag="BaseColor"></BandControls:BandColorSelector>
 
-                <StackPanel Grid.Column="2" HorizontalAlignment="Left">
-                    <TextBlock Margin="0,0,0,5"><Run Text="Accent Color (Headers etc.)"/></TextBlock>
-                    <BandControls:BandColorSelector Background="{Binding Theme.HighlightColor}" Tag="HighlightColor"></BandControls:BandColorSelector>
+                <TextBlock Grid.Column="1" Grid.Row="2" Margin="0,5,0,0"><Run Text="Secondary Text Color"/></TextBlock>
+                <BandControls:BandColorSelector Grid.Column="1" Grid.Row="3" Background="{Binding Theme.SecondaryTextColor}" Tag="SecondaryTextColor"></BandControls:BandColorSelector>
+
+                <TextBlock Grid.Column="2" Grid.Row="2" Margin="0,5,0,0"><Run Text="Accent Color (Headers etc.)"/></TextBlock>
+                <BandControls:BandColorSelector Grid.Column="2" Grid.Row="3" Background="{Binding Theme.HighlightColor}" Tag="HighlightColor"></BandControls:BandColorSelector>
                     
-                    <TextBlock Margin="0,10,0,5"><Run Text="Tile With Count Color"/></TextBlock>
-                    <BandControls:BandColorSelector Background="{Binding Theme.HighContrastColor}" Tag="HighContrastColor"></BandControls:BandColorSelector>
-                </StackPanel>
+                <TextBlock Grid.Column="0" Grid.Row="4" Margin="0,5,0,0"><Run Text="Tile With Count Color"/></TextBlock>
+                <BandControls:BandColorSelector Grid.Column="0" Grid.Row="5" Background="{Binding Theme.HighContrastColor}" Tag="HighContrastColor"></BandControls:BandColorSelector>
             </Grid>
 
         </Grid>

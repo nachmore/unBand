@@ -4,7 +4,7 @@
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         Title="unBand"
         MinHeight="425" MinWidth="700"
-        Height="425" Width="700"
+        Height="445" Width="700"
         WindowStartupLocation="CenterScreen"
         Loaded="MetroWindow_Loaded"
         Unloaded="MetroWindow_Unloaded"
