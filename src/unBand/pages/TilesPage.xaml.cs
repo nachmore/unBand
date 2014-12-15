@@ -40,6 +40,7 @@ namespace unBand.pages
             ListBox parent = sender as ListBox;
             CargoStrapp data = e.Data.GetData(typeof(CargoStrapp)) as CargoStrapp;
             CargoStrapp objectToPlaceBefore = GetObjectDataFromPoint(parent, e.GetPosition(parent)) as CargoStrapp;
+
             if (data != null && objectToPlaceBefore != null)
             {
                 int index = _band.Tiles.Strip.IndexOf(objectToPlaceBefore);
@@ -53,9 +54,8 @@ namespace unBand.pages
         private void ListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ListBox parent = sender as ListBox;
-            CargoStrapp data = GetObjectDataFromPoint(parent, e.GetPosition(parent)) as CargoStrapp;
 
-            System.Diagnostics.Debug.WriteLine(data);
+            CargoStrapp data = GetObjectDataFromPoint(parent, e.GetPosition(parent)) as CargoStrapp;
 
             if (data != null)
             {
@@ -69,14 +69,18 @@ namespace unBand.pages
             if (element != null)
             {
                 object data = DependencyProperty.UnsetValue;
+
                 while (data == DependencyProperty.UnsetValue)
                 {
                     data = source.ItemContainerGenerator.ItemFromContainer(element);
+
                     if (data == DependencyProperty.UnsetValue)
                         element = VisualTreeHelper.GetParent(element) as UIElement;
+
                     if (element == source)
                         return null;
                 }
+
                 if (data != DependencyProperty.UnsetValue)
                     return data;
             }
