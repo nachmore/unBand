@@ -26,7 +26,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0">
-                <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSteps}">Steps</CheckBox>
+                <!--<CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSteps}">Steps</CheckBox>-->
                 <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSleep}">Sleep</CheckBox>
                 <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeWorkouts}">Workouts</CheckBox>
                 <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeRuns}">Runs</CheckBox>
@@ -56,7 +56,7 @@
 
         </Grid>
 
-        <ListBox Grid.Row="2" ItemsSource="{Binding Events}"></ListBox>
+        <ListBox Visibility="Collapsed" Grid.Row="2" ItemsSource="{Binding Events}"></ListBox>
 
     </Grid>
 </UserControl>
