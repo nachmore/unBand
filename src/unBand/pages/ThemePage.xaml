@@ -43,7 +43,9 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Column="0" Grid.Row="0" TextWrapping="Wrap">Background (for best results use a 310x102 image)</TextBlock>
-                <Image Source="{Binding Theme.Background}" Grid.Column="0" Grid.Row="1" Height="51" Width="155" MouseUp="Background_MouseUp" />
+                <Border Grid.Column="0" Grid.Row="1" Background="Black" Height="51" Width="155">
+                    <Image Source="{Binding Theme.Background}" Height="51" Width="155" MouseUp="Background_MouseUp" />
+                </Border>
 
                 <TextBlock Grid.Column="1" Grid.Row="0"><Run Text="Tapped Item Color"/></TextBlock>
                 <BandControls:BandColorSelector Grid.Column="1" Grid.Row="1" Background="{Binding Theme.LowlightColor}" Tag="LowlightColor"></BandControls:BandColorSelector>

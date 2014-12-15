@@ -67,7 +67,10 @@ namespace unBand.BandHelpers
                         Alpha = 0
                     };
                     
-                    _client.SetMeTileImageAsync(value, 10000);
+                    // Usually we would just call the below, but that has a bug that switches channels so
+                    // all images come out blue tinted, so call our implementation instead
+                    //_client.SetMeTileImageAsync(value);
+                    SetMeTileImageAsync(value);
 
                     NotifyPropertyChanged();
                 }
@@ -189,7 +192,6 @@ namespace unBand.BandHelpers
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     _background = _client.GetMeTileBmp();
-                    System.Diagnostics.Debug.WriteLine("fsd");
                 }));
         
             _themeColor = await _client.GetDeviceThemeAsync();
@@ -262,29 +264,12 @@ namespace unBand.BandHelpers
             await _client.ResetThemeColorsAsync();
         }
 
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                }));
-            }
-        }
-
-        #endregion
-
         public void SetBackground(string file)
         {
             if (File.Exists(file))
             {
                 var bitmapSource = new BitmapImage();
-                
+
                 bitmapSource.BeginInit();
                 bitmapSource.UriSource = new Uri(file);
 
@@ -301,5 +286,72 @@ namespace unBand.BandHelpers
                 Background = b;
             }
         }
+
+        private async Task SetMeTileImageAsync(WriteableBitmap wb)
+        {
+            byte[] myBgr565 = ConvertToBGR565(wb);
+
+            var method = typeof(CargoClient).GetMethod("InstalledAppListStartStripSyncStart", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            await Task.Run(() => { method.Invoke(_client, null); });
+
+            method = typeof(CargoClient).GetMethod("ProtocolWrite", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            await Task.Run(() => { method.Invoke(_client, new object[] { (ushort)49937, new byte[] { 255, 255, 255, 255 }, myBgr565, 30000, false, 2 }); });
+
+            method = typeof(CargoClient).GetMethod("InstalledAppListStartStripSyncEnd", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            await Task.Run(() => { method.Invoke(_client, null); });
+        }
+
+        // Using the built in WB conversion fails, but doing it manually seems to work:
+        private byte[] ConvertToBGR565(WriteableBitmap wb)
+        {
+            int width = wb.PixelWidth;
+            int height = wb.PixelHeight;
+
+            int[] pixels = new int[width * height];
+
+            short[] shortArray = new short[pixels.Length];
+            byte[] byteArray = new byte[pixels.Length * 2];
+
+            wb.CopyPixels(pixels, width * 4, 0);
+
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                byte[] colors = BitConverter.GetBytes(pixels[i]);
+
+                // extract the RGB component of the pixel, bit shifted to the correct number of
+                // bits for BGR565
+                // PS: I believe this is the step where the bug in the actual Cargo library exists
+                //     since r and b seem to be transposed
+                byte r = (byte)(colors[2] >> 3);
+                byte g = (byte)(colors[1] >> 2);
+                byte b = (byte)(colors[0] >> 3);
+
+                // place the components into their correct 565 locations
+                shortArray[i] = (short)(r << 11 | g << 5 | b);
+            }
+
+            // Band commands expect an array of bytes so convert the Int16 (short) 
+            // to bytes and return that
+            Buffer.BlockCopy(shortArray, 0, byteArray, 0, byteArray.Length);
+
+            return byteArray;
+        }
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                }));
+            }
+        }
+
+        #endregion
     }
 }
