@@ -6,18 +6,32 @@
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:BandControls="clr-namespace:unBand.Controls"
              xmlns:local="clr-namespace:unBand"
-             mc:Ignorable="d" Height="330" Width="529">
+             mc:Ignorable="d" Height="330" Width="529"
+             >
 
     <Grid>
         <BandControls:WaitingForBand Visibility="{Binding IsConnected, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true"></BandControls:WaitingForBand>
 
         <Grid Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
+                <RowDefinition Height="75"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
 
-            <ListBox Grid.Row="0" ItemsSource="{Binding Tiles.Strip}" AllowDrop="True" Drop="ListBox_Drop" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <TextBlock Grid.Row="0" Margin="0,5,0,0" TextWrapping="Wrap">You can reorder your tiles by dragging them around below.<LineBreak /><LineBreak />
+                Note that the Settings tile is not shown because it is unfortunately locked to the end of your tiles strip.</TextBlock>
+            
+            <ListBox Grid.Row="1" ItemsSource="{Binding Tiles.Strip}" AllowDrop="True" Drop="ListBox_Drop" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.Resources>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Resources>
+                            <!-- this just resets the highlight / selection colors to (pretty much) the system defaults which look better than the accent color -->
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                        </Style.Resources>
+                    </Style>
+                </ListBox.Resources>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel/>
@@ -25,15 +39,14 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding TileImage}"></Image>
-                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        <StackPanel Margin="0,5,0,5" Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.Theme.BaseColor}" Height="40" Width="40">
+                            <Image Margin="2,2,2,2" Source="{Binding TileImage}" Height="36" Width="36" ToolTip="{Binding Name}"></Image>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Button Grid.Row="1" Margin="5,5,5,5" Content="Save to Band" Click="ButtonSave_Click"></Button>
+            <Button Grid.Row="2" Margin="5,5,5,5" Content="Save to Band" Click="ButtonSave_Click"></Button>
         </Grid>
     </Grid>
 </UserControl>
