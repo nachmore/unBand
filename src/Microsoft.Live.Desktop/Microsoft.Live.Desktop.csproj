@@ -28,7 +28,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DESKTOP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -67,126 +67,88 @@
     <Compile Include="Common\Source\Public\RefreshTokenInfo.cs">
     </Compile>
     <Compile Include="Common\Source\Internal\DynamicDictionary.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\WebRequestFactory.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\IWebRequestFactory.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Public\LiveConnectClient.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Public\LiveConnectClientTaskAsync.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Public\LiveConnectException.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\StringBuilderExtension.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\IServerResponseReaderObserver.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\QueryParameters.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\ServerResponseReader.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Operations\Operation.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Operations\ApiOperation.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Operations\ApiWriteOperation.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Operations\GetUploadLinkOperation.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Operations\OperationStatus.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Operations\WebOperation.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Operations\StreamCopyOperation.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\HttpMethods.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\ApiMethod.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\AuthEndpointsInfo.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\AuthErrorCodes.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Utilities\ErrorText.Designer.cs">
-      
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorText.resx</DependentUpon>
     </Compile>
     <Compile Include="Internal\LiveAuthClientCore.cs" />
     <Compile Include="Common\Source\Internal\Serialization\JsonReader.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Serialization\JsonWriter.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Serialization\IndentedTextWriter.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Serialization\IJsonSerializable.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Utilities\LiveAuthUtility.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Utilities\LiveUtility.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\AuthConstant.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\ResponseType.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\DisplayType.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Public\ThemeType.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Operations\DownloadOperation.cs">
-      
     </Compile>
     <Compile Include="Common\Source\Internal\Operations\UploadOperation.cs">
-      
     </Compile>
     <Compile Include="Internal\Platform.cs" />
     <Compile Include="Common\Source\Internal\Utilities\LiveAuthRequestUtility.cs">
-      
     </Compile>
     <Compile Include="Internal\SynchronizationContextWrapper.cs">
-      
     </Compile>
     <Compile Include="Internal\ResourceHelper.cs">
-      
     </Compile>
     <Compile Include="LiveAuthWindow.xaml.cs">
       <DependentUpon>LiveAuthWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\Resources.Designer.cs">
-      
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -194,22 +156,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Public\LiveAuthClient.cs" />
     <Compile Include="Public\LiveConnectClientExt.cs">
-      
     </Compile>
     <Compile Include="Internal\LiveDownloadOperationResult.cs">
-      
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Common\Source\Internal\Utilities\ErrorText.resx">
-      
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorText.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
       <CustomToolNamespace>Microsoft.Live</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Resources.resx">
-      
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
