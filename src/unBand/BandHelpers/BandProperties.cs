@@ -157,8 +157,7 @@ namespace unBand.BandHelpers
             {
                 _client.SensorUnsubscribe(SensorType.BatteryGauge);
             }
-            catch (Exception)
-            { } // this will throw if the user disconnected their band from the machine before exiting
+            catch { } // this will throw if the user disconnected their band from the machine before exiting
         }
 
         void _client_BatteryUpdated(object sender, BatteryUpdatedEventArgs e)
