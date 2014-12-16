@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="500">
     <StackPanel>
         
         <StackPanel Orientation="Horizontal">
@@ -14,7 +14,10 @@
                 Version <Run Text="{Binding Version, Mode=OneTime}"></Run>
             </TextBlock>
         </StackPanel>
-    
+        
+        <TextBlock Margin="0,5,0,0">
+            <Hyperlink FontSize="15" NavigateUri="https://github.com/nachmore/unBand/issues" RequestNavigate="Hyperlink_RequestNavigate">Report an issue / Request a Feature / Send Feedback</Hyperlink>
+        </TextBlock>
         <ScrollViewer Margin="0,20,0,0">
             <StackPanel>
                 <TextBlock FontWeight="Bold" FontSize="14">Changelog</TextBlock>
