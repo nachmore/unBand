@@ -177,6 +177,7 @@
     <Compile Include="pages\LogOutputPage.xaml.cs">
       <DependentUpon>LogOutputPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="Telemetry.cs" />
     <Compile Include="About.cs" />
     <Page Include="Controls\BandColorSelector.xaml">
@@ -263,11 +264,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Resource Include="assets\icons\export.png" />
     <Resource Include="assets\icons\tiles.png" />
     <Resource Include="assets\icons\log.png" />
@@ -281,10 +277,6 @@
     </Content>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

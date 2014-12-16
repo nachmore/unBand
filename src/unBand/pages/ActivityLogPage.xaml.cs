@@ -93,15 +93,15 @@ namespace unBand.pages
         {
             ExportSettings = new CloudDataExporterSettings();
 
-            ExportSettings = (Properties.Settings.Default.ExportSettings != null ? 
-                                Properties.Settings.Default.ExportSettings :
+            ExportSettings = (Settings.Current.ExportSettings != null ? 
+                                Settings.Current.ExportSettings :
                                 new CloudDataExporterSettings());
         }
 
         private void SaveExportSettings()
         {
-            Properties.Settings.Default.ExportSettings = ExportSettings;
-            Properties.Settings.Default.Save();
+            Settings.Current.ExportSettings = ExportSettings;
+            Settings.Current.Save();
         }
 
         private void btnExportLast100_Click(object sender, RoutedEventArgs e)

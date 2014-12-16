@@ -40,7 +40,7 @@ namespace unBand
 
         private async void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!Properties.Settings.Default.AgreedToFirstRunWarning)
+            if (!Settings.Current.AgreedToFirstRunWarning)
             {
                 if (!await AgreeToFirstRunWarning())
                 {
@@ -49,7 +49,7 @@ namespace unBand
                 }
             }
 
-            if (!Properties.Settings.Default.AgreedToTelemetry)
+            if (!Settings.Current.AgreedToTelemetry)
             {
                 if (!await AgreeToTelemetry())
                 {
@@ -76,7 +76,7 @@ namespace unBand
 
             if (dialogResult == MessageDialogResult.Affirmative)
             {
-                Properties.Settings.Default.AgreedToFirstRunWarning = true;
+                Settings.Current.AgreedToFirstRunWarning = true;
                 return true;
             }
 
@@ -95,7 +95,7 @@ namespace unBand
 
             if (dialogResult == MessageDialogResult.Affirmative)
             {
-                Properties.Settings.Default.AgreedToTelemetry = true;
+                Settings.Current.AgreedToTelemetry = true;
                 return true;
             }
 
@@ -124,7 +124,7 @@ namespace unBand
 
         private void MetroWindow_Unloaded(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.Save();
+            Settings.Current.Save();
         }
 
         private void ButtonLog_Click(object sender, RoutedEventArgs e)

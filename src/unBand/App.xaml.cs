@@ -15,7 +15,7 @@ namespace unBand
     {
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            unBand.Properties.Settings.Default.Save();
+            Settings.Current.Save();
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

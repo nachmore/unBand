@@ -20,7 +20,7 @@ namespace unBand
 
         private static void Init()
         {
-            var props = Properties.Settings.Default;
+            var props = Settings.Current;
 
             if (props.Device == Guid.Empty)
             {
@@ -29,7 +29,6 @@ namespace unBand
 
                 Client.Context.Session.IsFirst = true;
             }
-
             
             // DeviceID is initialized by the framework (see config file) but it includes the actual computer name
             // which I consider PII (not to mention that it is not guaranteed to be unique)
