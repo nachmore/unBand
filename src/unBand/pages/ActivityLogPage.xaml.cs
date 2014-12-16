@@ -155,7 +155,18 @@ namespace unBand.pages
         void ReportProgress(BandCloudExportProgress value)
         {
             // TODO: handle 0 events to export
-            _progressDialog.SetProgress(((double)(value.ExportedEventsCount) / value.TotalEventsToExport));
+
+            if (value.TotalEventsToExport <= 0)
+            {
+                _progressDialog.SetIndeterminate();
+            }
+            else
+            {
+                _progressDialog.SetProgress(((double)(value.ExportedEventsCount) / value.TotalEventsToExport));
+            }
+
+            if (!string.IsNullOrEmpty(value.StatusMessage))
+                _progressDialog.SetMessage(value.StatusMessage);
         }
 
         private void btnExport_Click(object sender, RoutedEventArgs e)

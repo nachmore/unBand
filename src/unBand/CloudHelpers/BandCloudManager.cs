@@ -107,7 +107,7 @@ namespace unBand.CloudHelpers
             }
         }
 
-        public async Task ExportEventsSummary(int? count, CloudDataExporter exporter, string fileName, Progress<BandCloudExportProgress> progress)
+        public async Task ExportEventsSummary(int? count, CloudDataExporter exporter, string fileName, IProgress<BandCloudExportProgress> progress)
         {
             var settings = exporter.Settings;
 
@@ -120,21 +120,25 @@ namespace unBand.CloudHelpers
                 // clear out our existing events, since they're going to be replaced
                 Events.Clear();
 
+                progress.Report(new BandCloudExportProgress() { TotalEventsToExport = 0, StatusMessage = "Downloading Events..." });
+
                 await LoadEvents((int)count);
             }
 
             // we have now downloaded the correct number of events, export them
             // Note: Take will take min(Events.Count, count)
             await ExportEventsSummary(
-                Events
-                    .Where(e =>
+                Events.Where(e =>
                         {
                             return (settings.IncludeRuns && e.Event.EventType == BandEventType.Running) ||
                                    (settings.IncludeSleep && e.Event.EventType == BandEventType.Sleeping) ||
                                    (settings.IncludeWorkouts && (e.Event.EventType == BandEventType.GuidedWorkout || e.Event.EventType == BandEventType.Workout));
                         }
                     )
-                    .Take((int)count), exporter, fileName, progress
+                    .Take((int)count), 
+                exporter, 
+                fileName, 
+                progress
             );
         }
 
@@ -144,9 +148,10 @@ namespace unBand.CloudHelpers
             var csv = new StringBuilder(500000);
             var dataToDump = new List<Dictionary<string, object>>(100);
 
-            var progressReport = new BandCloudExportProgress() { TotalEventsToExport = bandEvents.Count() };
+            var progressReport = new BandCloudExportProgress() { TotalEventsToExport = bandEvents.Count(), StatusMessage = "Exporting Events..." };
 
             progress.Report(progressReport);
+            await Task.Yield();
 
             foreach (var bandEvent in bandEvents)
             {
