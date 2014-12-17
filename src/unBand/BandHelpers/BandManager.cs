@@ -26,6 +26,7 @@ namespace unBand.BandHelpers
         #endregion
 
         private bool _isConnected = false;
+        private bool _isDesktopSyncAppRunning = false;
         private DeviceInfo _deviceInfo;
         private CargoClient _cargoClient;
         private BandProperties _properties;
@@ -41,6 +42,19 @@ namespace unBand.BandHelpers
                 if (_isConnected != value)
                 {
                     _isConnected = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsDesktopSyncAppRunning
+        {
+            get { return _isDesktopSyncAppRunning; }
+            set
+            {
+                if (_isDesktopSyncAppRunning != value)
+                {
+                    _isDesktopSyncAppRunning = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -176,6 +190,9 @@ namespace unBand.BandHelpers
 
         private async Task DiscoverDevices()
         {
+            if (DesktopSyncAppIsRunning())
+                return;
+
             var devices = await CargoClient.GetConnectedDevicesAsync();
 
             if (devices.Count() > 0)
@@ -198,6 +215,11 @@ namespace unBand.BandHelpers
                     Tiles = new BandTiles(CargoClient);
                 }));
             }
+        }
+
+        private bool DesktopSyncAppIsRunning()
+        {
+            return IsDesktopSyncAppRunning = (System.Diagnostics.Process.GetProcessesByName("Microsoft Band Sync").Length > 0);
         }
 
         private void InitializeCargoLogging()
