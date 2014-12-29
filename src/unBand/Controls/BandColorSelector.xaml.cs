@@ -36,13 +36,7 @@ namespace unBand.Controls
 
         private void Color_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
         {
-            Telemetry.Client.TrackEvent(
-                Telemetry.Events.ChangeThemeColor, 
-                new Dictionary<string, string>() {
-                    {"Category", Tag as string},
-                    {"Color", e.NewValue.ToString()}
-                },
-                null);
+            Telemetry.TrackEvent(TelemetryCategory.Theme, Tag as string, e.NewValue);
 
             var band = DataContext as BandManager;
 

@@ -16,7 +16,6 @@ using System.Windows.Shapes;
 using unBand.pages;
 using MahApps.Metro.Controls.Dialogs;
 using System.Diagnostics;
-using Microsoft.ApplicationInsights;
 using unBand.BandHelpers;
 using System.Timers;
 
@@ -32,7 +31,7 @@ namespace unBand
         {
             InitializeComponent();
 
-            Telemetry.Client.TrackEvent(Telemetry.Events.AppLaunch);
+            Telemetry.TrackEvent(TelemetryCategory.General, Telemetry.TelemetryEvent.AppLaunch, Settings.Current.Device);
 
             // Create just creates the singleton - call Start() to actually get things rolling
             BandManager.Create();
@@ -44,7 +43,7 @@ namespace unBand
             {
                 if (!await AgreeToFirstRunWarning())
                 {
-                    Telemetry.Client.TrackEvent(Telemetry.Events.DeclinedFirstRunWarning);
+                    Telemetry.TrackEvent(TelemetryCategory.General, Telemetry.TelemetryEvent.DeclinedFirstRunWarning);
                     Application.Current.Shutdown();
                 }
             }
@@ -53,7 +52,7 @@ namespace unBand
             {
                 if (!await AgreeToTelemetry())
                 {
-                    Telemetry.Client.TrackEvent(Telemetry.Events.DeclinedTelemetry);
+                    Telemetry.TrackEvent(TelemetryCategory.General, Telemetry.TelemetryEvent.DeclinedTelemetry);
                     Application.Current.Shutdown();
                 }
             }
