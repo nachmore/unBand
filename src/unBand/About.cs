@@ -37,6 +37,14 @@ namespace unBand
 
         public string FullVersionString { get; private set; }
 
+        public bool WasUpdated
+        {
+            get
+            {
+                return Version != Settings.Current.PreviousVersion;
+            }
+        }
+
         private About()
         {
             Version v = Assembly.GetExecutingAssembly().GetName().Version;
@@ -48,5 +56,6 @@ namespace unBand
             Version = string.Format(CultureInfo.InvariantCulture, @"{0}.{1:d2}.{2}", v.Major, v.Minor, buildWithRevision);
             FullVersionString = string.Format(CultureInfo.InvariantCulture, @"{0} Version {1}", AppName, Version);
         }
+
     }
 }

@@ -26,6 +26,9 @@ namespace unBand
                 if (_theOne == null)
                 {
                     _theOne = Load();
+
+                    // whatever object we got back is the actual Singleton, init it
+                    _theOne.Init();
                 }
 
                 return _theOne;
@@ -62,29 +65,36 @@ namespace unBand
                     return new Settings();
                 }
 
+                Settings deserialized = null;
+
                 using (var sr = new StreamReader(settingsFile))
                 {
                     var xmlSerializer = new XmlSerializer(typeof(Settings));
 
-                    Settings deserialized = null;
+                
 
                     try
                     {
                         deserialized = xmlSerializer.Deserialize(sr) as Settings;
                     }
                     catch { } // generally == corrupted Settings file
-
-                    if (deserialized == null)
-                    {
-                        return new Settings();
-                    }
-
-                    // no longer the first run if we're loading these Settings from disk
-                    if (deserialized.FirstRun)
-                        deserialized.FirstRun = false;
-
-                    return deserialized;
                 }
+
+                if (deserialized == null)
+                {
+                    // we don't have a valid file. Let's create one and save it immediately
+                    // so that we start with a fresh slate.
+                    var rv = new Settings();
+                    rv.Save();
+
+                    return rv;
+                }
+
+                // no longer the first run if we're loading these Settings from disk
+                if (deserialized.FirstRun)
+                    deserialized.FirstRun = false;
+
+                return deserialized;
             }
         }
 
@@ -182,18 +192,44 @@ namespace unBand
             }
         }
 
+        public string PreviousVersion { get; set; }
+
         private Settings() 
         {
             Default();
-            Save(); // save the defaults since some of them may be randomly generated
+
+            // we can't save Settings here since this constructor is called when deserializing
+            // so the file is clearly there / in use etc.
+        }
+
+        // Note that we can't do this in the constructor - while Settings is a singleton the constructor
+        // can be called multiple times internally while attempting to deserialize from disk
+        private void Init()
+        {
+            Application.Current.Exit += ApplicationExitHandler;
+        }
+
+        void ApplicationExitHandler(object sender, ExitEventArgs e)
+        {
+            // make any last minute updates, and save before exiting
+            PreviousVersion = About.Current.Version;
+
+            Save();
         }
         
         public void Save()
         {
-            using (var sw = new StreamWriter(GetSettingsFilePath(), false))
+            try
             {
-                var xmlSerializer = new XmlSerializer(typeof(Settings));
-                xmlSerializer.Serialize(sw, this);
+                using (var sw = new StreamWriter(GetSettingsFilePath(), false))
+                {
+                    var xmlSerializer = new XmlSerializer(typeof(Settings));
+                    xmlSerializer.Serialize(sw, this);
+                }
+            }
+            catch (Exception e)
+            {
+                Telemetry.TrackException(e);
             }
         }
 
@@ -203,6 +239,10 @@ namespace unBand
             AgreedToTelemetry = false;
             Device = Guid.NewGuid();
             FirstRun = false;
+
+            // set this to the current version so that we only see "updated" notifications
+            // on an actual update and not on first install
+            PreviousVersion = About.Current.Version; 
         }
 
         #region INotifyPropertyChanged
@@ -221,6 +261,5 @@ namespace unBand
         }
 
         #endregion
-
     }
 }

@@ -60,7 +60,14 @@ namespace unBand
             // Begin Band detection - this will continue for the lifetime of the process
             BandManager.Start();
 
-            ButtonMyBand_Click(null, null);
+            if (About.Current.WasUpdated)
+            {
+                PageContent.Content = new AboutPage(true);
+            }
+            else
+            {
+                ButtonMyBand_Click(null, null);
+            }
         }
 
         private async Task<bool> AgreeToFirstRunWarning()
