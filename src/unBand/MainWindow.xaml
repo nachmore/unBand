@@ -17,6 +17,7 @@
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
+            <Button Content="settings" Click="ButtonSettings_Click" />
             <Button Content="about" Click="ButtonAbout_Click" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>

@@ -65,7 +65,7 @@ namespace unBand.Cloud
 
             var authForm = new LiveAuthWindow(
                 logoutUrl,
-                this.OnLiveAuthCompleted,
+                null,
                 "Logout"
             );
 

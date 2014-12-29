@@ -152,6 +152,11 @@ namespace unBand
         {
             PageContent.Content = new AboutPage();
         }
+
+        private void ButtonSettings_Click(object sender, RoutedEventArgs e)
+        {
+            PageContent.Content = new SettingsPage();
+        }
         
     }
 }

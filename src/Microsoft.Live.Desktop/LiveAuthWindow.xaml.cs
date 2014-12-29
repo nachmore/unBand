@@ -21,7 +21,8 @@ namespace Microsoft.Live.Desktop
     /// </summary>
     public partial class LiveAuthWindow : Window
     {
-        private const string END_URL = "https://login.live.com/oauth20_desktop.srf";
+        private const string LOGGED_IN_URL = "https://login.live.com/oauth20_desktop.srf";
+        private const string LOGGED_OUT_URL = "https://login.live.com/oauth20_logout.srf";
 
         private string _url;
         private AuthCompletedCallback _callback;
@@ -39,7 +40,7 @@ namespace Microsoft.Live.Desktop
 
         private void browser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            if (e.Uri.ToString().StartsWith(END_URL))
+            if (e.Uri.ToString().StartsWith(LOGGED_IN_URL) || e.Uri.ToString().StartsWith(LOGGED_OUT_URL))
             {
                 // close the window since auth is complete
                 this.Close();
