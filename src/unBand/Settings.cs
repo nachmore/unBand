@@ -74,7 +74,16 @@ namespace unBand
                     }
                     catch { } // generally == corrupted Settings file
 
-                    return (deserialized == null ? new Settings() : deserialized);
+                    if (deserialized == null)
+                    {
+                        return new Settings();
+                    }
+
+                    // no longer the first run if we're loading these Settings from disk
+                    if (deserialized.FirstRun)
+                        deserialized.FirstRun = false;
+
+                    return deserialized;
                 }
             }
         }
@@ -158,9 +167,25 @@ namespace unBand
             }
         }
 
+        private bool _firstRun;
+        public bool FirstRun
+        {
+            get { return _firstRun; }
+            set
+            {
+                if (_firstRun != value)
+                {
+                    _firstRun = value;
+
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         private Settings() 
         {
             Default();
+            Save(); // save the defaults since some of them may be randomly generated
         }
         
         public void Save()
@@ -176,6 +201,8 @@ namespace unBand
         {
             AgreedToFirstRunWarning = false;
             AgreedToTelemetry = false;
+            Device = Guid.NewGuid();
+            FirstRun = false;
         }
 
         #region INotifyPropertyChanged

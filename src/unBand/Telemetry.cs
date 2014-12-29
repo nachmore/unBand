@@ -22,21 +22,19 @@ namespace unBand
 
         static Telemetry()
         {
-            _session = new AnalyticsSession("http://unband.nachmore.com/app", "UA-56820272-3");
             Init();
         }
 
         private static void Init()
         {
+            _session = new AnalyticsSession("http://unband.nachmore.com/app", "UA-56820272-3");
+
             var props = Settings.Current;
 
             _client = _session.CreatePageViewRequest("/", "Global");
 
-            if (props.Device == Guid.Empty)
+            if (props.FirstRun)
             {
-                props.Device = Guid.NewGuid();
-                props.Save();
-
                 TrackEvent(TelemetryCategory.General, "Install", props.Device);
 
                 // TODO: would be nice to fire a new OS event on system upgrade
