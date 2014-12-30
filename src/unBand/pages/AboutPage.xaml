@@ -19,7 +19,15 @@
         <ScrollViewer Margin="0,20,0,0">
             <StackPanel>
                 <TextBlock FontWeight="Bold" FontSize="18" Text="{Binding Path=Heading, ElementName=this}"></TextBlock>
-                
+
+                <TextBlock FontWeight="Bold" Margin="0,10,0,0">v0.51 - Dec 30, 2014</TextBlock>
+                <TextBlock TextWrapping="Wrap">
+                    • Fixed various unhandled Exceptions, especially when the Microsoft Band Sync app is running in the background<LineBreak/>
+                    • You can now clear your login information via the Settings button (in the title bar)<LineBreak/>
+                    • You can reorganize your tiles within the app<LineBreak/>
+                    • Device communication logs (not generally that useful unless you're debugging something specific)<LineBreak/>
+                </TextBlock>
+
                 <TextBlock FontWeight="Bold" Margin="0,10,0,0">v0.5 - Dec 15, 2014</TextBlock>
                 <TextBlock TextWrapping="Wrap">
                     • You can now export your data summaries from the cloud<LineBreak/>
