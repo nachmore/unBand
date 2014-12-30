@@ -131,6 +131,19 @@ namespace unBand.pages
 
             if (result == true)
             {
+                var gpxPath = "";
+
+                if (ExportSettings.ExportGPXRunEvents)
+                {
+                    var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                    dialog.Description = "Select GPX folder";
+
+                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        gpxPath = dialog.SelectedPath;
+                    }
+                }
+
                 _progressDialog = await ((MetroWindow)(Window.GetWindow(this))).ShowProgressAsync("Exporting Data", "...");
                 _progressDialog.SetCancelable(true); // TODO: this needs to be implemented. No event?
                 _progressDialog.SetProgress(0);
@@ -139,13 +152,17 @@ namespace unBand.pages
 
                 _exporter.Value.Settings = ExportSettings;
 
-                await BandCloudManager.Instance.ExportEventsSummary(count, _exporter.Value, saveDialog.FileName, progressIndicator);
+                await BandCloudManager.Instance.ExportEventsSummary(count, _exporter.Value, saveDialog.FileName, gpxPath, progressIndicator);
 
                 _progressDialog.CloseAsync();
 
                 if (ExportSettings.OpenFileAfterExport)
                 {
-                    Process.Start(saveDialog.FileName);                    
+                    Process.Start(saveDialog.FileName);
+                    if (gpxPath != "")
+                    {
+                        Process.Start("explorer.exe", gpxPath);
+                    }
                 }
 
                 SaveExportSettings();
