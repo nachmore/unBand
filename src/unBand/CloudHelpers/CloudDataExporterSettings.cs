@@ -30,6 +30,8 @@ namespace unBand.CloudHelpers
 
         public bool OpenFileAfterExport { get; set; }
 
+        public bool ExportGPXRunEvents { get; set; }
+
         public CloudDataExporterSettings()
         {
             // set up default
@@ -40,6 +42,7 @@ namespace unBand.CloudHelpers
 
             ExportAll = true;
             ExportCount = 100;
+            ExportGPXRunEvents = false;
 
             ConvertDateTimeToLocal = true;
 

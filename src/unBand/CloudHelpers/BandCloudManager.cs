@@ -107,7 +107,7 @@ namespace unBand.CloudHelpers
             }
         }
 
-        public async Task ExportEventsSummary(int? count, CloudDataExporter exporter, string fileName, IProgress<BandCloudExportProgress> progress)
+        public async Task ExportEventsSummary(int? count, CloudDataExporter exporter, string fileName, string gpxFolder, IProgress<BandCloudExportProgress> progress)
         {
             var settings = exporter.Settings;
 
@@ -137,12 +137,13 @@ namespace unBand.CloudHelpers
                     )
                     .Take((int)count), 
                 exporter, 
-                fileName, 
+                fileName,
+                gpxFolder,
                 progress
             );
         }
 
-        private async Task ExportEventsSummary(IEnumerable<BandEventViewModel> bandEvents, CloudDataExporter exporter, string fileName, IProgress<BandCloudExportProgress> progress)
+        private async Task ExportEventsSummary(IEnumerable<BandEventViewModel> bandEvents, CloudDataExporter exporter, string fileName, string gpxFolder, IProgress<BandCloudExportProgress> progress)
         {
             // TODO: set more logical initial capacity?
             var csv = new StringBuilder(500000);
@@ -160,6 +161,13 @@ namespace unBand.CloudHelpers
                 // TODO: This fits ExportsEventsFull, not Summary
                 //var data = await _cloud.GetFullEventData(bandEvent.Event.EventID, bandEvent.Event.Expanders);
                 //bandEvent.Event.InitFullEventData(data);
+
+                if (!String.IsNullOrEmpty(gpxFolder) && bandEvent.Event.EventType == BandEventType.Running)
+                {
+                    var data = await _cloud.GetFullEventData(bandEvent.Event.EventID, bandEvent.Event.Expanders);
+                    bandEvent.Event.InitFullEventData(data);
+                    ((RunEvent)bandEvent.Event).WriteGPXFile(gpxFolder);
+                }
 
                 dataToDump.Add(bandEvent.Event.DumpBasicEventData());
 
