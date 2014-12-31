@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BandCloudClient.cs" />
     <Compile Include="BandCloudTypes.cs" />
+    <Compile Include="Events\BandEventInfoSegment.cs" />
     <Compile Include="Events\BandExerciseEventBase.cs" />
     <Compile Include="Events\BandEventBase.cs" />
     <Compile Include="Events\UserWorkoutEvent.cs" />
