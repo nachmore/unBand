@@ -104,16 +104,6 @@ namespace unBand.pages
             Settings.Current.Save();
         }
 
-        private void btnExportLast100_Click(object sender, RoutedEventArgs e)
-        {
-            ExportEvents(100);
-        }
-
-        private void btnExportAll_Click(object sender, RoutedEventArgs e)
-        {
-            ExportEvents();            
-        }
-
         private async void ExportEvents(int? count = null)
         {
             if (_exporter.Value == null)
@@ -171,7 +161,18 @@ namespace unBand.pages
 
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
-            ExportEvents();
+            ExportEvents(ExportSettings.ExportAll ? (int?)null : 100);
+        }
+
+        private async void btnLoadEvents_Click(object sender, RoutedEventArgs e)
+        {
+            await BandCloudManager.Instance.LoadEvents(ExportSettings.ExportAll ? 1000000 : 100);
+        }
+
+        private void lstEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // when an Event is selected in the ListBox we need to load the full Event
+            ((BandEventViewModel)((ListBox)sender).SelectedItem).LoadFull();
         }
 
         #region INotifyPropertyChanged
@@ -190,6 +191,5 @@ namespace unBand.pages
         }
 
         #endregion
-
     }
 }

@@ -12,8 +12,9 @@ namespace unBand.CloudHelpers
 {
     public class BandEventViewModel :INotifyPropertyChanged
     {
-        public BandEventBase Event;
+        public BandEventBase Event { get; private set; }
 
+        private BandCloudClient _cloud;
         private bool _loaded = false;
 
         public bool Loaded
@@ -29,10 +30,17 @@ namespace unBand.CloudHelpers
             }
         }
 
-        public BandEventViewModel(BandEventBase cloudEvent)
+        public BandEventViewModel(BandCloudClient cloud, BandEventBase cloudEvent)
         {
+            _cloud = cloud;
+
             Event = cloudEvent;
             Event.EventDataDownloaded += Event_EventDataDownloaded;
+        }
+
+        public async Task LoadFull()
+        {
+            Event.InitFullEventData(await _cloud.GetFullEventData(Event.EventID, Event.Expanders));
         }
 
         ~BandEventViewModel()
@@ -61,5 +69,6 @@ namespace unBand.CloudHelpers
         }
 
         #endregion
+
     }
 }

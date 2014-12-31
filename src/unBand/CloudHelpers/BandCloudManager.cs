@@ -94,16 +94,20 @@ namespace unBand.CloudHelpers
         }
 
         /// <summary>
-        /// TODO: Find a way to load events within a range instead of just from the top
+        /// Proxy for BandCloudClient.GetEvents which wraps loaded Events into a wrapper which is a little more
+        /// friendly for Binding against objects which are often only partially loaded.
         /// </summary>
-        /// <param name="top"></param>
-        private async Task LoadEvents(int top = 100)
+        /// <param name="topCount"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns>Nothing. DataBind against Events.</returns>
+        public async Task LoadEvents(int? topCount = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            var events = await _cloud.GetEvents(top);
+            var events = await _cloud.GetEvents(topCount, startDate, endDate);
 
             foreach (var cloudEvent in events)
             {
-                Events.Add(new BandEventViewModel(cloudEvent));
+                Events.Add(new BandEventViewModel(_cloud, cloudEvent));
             }
         }
 

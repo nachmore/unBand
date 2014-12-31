@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:local="clr-namespace:unBand"
-             mc:Ignorable="d" Width="672" Height="412"
+             mc:Ignorable="d" Width="762" Height="433"
              x:Name="this">
 
     <Grid>
@@ -14,7 +14,7 @@
             <RowDefinition Height="130"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <TextBlock Margin="0,5,0,0" Grid.Row="0">Select your export settings below and then hit the Export button to get started.</TextBlock>
 
         <Grid Grid.Row="1" DataContext="{Binding ElementName=this}">
@@ -23,10 +23,11 @@
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="225"/>
+                <ColumnDefinition Width="225"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0">
-                <!--<CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSteps}">Steps</CheckBox>-->
+                <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSteps}">Steps</CheckBox>
                 <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSleep}">Sleep</CheckBox>
                 <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeWorkouts}">Workouts</CheckBox>
                 <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeRuns}">Runs</CheckBox>
@@ -34,8 +35,8 @@
 
             <StackPanel Grid.Column="1">
                 <TextBlock Margin="5" TextWrapping="Wrap">We're working on date ranges, but in the meanwhile you can:</TextBlock>
-                <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll, Mode=OneWay, Converter={StaticResource OppositeBoolConverter}}">Export Last 100 Activities</RadioButton>
-                <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll}">Export All</RadioButton>
+                <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll, Mode=OneWay, Converter={StaticResource OppositeBoolConverter}}">Last 100 Activities</RadioButton>
+                <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll}">All Activities</RadioButton>
             </StackPanel>
 
             <StackPanel Grid.Column="2">
@@ -46,17 +47,31 @@
                 </StackPanel>
                 <CheckBox Margin="5" IsChecked="{Binding ExportSettings.OpenFileAfterExport}">Open file when finished</CheckBox>
                 <CheckBox Margin="5" IsChecked="{Binding ExportSettings.ConvertDateTimeToLocal}">Convert UTC dates to local time</CheckBox>
-                <Button Margin="10" Click="btnExport_Click">Export</Button>
             </StackPanel>
 
-            <StackPanel Orientation="Vertical" Visibility="Collapsed">
-                <Button Margin="5,5,5,189" Content="Export Last 100 Activities" Click="btnExportLast100_Click" Width="167"></Button>
-                <Button Margin="5,5,5,189" Content="Export All Activities" Click="btnExportAll_Click" Width="164"/>
+            <StackPanel Grid.Column="3">
+                <Button Margin="10" Click="btnExport_Click">Export Summary</Button>
+                <Button Margin="10" Click="btnExport_Click">Export Complete Data</Button>
+                <Button Margin="10" Click="btnLoadEvents_Click">Load Events</Button>
             </StackPanel>
-
         </Grid>
 
-        <ListBox Visibility="Collapsed" Grid.Row="2" ItemsSource="{Binding Events}"></ListBox>
+        <Grid Grid.Row="2" DataContext="{Binding Events}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <ListBox Grid.Column="0" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" SelectionChanged="lstEvents_SelectionChanged"></ListBox>
+            
+            <StackPanel Grid.Column="1" DataContext="{Binding /}">
+                
+                <TextBlock Text="{Binding Event.Name}"></TextBlock>
+                
+            </StackPanel>
+            
+        </Grid>
+        
 
     </Grid>
 </UserControl>
