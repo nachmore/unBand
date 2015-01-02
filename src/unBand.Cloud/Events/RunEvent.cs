@@ -55,7 +55,6 @@ namespace unBand.Cloud
     [TypeConverter(typeof(RunEventConverter))]
     public class RunEvent : BandExerciseEventBase
     {
-
         public override BandEventExpandType[] Expanders
         {
             get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences, BandEventExpandType.MapPoints }; }
