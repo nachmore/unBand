@@ -159,10 +159,12 @@
     </ApplicationDefinition>
     <Compile Include="BandHelpers\BandLogger.cs" />
     <Compile Include="BandHelpers\BandTiles.cs" />
+    <Compile Include="Converters\EventTypeToImageConverter.cs" />
+    <Compile Include="Converters\PropValueToVisibilityConverter.cs" />
     <Compile Include="Controls\WaitingForBand.xaml.cs">
       <DependentUpon>WaitingForBand.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OppositeBoolConverter.cs" />
+    <Compile Include="Converters\OppositeBoolConverter.cs" />
     <Compile Include="CloudHelpers\BandEventViewModel.cs" />
     <Compile Include="CloudHelpers\BandCloudManager.cs" />
     <Compile Include="CloudHelpers\CloudDataExporterSettings.cs" />
@@ -211,7 +213,7 @@
     <Compile Include="BandHelpers\BandSensors.cs" />
     <Compile Include="BandHelpers\BandTheme.cs" />
     <Compile Include="BandHelpers\Sensors\BandPedometer.cs" />
-    <Compile Include="BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Controls\BandColorSelector.xaml.cs">
       <DependentUpon>BandColorSelector.xaml</DependentUpon>
     </Compile>
@@ -352,6 +354,18 @@
       <Project>{c65bd296-f5e1-400e-886e-bc3def6476ef}</Project>
       <Name>unBand.Cloud</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\icons\activity_run.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\icons\activity_sleep.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\icons\activity_workout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\icons\activity_guided_workout.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

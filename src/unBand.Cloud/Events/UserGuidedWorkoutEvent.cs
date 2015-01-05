@@ -36,6 +36,8 @@ namespace unBand.Cloud
 
         public List<UserGuidedWorkoutInfoSegment> Segments { get; private set; }
 
+        public override string FriendlyEventType { get { return "Guided Workout"; } }
+
         public UserGuidedWorkoutEvent(JObject json) : base(json)
         {
             Segments = new List<UserGuidedWorkoutInfoSegment>();

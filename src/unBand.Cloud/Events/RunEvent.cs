@@ -63,6 +63,9 @@ namespace unBand.Cloud
         public List<BandEventInfoSegment> Segments { get; private set; }
         public List<RunMapPoint> MapPoints { get; private set; }
 
+        public override string FriendlyEventType { get { return "Run"; } }
+        public override string PrimaryMetric { get { return TotalDistance + "m"; } }
+
         public int TotalDistance { get; set; }
         public int ActualDistance { get; set; }
         public int WayPointDistance { get; set; }

@@ -9,9 +9,9 @@ using System.Xml.Linq;
 
 namespace unBand.Cloud.Exporters
 {
-    public class GPXExporter
+    public static class GPXExporter
     {
-        public void ExportToFile(BandEventBase eventBase, string filePath)
+        public static void ExportToFile(BandEventBase eventBase, string filePath)
         {
             if (!(eventBase is RunEvent))
             {
@@ -66,8 +66,6 @@ namespace unBand.Cloud.Exporters
             }
 
             doc.Add(xroot);
-
-            filePath = Path.Combine(filePath, runEvent.StartTime.ToString("yyyymmdd") + "_" + runEvent.EventID + ".gpx");
 
             xroot.Save(filePath);
         }

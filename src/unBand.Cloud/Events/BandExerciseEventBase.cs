@@ -10,6 +10,8 @@ namespace unBand.Cloud
 {
     public abstract class BandExerciseEventBase : BandEventBase
     {
+        public override string PrimaryMetric { get { return CaloriesBurned + "cals"; } }
+
         public string AnalysisStatus { get; set; }
         public int CaloriesFromCarbs { get; set; }
         public int CaloriesFromFat { get; set; }

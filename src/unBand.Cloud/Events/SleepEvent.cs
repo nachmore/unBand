@@ -40,6 +40,9 @@ namespace unBand.Cloud
 
         public List<BandEventInfoSegment> Segments { get; private set; }
 
+        public override string FriendlyEventType { get { return "Sleep"; } }
+        public override string PrimaryMetric { get { return SleepTime + "m"; } } // TODO: convert to h/m
+
         public SleepEvent(JObject json)
             : base(json)
         {

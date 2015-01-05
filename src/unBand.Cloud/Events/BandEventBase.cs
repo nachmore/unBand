@@ -16,6 +16,34 @@ namespace unBand.Cloud
 
         public abstract BandEventExpandType[] Expanders { get; }
 
+        // calculated properties
+
+        public string DisplayName
+        {
+            get
+            {
+                return Name ?? FriendlyEventType;
+            }
+        }
+
+        public virtual string FriendlyEventType
+        {
+            get
+            {
+                System.Diagnostics.Debug.Assert(false, "This should never hit");
+                return "Unknown";
+            }
+        }
+
+        public virtual string PrimaryMetric
+        {
+            get
+            {
+                System.Diagnostics.Debug.Assert(false, "This should never hit");
+                return "N/A";
+            }
+        }
+
         // common Properties
         public string EventID { get; set; }
         public string Duration { get; set; }

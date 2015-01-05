@@ -23,6 +23,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using unBand.BandHelpers;
 using unBand.Cloud;
+using unBand.Cloud.Exporters;
 using unBand.CloudHelpers;
 
 namespace unBand.pages
@@ -173,6 +174,15 @@ namespace unBand.pages
         {
             // when an Event is selected in the ListBox we need to load the full Event
             ((BandEventViewModel)((ListBox)sender).SelectedItem).LoadFull();
+        }
+        private void btnExportToGPX_Click(object sender, RoutedEventArgs e)
+        {
+            var runEvent = ((BandEventViewModel)lstEvents.SelectedItem).Event as RunEvent;
+
+            if (runEvent != null)
+            {
+                GPXExporter.ExportToFile(runEvent, @"c:\temp\out.gpx");
+            }
         }
 
         #region INotifyPropertyChanged

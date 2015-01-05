@@ -52,7 +52,7 @@
             <StackPanel Grid.Column="3">
                 <Button Margin="10" Click="btnExport_Click">Export Summary</Button>
                 <Button Margin="10" Click="btnExport_Click">Export Complete Data</Button>
-                <Button Margin="10" Click="btnLoadEvents_Click">Load Events</Button>
+                <Button Margin="10" Click="btnLoadEvents_Click">Browse Activities</Button>
             </StackPanel>
         </Grid>
 
@@ -62,10 +62,23 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <ListBox Grid.Column="0" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" SelectionChanged="lstEvents_SelectionChanged">
+            <ListBox x:Name="lstEvents" Grid.Column="0" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" SelectionChanged="lstEvents_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Event.EventType}"></TextBlock>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Column="0" Source="{Binding Event.EventType, Converter={StaticResource EventTypeToImageConverter}}"></Image>
+                            <TextBlock Grid.Column="1" Text="{Binding Event.StartTime}"></TextBlock>
+                            <TextBlock Grid.Column="2" Text="{Binding Event.DisplayName}"></TextBlock>
+                            <TextBlock Grid.Column="3" Text="{Binding Event.PrimaryMetric}"></TextBlock>
+                            
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -73,7 +86,11 @@
             <StackPanel Grid.Column="1" DataContext="{Binding /}">
                 
                 <TextBlock Text="{Binding Event.Name}"></TextBlock>
-                
+
+                <StackPanel Visibility="{Binding Event.EventType, Converter={StaticResource PropValueToVisibilityConverter}, ConverterParameter=Running}">
+                    <Button Click="btnExportToGPX_Click" Margin="27,0,255,0" Content="Export GPX File"></Button>
+                </StackPanel>
+
             </StackPanel>
             
         </Grid>

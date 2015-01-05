@@ -15,8 +15,12 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Purple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
             <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <local:OppositeBoolConverter x:Key="OppositeBoolConverter"/>
+            <local:PropValueToVisibilityConverter x:Key="PropValueToVisibilityConverter"/>
+            <local:EventTypeToImageConverter x:Key="EventTypeToImageConverter"/>
+            
             <Style x:Key="MenuImageButton" TargetType="{x:Type Button}">
                 <Setter Property="MinHeight" Value="25"/>
                 <Setter Property="FontWeight" Value="Bold"/>
