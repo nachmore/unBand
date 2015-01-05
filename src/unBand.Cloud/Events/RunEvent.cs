@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ namespace unBand.Cloud
         public List<RunMapPoint> MapPoints { get; private set; }
 
         public override string FriendlyEventType { get { return "Run"; } }
-        public override string PrimaryMetric { get { return TotalDistance + "m"; } }
+        public override string PrimaryMetric { get { return (TotalDistance / 100000.0).ToString("N", CultureInfo.InvariantCulture) + "km"; } }
 
         public int TotalDistance { get; set; }
         public int ActualDistance { get; set; }
