@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:local="clr-namespace:unBand"
-             mc:Ignorable="d" Width="762" Height="433"
+             mc:Ignorable="d" MinWidth="762" MinHeight="433"
              x:Name="this">
 
     <Grid>
