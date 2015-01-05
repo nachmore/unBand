@@ -41,7 +41,13 @@ namespace unBand.Cloud
         public List<BandEventInfoSegment> Segments { get; private set; }
 
         public override string FriendlyEventType { get { return "Sleep"; } }
-        public override string PrimaryMetric { get { return SleepTime + "m"; } } // TODO: convert to h/m
+        public override string PrimaryMetric { 
+            get 
+            {
+                var span = TimeSpan.FromSeconds(SleepTime);
+                return string.Format("{0}h {1}m", span.Hours, span.Minutes);
+            } 
+        } 
 
         public SleepEvent(JObject json)
             : base(json)
