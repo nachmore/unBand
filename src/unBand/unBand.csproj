@@ -160,6 +160,7 @@
     <Compile Include="BandHelpers\BandLogger.cs" />
     <Compile Include="BandHelpers\BandTiles.cs" />
     <Compile Include="Converters\EventTypeToImageConverter.cs" />
+    <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\PropValueToVisibilityConverter.cs" />
     <Compile Include="Controls\WaitingForBand.xaml.cs">
       <DependentUpon>WaitingForBand.xaml</DependentUpon>

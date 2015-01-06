@@ -82,8 +82,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            
-            <StackPanel Grid.Column="1" DataContext="{Binding /}">
+
+            <StackPanel Grid.Column="1" DataContext="{Binding /}" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}">
                 
                 <TextBlock Text="{Binding Event.Name}"></TextBlock>
 

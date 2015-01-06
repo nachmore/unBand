@@ -20,6 +20,7 @@
             <local:OppositeBoolConverter x:Key="OppositeBoolConverter"/>
             <local:PropValueToVisibilityConverter x:Key="PropValueToVisibilityConverter"/>
             <local:EventTypeToImageConverter x:Key="EventTypeToImageConverter"/>
+            <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
             
             <Style x:Key="MenuImageButton" TargetType="{x:Type Button}">
                 <Setter Property="MinHeight" Value="25"/>
