@@ -4,97 +4,101 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:BandControls="clr-namespace:unBand.Controls"
              xmlns:local="clr-namespace:unBand"
              mc:Ignorable="d" MinWidth="762" MinHeight="433"
              x:Name="this">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="130"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <TextBlock Margin="0,5,0,0" Grid.Row="0">Select your export settings below and then hit the Export button to get started.</TextBlock>
-
-        <Grid Grid.Row="1" DataContext="{Binding ElementName=this}">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="225"/>
-                <ColumnDefinition Width="225"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Grid.Column="0">
-                <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSteps}">Steps</CheckBox>
-                <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSleep}">Sleep</CheckBox>
-                <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeWorkouts}">Workouts</CheckBox>
-                <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeRuns}">Runs</CheckBox>
-            </StackPanel>
-
-            <StackPanel Grid.Column="1">
-                <TextBlock Margin="5" TextWrapping="Wrap">We're working on date ranges, but in the meanwhile you can:</TextBlock>
-                <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll, Mode=OneWay, Converter={StaticResource OppositeBoolConverter}}">Last 100 Activities</RadioButton>
-                <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll}">All Activities</RadioButton>
-            </StackPanel>
-
-            <StackPanel Grid.Column="2">
-                <StackPanel Margin="5" Orientation="Horizontal">
-                    <TextBlock Height="15">Format:</TextBlock>
-                    <ComboBox Margin="5,0,5,0" HorizontalAlignment="Left" x:Name="cmbFormat" ItemsSource="{Binding Path=Exporters}" DisplayMemberPath="Key" SelectedValue="{Binding ElementName=this, Path=Exporter}" Width="70">
-                    </ComboBox>
-                </StackPanel>
-                <CheckBox Margin="5" IsChecked="{Binding ExportSettings.OpenFileAfterExport}">Open file when finished</CheckBox>
-                <CheckBox Margin="5" IsChecked="{Binding ExportSettings.ConvertDateTimeToLocal}">Convert UTC dates to local time</CheckBox>
-            </StackPanel>
-
-            <StackPanel Grid.Column="3">
-                <Button Margin="10" Click="btnExport_Click">Export Summary</Button>
-                <Button Margin="10" Click="btnExport_Click">Export Complete Data</Button>
-                <Button Margin="10" Click="btnLoadEvents_Click">Browse Activities</Button>
-            </StackPanel>
-        </Grid>
-
-        <Grid Grid.Row="2" DataContext="{Binding Events}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-            <ListBox x:Name="lstEvents" Grid.Column="0" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" SelectionChanged="lstEvents_SelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="16"/>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="50"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Image Grid.Column="0" Source="{Binding Event.EventType, Converter={StaticResource EventTypeToImageConverter}}"></Image>
-                            <TextBlock Grid.Column="1" Text="{Binding Event.StartTime}"></TextBlock>
-                            <TextBlock Grid.Column="2" Text="{Binding Event.DisplayName}"></TextBlock>
-                            <TextBlock Grid.Column="3" Text="{Binding Event.PrimaryMetric}"></TextBlock>
-                            
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-
-            <StackPanel Grid.Column="1" DataContext="{Binding /}" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}">
-                
-                <TextBlock Text="{Binding Event.Name}"></TextBlock>
-
-                <StackPanel Visibility="{Binding Event.EventType, Converter={StaticResource PropValueToVisibilityConverter}, ConverterParameter=Running}">
-                    <Button Click="btnExportToGPX_Click" Margin="27,0,255,0" Content="Export GPX File"></Button>
-                </StackPanel>
-
-            </StackPanel>
-            
-        </Grid>
+        <BandControls:WaitingForMSA Panel.ZIndex="100000" Visibility="{Binding IsLoggedIn, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="false"></BandControls:WaitingForMSA>
+        <!--<BandControls:WaitingForBand " local:DesignHelpers.IsHidden="true"></BandControls:WaitingForBand>-->
         
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="130"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
+            <TextBlock Margin="0,5,0,0" Grid.Row="0">Select your export settings below and then hit the Export button to get started.</TextBlock>
+
+            <Grid Grid.Row="1" DataContext="{Binding ElementName=this}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="225"/>
+                    <ColumnDefinition Width="225"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSteps}">Steps</CheckBox>
+                    <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSleep}">Sleep</CheckBox>
+                    <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeWorkouts}">Workouts</CheckBox>
+                    <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeRuns}">Runs</CheckBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Margin="5" TextWrapping="Wrap">We're working on date ranges, but in the meanwhile you can:</TextBlock>
+                    <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll, Mode=OneWay, Converter={StaticResource OppositeBoolConverter}}">Last 100 Activities</RadioButton>
+                    <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll}">All Activities</RadioButton>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <StackPanel Margin="5" Orientation="Horizontal">
+                        <TextBlock Height="15">Format:</TextBlock>
+                        <ComboBox Margin="5,0,5,0" HorizontalAlignment="Left" x:Name="cmbFormat" ItemsSource="{Binding Path=Exporters}" DisplayMemberPath="Key" SelectedValue="{Binding ElementName=this, Path=Exporter}" Width="70">
+                        </ComboBox>
+                    </StackPanel>
+                    <CheckBox Margin="5" IsChecked="{Binding ExportSettings.OpenFileAfterExport}">Open file when finished</CheckBox>
+                    <CheckBox Margin="5" IsChecked="{Binding ExportSettings.ConvertDateTimeToLocal}">Convert UTC dates to local time</CheckBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3">
+                    <Button Margin="10" Click="btnExport_Click">Export Summary</Button>
+                    <Button Margin="10" Click="btnExport_Click">Export Complete Data</Button>
+                    <Button Margin="10" Click="btnLoadEvents_Click">Browse Activities</Button>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="2" DataContext="{Binding Events}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <ListBox x:Name="lstEvents" Grid.Column="0" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" SelectionChanged="lstEvents_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0" Source="{Binding Event.EventType, Converter={StaticResource EventTypeToImageConverter}}"></Image>
+                                <TextBlock Grid.Column="1" Text="{Binding Event.StartTime}"></TextBlock>
+                                <TextBlock Grid.Column="2" Text="{Binding Event.DisplayName}"></TextBlock>
+                                <TextBlock Grid.Column="3" Text="{Binding Event.PrimaryMetric}"></TextBlock>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <StackPanel Grid.Column="1" DataContext="{Binding /}" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}">
+
+                    <TextBlock Text="{Binding Event.Name}"></TextBlock>
+
+                    <StackPanel Visibility="{Binding Event.EventType, Converter={StaticResource PropValueToVisibilityConverter}, ConverterParameter=Running}">
+                        <Button Click="btnExportToGPX_Click" Margin="27,0,255,0" Content="Export GPX File"></Button>
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
+
 </UserControl>

@@ -159,6 +159,9 @@
     </ApplicationDefinition>
     <Compile Include="BandHelpers\BandLogger.cs" />
     <Compile Include="BandHelpers\BandTiles.cs" />
+    <Compile Include="Controls\WaitingForMSA.xaml.cs">
+      <DependentUpon>WaitingForMSA.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\EventTypeToImageConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\PropValueToVisibilityConverter.cs" />
@@ -196,6 +199,10 @@
     <Page Include="Controls\BandMeTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WaitingForMSA.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\WaitingForBand.xaml">
       <SubType>Designer</SubType>
