@@ -10,10 +10,9 @@
              x:Name="this">
 
     <Grid>
-        <BandControls:WaitingForMSA Panel.ZIndex="100000" Visibility="{Binding IsLoggedIn, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="false"></BandControls:WaitingForMSA>
-        <!--<BandControls:WaitingForBand " local:DesignHelpers.IsHidden="true"></BandControls:WaitingForBand>-->
-        
-        <Grid>
+        <BandControls:WaitingForMSA Visibility="{Binding IsLoggedIn, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true"></BandControls:WaitingForMSA>
+
+        <Grid Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="130"/>

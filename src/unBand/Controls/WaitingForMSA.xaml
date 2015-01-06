@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:local="clr-namespace:unBand"
-             Background="White"
              mc:Ignorable="d" MinHeight="351" MinWidth="466" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <Grid>
         <StackPanel Margin="0,25,0,0">
