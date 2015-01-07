@@ -33,13 +33,13 @@
             <Button Style="{DynamicResource MenuImageButton}" ToolTip="My Band" Click="ButtonMyBand_Click" x:Name="test">
                 <Image Source="/assets/icons/band.png" Height="24" Width="24"></Image>
             </Button>
-            <Button Style="{DynamicResource MenuImageButton}" ToolTip="Sensors" Click="ButtonTheme_Click">
+            <Button Style="{DynamicResource MenuImageButton}" ToolTip="Customize your Theme" Click="ButtonTheme_Click">
                 <Image Source="/assets/icons/theme.png" Height="36" Width="36"></Image>
             </Button>
             <Button Style="{DynamicResource MenuImageButton}" ToolTip="Sensors" Click="ButtonSensors_Click">
                 <Image Source="/assets/icons/sensors.png" Height="36" Width="36"></Image>
             </Button>
-            <Button Style="{DynamicResource MenuImageButton}" ToolTip="Device Log" Click="ButtonTiles_Click">
+            <Button Style="{DynamicResource MenuImageButton}" ToolTip="Manage Tiles" Click="ButtonTiles_Click">
                 <Image Source="/assets/icons/tiles.png" Height="36" Width="36"></Image>
             </Button>
             <Button Style="{DynamicResource MenuImageButton}" ToolTip="Activity Data" Click="ButtonActivityLog_Click">
