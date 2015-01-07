@@ -24,43 +24,64 @@
             <Grid Grid.Row="1" DataContext="{Binding ElementName=this}">
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="225"/>
-                    <ColumnDefinition Width="225"/>
+                    <ColumnDefinition Width="550"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0">
-                    <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSteps}">Steps</CheckBox>
-                    <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSleep}">Sleep</CheckBox>
-                    <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeWorkouts}">Workouts</CheckBox>
-                    <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeRuns}">Runs</CheckBox>
+                <Grid Grid.Column="0">
+                    
+                    <TextBlock Margin="0,-25,0,0" TextWrapping="Wrap">You can view your events directly in this app, or export your data using the buttons below:</TextBlock>
+
+                    <Button ToolTip="Display your events below" Click="btnLoadEvents_Click" Margin="0,40,150,40" Style="{DynamicResource MetroCircleButtonStyle}" BorderBrush="Black" Height="50" Width="50">
+                        <Image Source="/assets/actions/load_activities.png" Height="48" Width="48"></Image>
+                    </Button>
+
+                    <Button ToolTip="Export a summary of all of the events that match your selection settings" Click="btnExport_Click" Margin="0,40,40,40" Style="{DynamicResource MetroCircleButtonStyle}" BorderBrush="Black" Height="50" Width="50">
+                        <Image Source="/assets/actions/export_summary.png" Height="48" Width="48"></Image>
+                    </Button>
+
+                    <Button ToolTip="Export all of the data from all of the events that match your selection settings" Margin="70,40,0,40" Style="{DynamicResource MetroCircleButtonStyle}" BorderBrush="Black" Height="50" Width="50" >
+                        <Image Source="/assets/actions/export_full.png" Height="48" Width="48"></Image>
+                    </Button>
+                </Grid>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+
+                    <Expander Header="Activities" ExpandDirection="Right" IsExpanded="True" Style="{StaticResource RightVerticalExpanderHeader}">
+                        <StackPanel Grid.Column="0">
+                            <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSteps}">Steps</CheckBox>
+                            <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSleep}">Sleep</CheckBox>
+                            <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeWorkouts}">Workouts</CheckBox>
+                            <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeRuns}">Runs</CheckBox>
+                        </StackPanel>
+
+                    </Expander>
+
+                    <Expander Header="Range" ExpandDirection="Right" IsExpanded="True" Style="{StaticResource RightVerticalExpanderHeader}" Width="198">
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Margin="5" TextWrapping="Wrap">We're working on date ranges, but in the meanwhile you can:</TextBlock>
+                            <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}">Last 100 Activities</RadioButton>
+                            <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll}">All Activities</RadioButton>
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander Header="Options" ExpandDirection="Right" IsExpanded="True" Style="{StaticResource RightVerticalExpanderHeader}" Width="223">
+                        <StackPanel>
+                            <StackPanel Margin="5" Orientation="Horizontal">
+                                <TextBlock Height="15">Format:</TextBlock>
+                                <ComboBox Margin="5,0,5,0" HorizontalAlignment="Left" x:Name="cmbFormat" ItemsSource="{Binding Path=Exporters}" DisplayMemberPath="Key" SelectedValue="{Binding ElementName=this, Path=Exporter}" Width="70">
+                                </ComboBox>
+                            </StackPanel>
+                            <CheckBox Margin="5" IsChecked="{Binding ExportSettings.OpenFileAfterExport}">Open file when finished</CheckBox>
+                            <CheckBox Margin="5" IsChecked="{Binding ExportSettings.ConvertDateTimeToLocal}">Convert UTC dates to local time</CheckBox>
+                        </StackPanel>
+                    </Expander>
+
                 </StackPanel>
 
-                <StackPanel Grid.Column="1">
-                    <TextBlock Margin="5" TextWrapping="Wrap">We're working on date ranges, but in the meanwhile you can:</TextBlock>
-                    <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll, Mode=OneWay, Converter={StaticResource OppositeBoolToVisibilityConverter}}">Last 100 Activities</RadioButton>
-                    <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll}">All Activities</RadioButton>
-                </StackPanel>
-
-                <StackPanel Grid.Column="2">
-                    <StackPanel Margin="5" Orientation="Horizontal">
-                        <TextBlock Height="15">Format:</TextBlock>
-                        <ComboBox Margin="5,0,5,0" HorizontalAlignment="Left" x:Name="cmbFormat" ItemsSource="{Binding Path=Exporters}" DisplayMemberPath="Key" SelectedValue="{Binding ElementName=this, Path=Exporter}" Width="70">
-                        </ComboBox>
-                    </StackPanel>
-                    <CheckBox Margin="5" IsChecked="{Binding ExportSettings.OpenFileAfterExport}">Open file when finished</CheckBox>
-                    <CheckBox Margin="5" IsChecked="{Binding ExportSettings.ConvertDateTimeToLocal}">Convert UTC dates to local time</CheckBox>
-                </StackPanel>
-
-                <StackPanel Grid.Column="3">
-                    <Button Margin="10" Click="btnExport_Click">Export Summary</Button>
-                    <Button Margin="10" Click="btnExport_Click">Export Complete Data</Button>
-                    <Button Margin="10" Click="btnLoadEvents_Click">Browse Activities</Button>
-                </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="2" DataContext="{Binding Events}">
+            <Grid Grid.Row="2" DataContext="{Binding Events}" Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" MaxWidth="600"></ColumnDefinition>
                     <ColumnDefinition Width="350"></ColumnDefinition>
@@ -74,7 +95,7 @@
                                     <ColumnDefinition Width="16"/>
                                     <ColumnDefinition Width="150"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="65"/>
+                                    <ColumnDefinition Width="80"/>
                                 </Grid.ColumnDefinitions>
 
                                 <Image Grid.Column="0" Source="{Binding Event.EventType, Converter={StaticResource EventTypeToImageConverter}}"></Image>
@@ -87,8 +108,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <!--<Grid Grid.Column="1" DataContext="{Binding /}" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}">-->
-                <StackPanel Grid.Column="1">
+                <StackPanel Grid.Column="1" Visibility="{Binding /, Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}">
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -106,7 +126,7 @@
 
                         <Image Grid.Column="0" Grid.Row="1" Source="/assets/activity_details/duration.png" Height="32" Width="32"/>
                         <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Event.Duration}" VerticalAlignment="Center"/>
-                        
+
                         <Image Grid.Column="0" Grid.Row="2" Source="/assets/activity_details/calories.png" Height="32" Width="32"/>
                         <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Event.CaloriesBurned}" VerticalAlignment="Center"/>
 
@@ -118,14 +138,14 @@
 
                         <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="false">
                             <Image Source="/assets/activity_details/map_gps.png" Height="32" Width="32" Margin="3,10,315,231"/>
-                            <TextBlock TextWrapping="Wrap" Margin="40,0,0,0"><Run Text="Your GPS was on during this run, you can export these points to a generic GPX file which can be opened or imported into a variety of other services."/></TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="40,0,0,0">Your GPS was on and recording during this run.<LineBreak/>You can export these points to a generic GPX file which can be opened or imported into a variety of other services.</TextBlock>
 
                             <Button Click="btnExportToGPX_Click" Content="Export GPX File" Margin="40,55,206,192"/>
                         </Grid>
 
                         <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource OppositeBoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true">
                             <Image Source="/assets/activity_details/map_gps.png" Height="32" Width="32" Margin="0,0,318,241"/>
-                            <TextBlock TextWrapping="Wrap" Margin="37,6,-2,247"><Run Text="This run did not record any location points from GPS"/></TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="37,6,-2,247"><Run Text="This run did not record any GPS location points"/></TextBlock>
                         </Grid>
 
                     </Grid>

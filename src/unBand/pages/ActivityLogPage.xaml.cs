@@ -88,15 +88,18 @@ namespace unBand.pages
             _band = BandManager.Instance;
 
             this.DataContext = BandCloudManager.Instance;
+
+            BandCloudManager.Instance.AuthenticationCompleted += Instance_AuthenticationCompleted;
+        }
+
+        void Instance_AuthenticationCompleted()
+        {
+            BandCloudManager.Instance.LoadEvents(10);
         }
 
         private void LoadExportSettings()
         {
-            ExportSettings = new CloudDataExporterSettings();
-
-            ExportSettings = (Settings.Current.ExportSettings != null ? 
-                                Settings.Current.ExportSettings :
-                                new CloudDataExporterSettings());
+            ExportSettings = (Settings.Current.ExportSettings ?? Settings.Current.ExportSettings);
         }
 
         private void SaveExportSettings()
@@ -167,6 +170,8 @@ namespace unBand.pages
 
         private async void btnLoadEvents_Click(object sender, RoutedEventArgs e)
         {
+            SaveExportSettings();
+
             await BandCloudManager.Instance.LoadEvents(ExportSettings.ExportAll ? 1000000 : 100);
         }
 
