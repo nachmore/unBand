@@ -39,7 +39,7 @@
 
                 <StackPanel Grid.Column="1">
                     <TextBlock Margin="5" TextWrapping="Wrap">We're working on date ranges, but in the meanwhile you can:</TextBlock>
-                    <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll, Mode=OneWay, Converter={StaticResource OppositeBoolConverter}}">Last 100 Activities</RadioButton>
+                    <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll, Mode=OneWay, Converter={StaticResource OppositeBoolToVisibilityConverter}}">Last 100 Activities</RadioButton>
                     <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll}">All Activities</RadioButton>
                 </StackPanel>
 
@@ -73,8 +73,8 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="16"/>
                                     <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="65"/>
                                 </Grid.ColumnDefinitions>
 
                                 <Image Grid.Column="0" Source="{Binding Event.EventType, Converter={StaticResource EventTypeToImageConverter}}"></Image>
@@ -92,7 +92,8 @@
                     <TextBlock Text="{Binding Event.Name}"></TextBlock>
 
                     <StackPanel Visibility="{Binding Event.EventType, Converter={StaticResource PropValueToVisibilityConverter}, ConverterParameter=Running}">
-                        <Button Click="btnExportToGPX_Click" Margin="27,0,255,0" Content="Export GPX File"></Button>
+                        <Button Click="btnExportToGPX_Click" Margin="27,0,255,0" Content="Export GPX File" Visibility="{Binding HasGPSPoints, Converter={StaticResource BoolToVisibilityConverter}}"></Button>
+
                     </StackPanel>
 
                 </StackPanel>

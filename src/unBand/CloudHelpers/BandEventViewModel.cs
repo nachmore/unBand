@@ -14,6 +14,20 @@ namespace unBand.CloudHelpers
     {
         public BandEventBase Event { get; private set; }
 
+        private bool _hasGPSPoints = false;
+        public bool HasGPSPoints
+        {
+            get { return _hasGPSPoints; }
+            set
+            {
+                if (_hasGPSPoints != value)
+                {
+                    _hasGPSPoints = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         private BandCloudClient _cloud;
         private bool _loaded = false;
 
@@ -35,22 +49,18 @@ namespace unBand.CloudHelpers
             _cloud = cloud;
 
             Event = cloudEvent;
-            Event.EventDataDownloaded += Event_EventDataDownloaded;
         }
 
         public async Task LoadFull()
         {
-            Event.InitFullEventData(await _cloud.GetFullEventData(Event.EventID, Event.Expanders));
-        }
+            if (!Loaded)
+            {
+                Event.InitFullEventData(await _cloud.GetFullEventData(Event.EventID, Event.Expanders));
 
-        ~BandEventViewModel()
-        {
-            Event.EventDataDownloaded -= Event_EventDataDownloaded;
-        }
+                Loaded = true;
 
-        void Event_EventDataDownloaded(BandEventBase bandEvent)
-        {
-            Loaded = true;
+                HasGPSPoints = (Event is RunEvent) && ((RunEvent)Event).HasGPSPoints;
+            }
         }
 
         #region INotifyPropertyChanged

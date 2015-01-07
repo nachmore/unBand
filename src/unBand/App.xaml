@@ -17,7 +17,7 @@
             </ResourceDictionary.MergedDictionaries>
             
             <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-            <local:OppositeBoolConverter x:Key="OppositeBoolConverter"/>
+            <local:OppositeBoolToVisibilityConverter x:Key="OppositeBoolToVisibilityConverter"/>
             <local:PropValueToVisibilityConverter x:Key="PropValueToVisibilityConverter"/>
             <local:EventTypeToImageConverter x:Key="EventTypeToImageConverter"/>
             <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>

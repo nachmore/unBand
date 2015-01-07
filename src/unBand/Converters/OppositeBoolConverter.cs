@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace unBand
 {
-    class OppositeBoolConverter : IValueConverter
+    class OppositeBoolToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

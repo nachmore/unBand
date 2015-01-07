@@ -64,6 +64,12 @@ namespace unBand.Cloud
         public List<BandEventInfoSegment> Segments { get; private set; }
         public List<RunMapPoint> MapPoints { get; private set; }
 
+        /// <summary>
+        /// Calculated property which indicates whether or not any actual GPS points were
+        /// recorded on this run
+        /// </summary>
+        public bool HasGPSPoints { get; set; }
+
         public override string FriendlyEventType { get { return "Run"; } }
         public override string PrimaryMetric { get { return (TotalDistance / 100000.0).ToString("N", CultureInfo.InvariantCulture) + "km"; } }
 
@@ -130,6 +136,8 @@ namespace unBand.Cloud
                     runMapPoint.Altitude = ((double)mapData.Location.AltitudeFromMSL * 0.01);
                     runMapPoint.EHPE = ((double)mapData.Location.EHPE * 0.01);
                     runMapPoint.EVPE = ((double)mapData.Location.EVPE * 0.01);
+
+                    HasGPSPoints = true;
                 }
 
                 MapPoints.Add(runMapPoint);
@@ -138,6 +146,5 @@ namespace unBand.Cloud
                 // since it seems to be derived from the full set of data. For now, not exporting that.
             }
         }
-
     }
 }
