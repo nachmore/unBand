@@ -164,11 +164,11 @@
     </Compile>
     <Compile Include="Converters\EventTypeToImageConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Converters\OppositeBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\PropValueToVisibilityConverter.cs" />
     <Compile Include="Controls\WaitingForBand.xaml.cs">
       <DependentUpon>WaitingForBand.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\OppositeBoolConverter.cs" />
     <Compile Include="CloudHelpers\BandEventViewModel.cs" />
     <Compile Include="CloudHelpers\BandCloudManager.cs" />
     <Compile Include="CloudHelpers\CloudDataExporterSettings.cs" />
