@@ -375,6 +375,22 @@
   <ItemGroup>
     <Resource Include="assets\icons\activity_guided_workout.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\activity_details\map_gps.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\activity_details\name.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\activity_details\duration.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\activity_details\heartrate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\activity_details\calories.png" />
+    <Content Include="assets\activity_details\distance_km.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

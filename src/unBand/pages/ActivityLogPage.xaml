@@ -62,8 +62,8 @@
 
             <Grid Grid.Row="2" DataContext="{Binding Events}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="*" MaxWidth="600"></ColumnDefinition>
+                    <ColumnDefinition Width="350"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
                 <ListBox x:Name="lstEvents" Grid.Column="0" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" SelectionChanged="lstEvents_SelectionChanged">
@@ -87,14 +87,48 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <StackPanel Grid.Column="1" DataContext="{Binding /}" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}">
+                <!--<Grid Grid.Column="1" DataContext="{Binding /}" Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}">-->
+                <StackPanel Grid.Column="1">
 
-                    <TextBlock Text="{Binding Event.Name}"></TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Image Grid.Column="0" Grid.Row="0" Source="/assets/activity_details/name.png" Height="32" Width="32"/>
+                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Event.Name, TargetNullValue=&lt;No custom name&gt;}" VerticalAlignment="Center"/>
 
-                    <StackPanel Visibility="{Binding Event.EventType, Converter={StaticResource PropValueToVisibilityConverter}, ConverterParameter=Running}">
-                        <Button Click="btnExportToGPX_Click" Margin="27,0,255,0" Content="Export GPX File" Visibility="{Binding HasGPSPoints, Converter={StaticResource BoolToVisibilityConverter}}"></Button>
+                        <Image Grid.Column="0" Grid.Row="1" Source="/assets/activity_details/duration.png" Height="32" Width="32"/>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Event.Duration}" VerticalAlignment="Center"/>
+                        
+                        <Image Grid.Column="0" Grid.Row="2" Source="/assets/activity_details/calories.png" Height="32" Width="32"/>
+                        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Event.CaloriesBurned}" VerticalAlignment="Center"/>
 
-                    </StackPanel>
+                        <Image Grid.Column="0" Grid.Row="3" Source="/assets/activity_details/heartrate.png" Height="32" Width="32"/>
+                        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Event.HeartRate.Average}" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid Visibility="{Binding Event.EventType, ConverterParameter=Running, Converter={StaticResource PropValueToVisibilityConverter}}">
+
+                        <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="false">
+                            <Image Source="/assets/activity_details/map_gps.png" Height="32" Width="32" Margin="3,10,315,231"/>
+                            <TextBlock TextWrapping="Wrap" Margin="40,0,0,0"><Run Text="Your GPS was on during this run, you can export these points to a generic GPX file which can be opened or imported into a variety of other services."/></TextBlock>
+
+                            <Button Click="btnExportToGPX_Click" Content="Export GPX File" Margin="40,55,206,192"/>
+                        </Grid>
+
+                        <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource OppositeBoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true">
+                            <Image Source="/assets/activity_details/map_gps.png" Height="32" Width="32" Margin="0,0,318,241"/>
+                            <TextBlock TextWrapping="Wrap" Margin="37,6,-2,247"><Run Text="This run did not record any location points from GPS"/></TextBlock>
+                        </Grid>
+
+                    </Grid>
 
                 </StackPanel>
             </Grid>
