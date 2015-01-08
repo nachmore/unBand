@@ -180,7 +180,13 @@ namespace unBand.pages
         private void lstEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // when an Event is selected in the ListBox we need to load the full Event
-            ((BandEventViewModel)((ListBox)sender).SelectedItem).LoadFull();
+
+            var item = ((ListBox)sender).SelectedItem as BandEventViewModel;
+
+            if (item != null)
+            {
+                item.LoadFull();
+            }
         }
         private void btnExportToGPX_Click(object sender, RoutedEventArgs e)
         {
