@@ -6,7 +6,7 @@
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:BandControls="clr-namespace:unBand.Controls"
              xmlns:local="clr-namespace:unBand"
-             mc:Ignorable="d" MinWidth="762" MinHeight="433"
+             mc:Ignorable="d" MinWidth="800" MinHeight="433"
              x:Name="this">
 
     <Grid>
@@ -19,18 +19,16 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Margin="0,5,0,0" Grid.Row="0">Select your export settings below and then hit the Export button to get started.</TextBlock>
-
             <Grid Grid.Row="1" DataContext="{Binding ElementName=this}">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="550"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="0">
                     
-                    <TextBlock Margin="0,-25,0,0" TextWrapping="Wrap">You can view your events directly in this app, or export your data using the buttons below:</TextBlock>
+                    <TextBlock Margin="0,-25,0,0" TextWrapping="Wrap">You can view your events directly in this app, or export your data to a file. Choose an action below:</TextBlock>
 
                     <Button ToolTip="Display your events below" Click="btnLoadEvents_Click" Margin="0,40,150,40" Style="{DynamicResource MetroCircleButtonStyle}" BorderBrush="Black" Height="50" Width="50">
                         <Image Source="/assets/actions/load_activities.png" Height="48" Width="48"></Image>
@@ -48,7 +46,7 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
 
                     <Expander Header="Activities" ExpandDirection="Right" IsExpanded="True" Style="{StaticResource RightVerticalExpanderHeader}">
-                        <StackPanel Grid.Column="0">
+                        <StackPanel>
                             <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSteps}">Steps</CheckBox>
                             <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeSleep}">Sleep</CheckBox>
                             <CheckBox Margin="5" IsChecked="{Binding Path=ExportSettings.IncludeWorkouts}">Workouts</CheckBox>
@@ -57,15 +55,15 @@
 
                     </Expander>
 
-                    <Expander Header="Range" ExpandDirection="Right" IsExpanded="True" Style="{StaticResource RightVerticalExpanderHeader}" Width="198">
-                        <StackPanel Grid.Column="1">
+                    <Expander Header="Range" ExpandDirection="Right" IsExpanded="True" Style="{StaticResource RightVerticalExpanderHeader}">
+                        <StackPanel Width="170">
                             <TextBlock Margin="5" TextWrapping="Wrap">We're working on date ranges, but in the meanwhile you can:</TextBlock>
                             <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll, Mode=OneWay, Converter={StaticResource ReverseBoolConverter}}">Last 100 Activities</RadioButton>
                             <RadioButton Margin="5" IsChecked="{Binding Path=ExportSettings.ExportAll}">All Activities</RadioButton>
                         </StackPanel>
                     </Expander>
 
-                    <Expander Header="Options" ExpandDirection="Right" IsExpanded="True" Style="{StaticResource RightVerticalExpanderHeader}" Width="223">
+                    <Expander Header="Options" ExpandDirection="Right" IsExpanded="True" Style="{StaticResource RightVerticalExpanderHeader}">
                         <StackPanel>
                             <StackPanel Margin="5" Orientation="Horizontal">
                                 <TextBlock Height="15">Format:</TextBlock>

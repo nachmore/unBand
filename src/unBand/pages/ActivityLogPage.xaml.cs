@@ -94,7 +94,9 @@ namespace unBand.pages
 
         void Instance_AuthenticationCompleted()
         {
-            BandCloudManager.Instance.LoadEvents(10);
+            // BUG #19: When loading events has less impact on the UI / a smooth loading indicator 
+            //          reenable this code
+            //BandCloudManager.Instance.LoadEvents(10);
         }
 
         private void LoadExportSettings()
