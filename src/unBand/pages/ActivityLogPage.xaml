@@ -38,7 +38,7 @@
                         <Image Source="/assets/actions/export_summary.png" Height="48" Width="48"></Image>
                     </Button>
 
-                    <Button ToolTip="Export all of the data from all of the events that match your selection settings" Margin="70,40,0,40" Style="{DynamicResource MetroCircleButtonStyle}" BorderBrush="Black" Height="50" Width="50" >
+                    <Button ToolTip="Export all of the data from all of the events that match your selection settings" Margin="70,40,0,40" Click="btnExportAll_Click" Style="{DynamicResource MetroCircleButtonStyle}" BorderBrush="Black" Height="50" Width="50" >
                         <Image Source="/assets/actions/export_full.png" Height="48" Width="48"></Image>
                     </Button>
                 </Grid>
@@ -143,7 +143,7 @@
 
                         <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource OppositeBoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true">
                             <Image Source="/assets/activity_details/map_gps.png" Height="32" Width="32" Margin="0,0,318,241"/>
-                            <TextBlock TextWrapping="Wrap" Margin="37,6,-2,247"><Run Text="This run did not record any GPS location points"/></TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="37,6,-2,247"><Run Text="No GPS location points recorded during this run"/></TextBlock>
                         </Grid>
 
                     </Grid>

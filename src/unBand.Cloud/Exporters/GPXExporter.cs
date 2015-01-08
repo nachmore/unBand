@@ -11,6 +11,9 @@ namespace unBand.Cloud.Exporters
 {
     public static class GPXExporter
     {
+        // TODO: this entire class needs to be cleaned up with an exporters refactor
+        public const string DefaultExtension = ".gpx";
+
         public static void ExportToFile(BandEventBase eventBase, string filePath)
         {
             if (!(eventBase is RunEvent))

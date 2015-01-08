@@ -194,8 +194,23 @@ namespace unBand.pages
 
             if (runEvent != null)
             {
-                GPXExporter.ExportToFile(runEvent, @"c:\temp\out.gpx");
+                var saveDialog = new SaveFileDialog();
+                saveDialog.AddExtension = true;
+                saveDialog.FileName = "run_" + runEvent.EventID + ".gpx"; // TODO: better auto-generated name?
+                saveDialog.DefaultExt = GPXExporter.DefaultExtension;
+
+                var result = saveDialog.ShowDialog();
+
+                if (result == true)
+                {
+                    GPXExporter.ExportToFile(runEvent, saveDialog.FileName);
+                }
             }
+        }
+
+        private void btnExportAll_Click(object sender, RoutedEventArgs e)
+        {
+            ((MetroWindow)(Window.GetWindow(this))).ShowMessageAsync("Coming Soon", "Stay tuned...");
         }
 
         #region INotifyPropertyChanged
