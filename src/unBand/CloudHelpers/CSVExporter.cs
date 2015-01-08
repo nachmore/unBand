@@ -39,13 +39,43 @@ namespace unBand.CloudHelpers
 
         private string PrepareValue(object value)
         {
+            string rv;
+
             if (value is DateTime && Settings.ConvertDateTimeToLocal) 
             {
                 var dt = (DateTime)value;
-                return dt.ToLocalTime().ToString();
-            } 
+                rv = dt.ToLocalTime().ToString();
+            }
+            else
+            {
+                rv = (value == null ? "" : value.ToString());
+            }
 
-            return (value == null ? "" : value.ToString());
+            rv = CSVEscape(rv);
+
+            return rv;
         }
+
+        #region Handle Commas
+
+        // From: http://stackoverflow.com/questions/769621/dealing-with-commas-in-a-csv-file
+
+        private const string QUOTE = "\"";
+        private const string ESCAPED_QUOTE = "\"\"";
+        private static char[] CHARACTERS_THAT_MUST_BE_QUOTED = { ',', '"', '\n' };
+
+        private string CSVEscape(string field)
+        {
+            if (field.Contains(QUOTE))
+                field = field.Replace(QUOTE, ESCAPED_QUOTE);
+
+            if (field.IndexOfAny(CHARACTERS_THAT_MUST_BE_QUOTED) > -1)
+                field = QUOTE + field + QUOTE;
+
+            return field;
+        }
+        
+        #endregion
+
     }
 }
