@@ -5,11 +5,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using unBand.Cloud.Exporters.EventExporters;
 
 namespace unBand.Cloud
 {
     public abstract class BandEventBase
     {
+        public virtual List<IEventExporter> Exporters { get { return new List<IEventExporter>() { }; } }
+
         public abstract BandEventExpandType[] Expanders { get; }
 
         // calculated properties

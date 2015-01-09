@@ -23,7 +23,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using unBand.BandHelpers;
 using unBand.Cloud;
-using unBand.Cloud.Exporters;
+using unBand.Cloud.Exporters.EventExporters;
 using unBand.CloudHelpers;
 
 namespace unBand.pages
@@ -194,16 +194,18 @@ namespace unBand.pages
 
             if (runEvent != null)
             {
+                var exporter = GPXExporter.Instance;
+
                 var saveDialog = new SaveFileDialog();
                 saveDialog.AddExtension = true;
                 saveDialog.FileName = "run_" + runEvent.EventID + ".gpx"; // TODO: better auto-generated name?
-                saveDialog.DefaultExt = GPXExporter.DefaultExtension;
+                saveDialog.DefaultExt = exporter.DefaultExtension;
 
                 var result = saveDialog.ShowDialog();
 
                 if (result == true)
                 {
-                    GPXExporter.ExportToFile(runEvent, saveDialog.FileName);
+                    exporter.ExportToFile(runEvent, saveDialog.FileName);
                 }
             }
         }
