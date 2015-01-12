@@ -101,7 +101,7 @@ namespace unBand.pages
 
         private void LoadExportSettings()
         {
-            ExportSettings = (Settings.Current.ExportSettings ?? Settings.Current.ExportSettings);
+            ExportSettings = (Settings.Current.ExportSettings ?? new CloudDataExporterSettings());
         }
 
         private void SaveExportSettings()
@@ -177,7 +177,7 @@ namespace unBand.pages
             await BandCloudManager.Instance.LoadEvents(ExportSettings.ExportAll ? 1000000 : 100);
         }
 
-        private void lstEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void lstEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // when an Event is selected in the ListBox we need to load the full Event
 
@@ -185,7 +185,7 @@ namespace unBand.pages
 
             if (item != null)
             {
-                item.LoadFull();
+                await item.LoadFull();
             }
         }
         private void btnExportToGPX_Click(object sender, RoutedEventArgs e)
