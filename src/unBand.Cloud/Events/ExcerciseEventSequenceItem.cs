@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace unBand.Cloud
 {
+    public enum ExcerciseEventSequenceType
+    {
+        Workout,
+        GuidedWorkout,
+        Running,
+    }
+
     public class ExcerciseEventSequenceItem : EventBaseSequenceItem
     {
         public ExcerciseEventSequenceType SequenceType { get; internal set; }

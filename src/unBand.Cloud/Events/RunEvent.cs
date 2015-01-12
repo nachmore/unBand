@@ -11,14 +11,6 @@ using unBand.Cloud.Exporters.EventExporters;
 
 namespace unBand.Cloud
 {
-    public enum ExcerciseEventSequenceType
-    {
-        Workout,
-        GuidedWorkout,
-        Running,
-    }
-
-
     // for now this looks to be a superset of ExcerciseEventSequenceItem. If it diverges significantly
     // then we'll need to split ExcerciseEventSequenceItem back into a Base abstract class.
     public class RunEventSequenceItem : ExcerciseEventSequenceItem
