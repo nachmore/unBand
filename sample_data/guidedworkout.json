@@ -1,0 +1,89 @@
+{
+  "odata.metadata": "https://prodphswus.dns-cargo.com/v1/$metadata#Events",
+  "value": [
+    {
+      "odata.type": "Microsoft.Khronos.Cloud.Ods.Data.Entities.UserWorkoutEventDTO",
+      "Info": [
+        {
+          "TimeOfDay": "2014-11-26T19:07:00Z",
+          "DayClassification": "None",
+          "ActivityLevel": "Inactive",
+          "StepsTaken": 0,
+          "CaloriesBurned": 0,
+          "UvExposure": 0,
+          "Location": null,
+          "PeakHeartRate": 0,
+          "LowestHeartRate": 0,
+          "AverageHeartRate": 0,
+          "TotalDistance": "0",
+          "ItCal": 0
+        }
+      ],
+      "Sequences": [
+        {
+          "odata.type": "Microsoft.Khronos.Cloud.Ods.Data.Entities.ExerciseEventSequenceDTO",
+          "SequenceId": "635526256529601075",
+          "StartTime": "2014-11-26T19:07:32.9601075Z",
+          "SequenceType": "Workout",
+          "Duration": 15,
+          "CaloriesBurned": 1,
+          "LocationBlob": "00000000-0000-0000-0000-000000000000",
+          "Order": 1,
+          "AverageHeartRate": 0,
+          "LowestHeartRate": 0,
+          "PeakHeartRate": 0,
+          "CaloriesFromCarbs": 0,
+          "CaloriesFromFat": 1,
+          "StressBalance": 50.0,
+          "MaximalV02": 0.0,
+          "TrainingEffect": 1.0,
+          "AnalysisStatus": "Successful",
+          "HRZoneClassification": null,
+          "HeartRateZones": {
+            "Under": 1,
+            "Aerobic": 0,
+            "Anaerobic": 0,
+            "FitnessZone": 0,
+            "HealthyHeart": 0,
+            "RedLine": 0,
+            "Over": 0
+          }
+        }
+      ],
+      "EventId": "2519852719470398924",
+      "Duration": 14,
+      "ParentEventId": "0",
+      "Name": null,
+      "DeliveryID": 0,
+      "EventType": "Workout",
+      "StartTime": "2014-11-26T19:07:32.9601075Z",
+      "CaloriesBurned": 1,
+      "DayId": "2014-11-26T00:00:00Z",
+      "Feeling": "Unknown",
+      "AverageHeartRate": 0,
+      "LowestHeartRate": 0,
+      "PeakHeartRate": 0,
+      "Flags": 1,
+      "AnalysisStatus": "Successful",
+      "CaloriesFromCarbs": 0,
+      "CaloriesFromFat": 1,
+      "StressBalance": 50.0,
+      "MaximalVO2": 0.0,
+      "TrainingEffect": 1.0,
+      "HeartRateZones": {
+        "Under": 1,
+        "Aerobic": 0,
+        "Anaerobic": 0,
+        "FitnessZone": 0,
+        "HealthyHeart": 0,
+        "RedLine": 0,
+        "Over": 0
+      },
+      "FinishHeartRate": 0,
+      "RecoveryHeartRate1Minute": 0,
+      "RecoveryHeartRate2Minute": 0,
+      "RecoveryTime": 240,
+      "PausedTime": 0
+    }
+  ]
+}
