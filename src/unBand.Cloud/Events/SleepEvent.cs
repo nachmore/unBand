@@ -22,6 +22,39 @@ namespace unBand.Cloud
         }
     }
 
+    public enum SleepEventSequenceType 
+    {
+        Dozing,
+        Sleep,
+        Awake,
+        Snoozing
+    }
+
+    public enum SleepType 
+    {
+        Unknown,
+        RestlessSleep,
+        RestfulSleep,
+    }
+
+    public class SleepEventSequenceItem : EventBaseSequenceItem
+    {
+        public SleepEventSequenceType SequenceType { get; private set; }
+        public int SleepTime { get; private set; }
+        public DateTime DayId { get; private set; }
+        public SleepType SleepType { get; private set; }
+
+        public SleepEventSequenceItem(JObject json) : base(json)
+        {
+            dynamic rawSequence = (dynamic)json;
+            
+            SequenceType = rawSequence.SequenceType;
+            SleepTime = rawSequence.SleepTime;
+            DayId = rawSequence.DayId;
+            SleepType = rawSequence.SleepType;
+        }
+    }
+
     [TypeConverter(typeof(SleepEventConverter))]
     public class SleepEvent : BandEventBase
     {
@@ -38,7 +71,7 @@ namespace unBand.Cloud
             get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences }; }
         }
 
-        public List<BandEventInfoSegment> Segments { get; private set; }
+        public List<BandEventInfoItem> Segments { get; private set; }
 
         public override string FriendlyEventType { get { return "Sleep"; } }
         public override string PrimaryMetric { 
@@ -52,7 +85,7 @@ namespace unBand.Cloud
         public SleepEvent(JObject json)
             : base(json)
         {
-            Segments = new List<BandEventInfoSegment>();
+            Segments = new List<BandEventInfoItem>();
             
             dynamic eventSummary = (dynamic)json;
 
@@ -81,7 +114,14 @@ namespace unBand.Cloud
 
         public override void InitFullEventData(JObject json)
         {
-            dynamic fullData = (dynamic)json;
+            base.InitFullEventData(json);
+
+            dynamic fullEvent = (dynamic)json;
+
+            foreach (dynamic sequenceData in fullEvent.value[0].Sequences)
+            {
+                Sequences.Add(new SleepEventSequenceItem(sequenceData));
+            }
         }
     }
 }

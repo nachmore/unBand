@@ -11,6 +11,52 @@ using unBand.Cloud.Exporters.EventExporters;
 
 namespace unBand.Cloud
 {
+    public enum RunEventSequenceType
+    {
+        Running,
+    }
+
+    public abstract class ExcerciseEventBaseSequenceItem : EventBaseSequenceItem
+    {
+        public ExcerciseEventBaseSequenceItem(JObject json)
+            : base(json)
+        {
+            // TODO: move common excercise items from RunEvent to here and then split this out to its own file
+        }
+    }
+
+    public class RunEventSequenceItem : ExcerciseEventBaseSequenceItem
+    {
+        public RunEventSequenceType SequenceType { get; private set; }
+        public int CaloriesFromCarbs { get; private set; }
+        public int CaloriesFromFat { get; private set; }
+        public int StressBalance { get; private set; }
+        public int MaximalV02 { get; private set; }
+        public int TotalDistance { get; private set; }
+        public int SplitDistance { get; private set; }
+        public int SplitPace { get; private set; }
+        public int OverallPace { get; private set; }
+        public int ActualDistance { get; private set; }
+        public int PausedTime { get; private set; }
+        
+        public RunEventSequenceItem(JObject json) : base(json)
+        {
+            dynamic rawSequence = (dynamic)json;
+
+            SequenceType = rawSequence.SequenceType;
+            CaloriesFromCarbs = rawSequence.CaloriesFromCarbs;
+            CaloriesFromFat = rawSequence.CaloriesFromFat;
+            StressBalance = rawSequence.StressBalance;
+            MaximalV02 = rawSequence.MaximalV02;
+            TotalDistance = rawSequence.TotalDistance;
+            SplitDistance = rawSequence.SplitDistance;
+            SplitPace = rawSequence.SplitPace;
+            OverallPace = rawSequence.OverallPace;
+            ActualDistance = rawSequence.ActualDistance;
+            PausedTime = rawSequence.PausedTime;
+        }
+    }
+
     public class RunMapPoint
     {
         public string Type { get; set; }
@@ -79,7 +125,6 @@ namespace unBand.Cloud
             get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences, BandEventExpandType.MapPoints }; }
         }
 
-        public List<BandEventInfoSegment> Segments { get; private set; }
         public List<RunMapPoint> MapPoints { get; private set; }
 
         /// <summary>
@@ -98,7 +143,6 @@ namespace unBand.Cloud
 
         public RunEvent(JObject json) : base(json)
         {
-            Segments = new List<BandEventInfoSegment>();
             MapPoints = new List<RunMapPoint>();
             
             dynamic eventSummary = (dynamic)json;
@@ -123,12 +167,13 @@ namespace unBand.Cloud
 
         public override void InitFullEventData(JObject json)
         {
+            base.InitFullEventData(json);
+
             dynamic fullEvent = (dynamic)json;
 
-            // parse out the "Info" section
-            foreach (dynamic infoData in fullEvent.value[0].Info)
+            foreach (dynamic sequenceData in fullEvent.value[0].Sequences)
             {
-                Segments.Add(new BandEventInfoSegment(infoData));
+                Sequences.Add(new RunEventSequenceItem(sequenceData));
             }
 
             // parse out map points
@@ -159,9 +204,6 @@ namespace unBand.Cloud
                 }
 
                 MapPoints.Add(runMapPoint);
-
-                // Potential TODO: There is also a .Sequences array in the JSON, though I haven't found much use for it
-                // since it seems to be derived from the full set of data. For now, not exporting that.
             }
         }
     }

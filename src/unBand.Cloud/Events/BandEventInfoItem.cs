@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace unBand.Cloud
 {
-    public class BandEventInfoSegment
+    public class BandEventInfoItem
     {
         public DateTime TimeOfDay { get; set; }
         public string DayClassification { get; set; }
@@ -22,7 +22,7 @@ namespace unBand.Cloud
         public string TotalDistance { get; set; } // unclear why this is a string, but it is defined as a string in the JSON
         public int ItCal { get; set; }
 
-        public BandEventInfoSegment(JObject jsonEvent)
+        public BandEventInfoItem(JObject jsonEvent)
         {
             dynamic rawEvent = (dynamic)jsonEvent;
 

@@ -9,6 +9,29 @@ using unBand.Cloud.Exporters.EventExporters;
 
 namespace unBand.Cloud
 {
+    public abstract class EventBaseSequenceItem
+    {
+        public long SequenceId { get; internal set; }
+        public DateTime StartTime { get; internal set; }
+        public int CaloriesBurned { get; internal set; }
+        public int Order { get; internal set; }
+        public HeartRateSummary HeartRate { get; internal set; }
+        public int Duration { get; internal set; }
+
+        public EventBaseSequenceItem(JObject json)
+        {
+            dynamic rawSequence = (dynamic)json;
+
+            SequenceId = rawSequence.SequenceId;
+            StartTime = rawSequence.StartTime; // TODO: DateTime needs to be adjusted per export settings
+            CaloriesBurned = rawSequence.CaloriesBurned;
+            Duration = rawSequence.Duration;
+            Order = rawSequence.Order;
+
+            HeartRate = new HeartRateSummary((int)rawSequence.AverageHeartRate, (int)rawSequence.LowestHeartRate, (int)rawSequence.PeakHeartRate);
+        }
+    }
+
     public abstract class BandEventBase
     {
         public virtual List<IEventExporter> Exporters { get { return new List<IEventExporter>() { }; } }
@@ -44,6 +67,9 @@ namespace unBand.Cloud
         }
 
         // common Properties
+        public List<BandEventInfoItem> Segments { get; private set; }
+        public List<EventBaseSequenceItem> Sequences { get; private set; }
+
         public string EventID { get; set; }
         public string Duration { get; set; }
         public string ParentEventId { get; set; }
@@ -73,6 +99,9 @@ namespace unBand.Cloud
             Feeling        = eventSummary.Feeling;
             HeartRate      = new HeartRateSummary((int)eventSummary.AverageHeartRate, (int)eventSummary.LowestHeartRate, (int)eventSummary.PeakHeartRate);
             Flags          = eventSummary.Flags;
+
+            Segments = new List<BandEventInfoItem>();
+            Sequences = new List<EventBaseSequenceItem>();
         }
 
         private static Dictionary<string, Type> _knownEventTypes = new Dictionary<string, Type>()
@@ -97,7 +126,16 @@ namespace unBand.Cloud
             return converter.ConvertFrom(rawBandEvent);
         }
 
-        public abstract void InitFullEventData(JObject json);
+        public virtual void InitFullEventData(JObject json)
+        {
+            dynamic fullEvent = (dynamic)json;
+
+            // parse out the "Info" section
+            foreach (dynamic infoData in fullEvent.value[0].Info)
+            {
+                Segments.Add(new BandEventInfoItem(infoData));
+            }
+        }
 
         /// <summary>
         /// Returns a Dictionary with the raw field-value for this object

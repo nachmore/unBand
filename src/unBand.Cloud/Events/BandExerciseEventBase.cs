@@ -24,7 +24,7 @@ namespace unBand.Cloud
         public BandExerciseEventBase(JObject json) : base(json)
         {
             dynamic eventSummary = (dynamic)json;
-
+            
             AnalysisStatus    = eventSummary.AnalysisStatus;
             CaloriesFromCarbs = eventSummary.CaloriesFromCarbs;
             CaloriesFromFat   = eventSummary.CaloriesFromFat;
