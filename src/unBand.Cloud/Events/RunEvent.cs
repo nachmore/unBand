@@ -11,27 +11,18 @@ using unBand.Cloud.Exporters.EventExporters;
 
 namespace unBand.Cloud
 {
-    public enum RunEventSequenceType
+    public enum ExcerciseEventSequenceType
     {
+        Workout,
+        GuidedWorkout,
         Running,
     }
 
-    public abstract class ExcerciseEventBaseSequenceItem : EventBaseSequenceItem
-    {
-        public ExcerciseEventBaseSequenceItem(JObject json)
-            : base(json)
-        {
-            // TODO: move common excercise items from RunEvent to here and then split this out to its own file
-        }
-    }
 
-    public class RunEventSequenceItem : ExcerciseEventBaseSequenceItem
+    // for now this looks to be a superset of ExcerciseEventSequenceItem. If it diverges significantly
+    // then we'll need to split ExcerciseEventSequenceItem back into a Base abstract class.
+    public class RunEventSequenceItem : ExcerciseEventSequenceItem
     {
-        public RunEventSequenceType SequenceType { get; private set; }
-        public int CaloriesFromCarbs { get; private set; }
-        public int CaloriesFromFat { get; private set; }
-        public int StressBalance { get; private set; }
-        public int MaximalV02 { get; private set; }
         public int TotalDistance { get; private set; }
         public int SplitDistance { get; private set; }
         public int SplitPace { get; private set; }
@@ -43,11 +34,6 @@ namespace unBand.Cloud
         {
             dynamic rawSequence = (dynamic)json;
 
-            SequenceType = rawSequence.SequenceType;
-            CaloriesFromCarbs = rawSequence.CaloriesFromCarbs;
-            CaloriesFromFat = rawSequence.CaloriesFromFat;
-            StressBalance = rawSequence.StressBalance;
-            MaximalV02 = rawSequence.MaximalV02;
             TotalDistance = rawSequence.TotalDistance;
             SplitDistance = rawSequence.SplitDistance;
             SplitPace = rawSequence.SplitPace;

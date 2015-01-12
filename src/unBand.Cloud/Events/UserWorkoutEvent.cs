@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace unBand.Cloud
 {
-    public class UserWorkoutInfoSegment
-    {
-    }
+    //public class UserWorkoutEventSequenceItem : ExcerciseEventBaseSequenceItem
+    //{
+
+    //}
 
     public class UserWorkoutEventConverter : TypeConverter 
     {
@@ -34,14 +35,10 @@ namespace unBand.Cloud
             get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences }; }
         }
 
-        public List<UserWorkoutInfoSegment> Segments { get; private set; }
-
         public override string FriendlyEventType { get { return "User Workout"; } }
 
         public UserWorkoutEvent(JObject json) : base(json)
         {
-            Segments = new List<UserWorkoutInfoSegment>();
-
             dynamic eventSummary = (dynamic)json;
         }
 
@@ -52,7 +49,14 @@ namespace unBand.Cloud
 
         public override void InitFullEventData(JObject json)
         {
-            throw new NotImplementedException();
+            base.InitFullEventData(json);
+
+            dynamic fullEvent = (dynamic)json;
+
+            foreach (dynamic sequenceData in fullEvent.value[0].Sequences)
+            {
+                Sequences.Add(new ExcerciseEventSequenceItem(sequenceData));
+            }
         }
     }
 }

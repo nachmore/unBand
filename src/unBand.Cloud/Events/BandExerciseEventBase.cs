@@ -49,6 +49,9 @@ namespace unBand.Cloud
             HeartRate.Zones.Over         = zones.Over;
         }
 
+        // NOTE: We don't override InitFullData since the main processing done there is 
+        //       Sequences which differs slightly between guided / user workouts and runs
+
         public override Dictionary<string, object> DumpBasicEventData()
         {
             var rv = new Dictionary<string, object>(base.DumpBasicEventData());

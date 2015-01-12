@@ -53,6 +53,7 @@
     <Compile Include="Events\BandEventInfoItem.cs" />
     <Compile Include="Events\BandExerciseEventBase.cs" />
     <Compile Include="Events\BandEventBase.cs" />
+    <Compile Include="Events\ExcerciseEventSequenceItem.cs" />
     <Compile Include="Events\UserWorkoutEvent.cs" />
     <Compile Include="Events\UserGuidedWorkoutEvent.cs" />
     <Compile Include="Events\RunEvent.cs" />

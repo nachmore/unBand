@@ -52,7 +52,14 @@ namespace unBand.Cloud
 
         public override void InitFullEventData(JObject json)
         {
-            throw new NotImplementedException();
+            base.InitFullEventData(json);
+
+            dynamic fullEvent = (dynamic)json;
+
+            foreach (dynamic sequenceData in fullEvent.value[0].Sequences)
+            {
+                Sequences.Add(new ExcerciseEventSequenceItem(sequenceData));
+            }
         }
     }
 }
