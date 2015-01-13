@@ -9,7 +9,7 @@ namespace unBand.Cloud.Exporters.EventExporters.Helpers
 {
     public static class CSVExporter
     {
-        public static void ExportToFile(List<Dictionary<string, object>> data, string filename, bool convertDateTimeToLocal = true)
+        public static void ExportToFile(List<Dictionary<string, object>> data, string filePath, bool convertDateTimeToLocal = true)
         {
             var sb = new StringBuilder(500000);
             var fields = GetUnifiedFields(data);
@@ -32,7 +32,7 @@ namespace unBand.Cloud.Exporters.EventExporters.Helpers
                 sb.Append("\n");
             }
 
-            File.WriteAllText(filename, sb.ToString());
+            File.WriteAllText(filePath, sb.ToString());
         }
 
         private static string PrepareValue(object value, bool convertDateTimeToLocal)

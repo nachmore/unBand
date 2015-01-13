@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using unBand.Cloud.Exporters.EventExporters.Helpers;
 
 namespace unBand.Cloud.Exporters.EventExporters
 {
@@ -37,24 +38,30 @@ namespace unBand.Cloud.Exporters.EventExporters
 
         public async Task ExportToFile(BandEventBase eventBase, string filePath)
         {
-            var sleepEvent = eventBase as SleepEvent;
-
-            if (!(eventBase is RunEvent))
-            {
-                throw new ArgumentException("eventBase must be of type SleepEvent to use the SleepToCSVExporter");
-            }
-
             await Task.Run(() =>
             {
                 var dataDump = new List<Dictionary<string, object>>();
 
-                foreach (var info in sleepEvent.InfoSegments)
+                foreach (var info in eventBase.InfoSegments)
                 {
                     dataDump.Add(new Dictionary<string, object>()
                     {
-
+                        {"Time of Day", info.TimeOfDay},
+                        {"Day Classification", info.DayClassification},
+                        {"Activity Level", info.ActivityLevel},
+                        {"Steps Taken", info.StepsTaken},
+                        {"Calories Burned", info.CaloriesBurned},
+                        {"UV Exposure", info.UvExposure},
+                        {"Location", info.Location},
+                        {"Peak Heart Rate", info.HeartRate.Peak},
+                        {"Average Heart Rate", info.HeartRate.Average},
+                        {"Lowest Heart Rate", info.HeartRate.Lowest},
+                        {"Total Distance", info.TotalDistance},
+                        {"It Cal", info.ItCal}
                     });
                 }
+
+                CSVExporter.ExportToFile(dataDump, filePath);
             });
         }
     }

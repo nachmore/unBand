@@ -34,7 +34,7 @@ namespace unBand.Cloud
 
     public abstract class BandEventBase
     {
-        public virtual List<IEventExporter> Exporters { get { return new List<IEventExporter>() { }; } }
+        public virtual List<IEventExporter> Exporters { get { return new List<IEventExporter>() { EventInfoToCSVExporter.Instance }; } }
 
         public abstract BandEventExpandType[] Expanders { get; }
 

@@ -16,9 +16,7 @@ namespace unBand.Cloud
         public int CaloriesBurned { get; set; }
         public int UvExposure { get; set; }
         public object Location { get; set; }
-        public int PeakHeartRate { get; set; }
-        public int LowestHeartRate { get; set; }
-        public int AverageHeartRate { get; set; }
+        public HeartRateSummary HeartRate { get; set; }
         public string TotalDistance { get; set; } // unclear why this is a string, but it is defined as a string in the JSON
         public int ItCal { get; set; }
 
@@ -33,9 +31,9 @@ namespace unBand.Cloud
             CaloriesBurned    = rawEvent.CaloriesBurned;
             UvExposure        = rawEvent.UvExposure;
             Location          = rawEvent.Location; // always seem to be null? If this ever shows up, will have to parse it properly
-            PeakHeartRate     = rawEvent.PeakHeartRate;
-            LowestHeartRate   = rawEvent.LowestHeartRate;
-            AverageHeartRate  = rawEvent.AverageHeartRate;
+
+            HeartRate = new HeartRateSummary((int)rawEvent.AverageHeartRate, (int)rawEvent.LowestHeartRate, (int)rawEvent.PeakHeartRate);
+
             TotalDistance     = rawEvent.TotalDistance;
             ItCal             = rawEvent.ItCal;
         }
