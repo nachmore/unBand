@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Shapes;
 using unBand.Cloud;
 
 namespace unBand.CloudHelpers
@@ -177,6 +178,38 @@ namespace unBand.CloudHelpers
 
             //TODO: dump data
             System.Diagnostics.Debug.WriteLine(dataToDump.Count);
+        }
+
+        /// <summary>
+        /// Make sure to call LoadEvents() first, this will then dump everything in Events
+        /// </summary>
+        public async Task ExportFullEventData(string folder, CloudDataExporterSettings settings) 
+        {
+            // TODO: there is a limit to how quickly we can hit the service. This limit should be enforced at 
+            //       a global level
+            var count = 1;
+
+            foreach (var eventViewModel in Events)
+            {
+                System.Diagnostics.Debug.WriteLine("loading " + count);
+
+                await eventViewModel.LoadFull();
+
+                var bandEvent = eventViewModel.Event;
+
+                foreach (var exporter in bandEvent.Exporters)
+                {
+                    var dateTime = (settings.ConvertDateTimeToLocal ? bandEvent.StartTime.ToLocalTime() : bandEvent.StartTime);
+                    var filePath = System.IO.Path.Combine(folder, bandEvent.FriendlyEventType + "_" + dateTime.ToString("yyyyMMdd_hhmm") + "_" + exporter.DefaultExportSuffix + exporter.DefaultExtension);
+
+                    // export in the background, no await
+                    exporter.ExportToFile(bandEvent, filePath);
+                }
+
+                // we are restricted to loading an event / 10 seconds (approximately). See https://github.com/nachmore/unBand/issues/20
+                // for more details
+                await Task.Delay(10000);
+            }
         }
 
         #region INotifyPropertyChanged

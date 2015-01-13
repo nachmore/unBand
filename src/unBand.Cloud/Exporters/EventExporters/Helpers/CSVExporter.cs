@@ -5,13 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace unBand.CloudHelpers
+namespace unBand.Cloud.Exporters.EventExporters.Helpers
 {
-    public class CSVExporter : CloudDataExporter
+    public static class CSVExporter
     {
-        public override string DefaultExt { get { return ".csv"; } }
-
-        public override void ExportToFile(List<Dictionary<string, object>> data, string filename)
+        public static void ExportToFile(List<Dictionary<string, object>> data, string filename, bool convertDateTimeToLocal = true)
         {
             var sb = new StringBuilder(500000);
             var fields = GetUnifiedFields(data);
@@ -26,7 +24,7 @@ namespace unBand.CloudHelpers
                 {
                     if (item.Keys.Contains(field))
                     {
-                        sb.Append(PrepareValue(item[field]));
+                        sb.Append(PrepareValue(item[field], convertDateTimeToLocal));
                     }
 
                     sb.Append(",");
@@ -37,11 +35,11 @@ namespace unBand.CloudHelpers
             File.WriteAllText(filename, sb.ToString());
         }
 
-        private string PrepareValue(object value)
+        private static string PrepareValue(object value, bool convertDateTimeToLocal)
         {
             string rv;
 
-            if (value is DateTime && Settings.ConvertDateTimeToLocal) 
+            if (value is DateTime && convertDateTimeToLocal) 
             {
                 var dt = (DateTime)value;
                 rv = dt.ToLocalTime().ToString();
@@ -56,6 +54,24 @@ namespace unBand.CloudHelpers
             return rv;
         }
 
+        /// <summary>
+        /// Returns a list of the unique fields across all items in the dictionary.
+        /// 
+        /// This is useful when dumping different event types as there will be a common set of fields
+        /// but also some unique fields per event type that only need to be filled out for that event
+        /// (so we need to add blanks in the correct spots)
+        /// </summary>
+        /// <param name="data"></param>
+        private static List<string> GetUnifiedFields(List<Dictionary<string, object>> data)
+        {
+            // and this, my friends, is why I'm not the biggest linq fan. Essentially this:
+            // 1. selects all keys
+            // 2. flattens all of them
+            // 3. Gets all of the unique items
+            // 4. grabs all of the keys from the unique grouping
+            return data.Select(d => d.Keys).SelectMany(d => d).GroupBy(d => d).Select(d => d.Key).ToList();
+        }
+
         #region Handle Commas
 
         // From: http://stackoverflow.com/questions/769621/dealing-with-commas-in-a-csv-file
@@ -64,7 +80,7 @@ namespace unBand.CloudHelpers
         private const string ESCAPED_QUOTE = "\"\"";
         private static char[] CHARACTERS_THAT_MUST_BE_QUOTED = { ',', '"', '\n' };
 
-        private string CSVEscape(string field)
+        private static string CSVEscape(string field)
         {
             if (field.Contains(QUOTE))
                 field = field.Replace(QUOTE, ESCAPED_QUOTE);

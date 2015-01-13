@@ -4,6 +4,7 @@ using Microsoft.Cargo.Client;
 using Microsoft.Live;
 using Microsoft.Live.Desktop;
 using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,13 +38,11 @@ namespace unBand.pages
         private BandManager _band;
         ProgressDialogController _progressDialog;
 
-        public List<BandEventBase> Events { get; set; }
-
         public Dictionary<string, CloudDataExporter> Exporters { get { return _exporters; } }
 
         private Dictionary<string, CloudDataExporter> _exporters = new Dictionary<string, CloudDataExporter>()
         {
-            {"CSV", new CSVExporter()},
+            {"CSV", null},
             {"Excel", null}
         };
 
@@ -174,6 +173,11 @@ namespace unBand.pages
         {
             SaveExportSettings();
 
+            await LoadEvents();
+        }
+
+        private async Task LoadEvents() 
+        {
             await BandCloudManager.Instance.LoadEvents(ExportSettings.ExportAll ? 1000000 : 100);
         }
 
@@ -210,9 +214,30 @@ namespace unBand.pages
             }
         }
 
-        private void btnExportAll_Click(object sender, RoutedEventArgs e)
+        private async void btnExportAll_Click(object sender, RoutedEventArgs e)
         {
-            ((MetroWindow)(Window.GetWindow(this))).ShowMessageAsync("Coming Soon", "Stay tuned...");
+            var folderDialog = new CommonOpenFileDialog();
+            folderDialog.Title = "Where should I save your data?";
+            folderDialog.IsFolderPicker   = true;
+            folderDialog.EnsureFileExists = true;
+            folderDialog.EnsurePathExists = true;
+            folderDialog.EnsureValidNames = true;
+            folderDialog.EnsureReadOnly   = false;
+            folderDialog.Multiselect      = false;
+            folderDialog.ShowPlacesList   = true;
+
+            if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                var folder = folderDialog.FileName;
+
+                BandCloudManager.Instance.Events.Clear();
+
+                await LoadEvents();
+
+                // TODO: progress reporter
+                await BandCloudManager.Instance.ExportFullEventData(folder, ExportSettings);
+            }
+            
         }
 
         #region INotifyPropertyChanged

@@ -14,6 +14,7 @@ namespace unBand.Cloud.Exporters.EventExporters
     public interface IEventExporter
     {
         string DefaultExtension { get; }
+        string DefaultExportSuffix { get; }
 
         Task ExportToFile(BandEventBase eventBase, string filePath);
     }

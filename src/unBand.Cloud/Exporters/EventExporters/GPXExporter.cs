@@ -34,17 +34,25 @@ namespace unBand.Cloud.Exporters.EventExporters
 
 
         public string DefaultExtension { get { return ".gpx"; } }
-
+        public string DefaultExportSuffix { get { return "map"; } }
+        
         public async Task ExportToFile(BandEventBase eventBase, string filePath)
         {
+            if (!(eventBase is RunEvent))
+            {
+                throw new ArgumentException("eventBase must be of type RunEvent to use the GPXExporter");
+            }
+
+            var runEvent = eventBase as RunEvent;
+
+            if (!runEvent.HasGPSPoints)
+            {
+                // nothing to do here, no point in piping out an empty file
+                return;
+            }
+
             await Task.Run(() =>
             {
-                if (!(eventBase is RunEvent))
-                {
-                    throw new ArgumentException("eventBase must be of type RunEvent to use the GPXExporter");
-                }
-
-                var runEvent = eventBase as RunEvent;
 
                 var gpxtpx = XNamespace.Get("http://www.garmin.com/xmlschemas/TrackPointExtension/v1");
                 var gpxx = XNamespace.Get("http://www.garmin.com/xmlschemas/GpxExtensions/v3");

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using unBand.Cloud.Exporters.EventExporters;
 
 namespace unBand.Cloud
 {
@@ -58,6 +59,27 @@ namespace unBand.Cloud
     [TypeConverter(typeof(SleepEventConverter))]
     public class SleepEvent : BandEventBase
     {
+        private static List<IEventExporter> _exporters;
+
+        public override List<IEventExporter> Exporters
+        {
+            get
+            {
+                if (_exporters == null)
+                {
+                    _exporters = new List<IEventExporter>() { SleepSequencesToCSVExporter.Instance };
+                    _exporters.AddRange(base.Exporters);
+                }
+
+                return _exporters;
+            }
+        }
+
+        public override BandEventExpandType[] Expanders
+        {
+            get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences }; }
+        }
+
         public int AwakeTime { get; private set; }
         public int SleepTime { get; private set; }
         public int NumberOfWakeups { get; private set; }
@@ -65,13 +87,6 @@ namespace unBand.Cloud
         public int SleepEfficiencyPercentage { get; private set; }
         public int SleepRecoveryIndex { get; private set; }
         public int RestingHeartRate { get; private set; }
-
-        public override BandEventExpandType[] Expanders
-        {
-            get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences }; }
-        }
-
-        public List<BandEventInfoItem> Segments { get; private set; }
 
         public override string FriendlyEventType { get { return "Sleep"; } }
         public override string PrimaryMetric { 
@@ -85,8 +100,6 @@ namespace unBand.Cloud
         public SleepEvent(JObject json)
             : base(json)
         {
-            Segments = new List<BandEventInfoItem>();
-            
             dynamic eventSummary = (dynamic)json;
 
             AwakeTime                 = eventSummary.AwakeTime;

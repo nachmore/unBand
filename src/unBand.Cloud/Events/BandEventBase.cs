@@ -67,7 +67,7 @@ namespace unBand.Cloud
         }
 
         // common Properties
-        public List<BandEventInfoItem> Segments { get; private set; }
+        public List<BandEventInfoItem> InfoSegments { get; private set; }
         public List<EventBaseSequenceItem> Sequences { get; private set; }
 
         public string EventID { get; set; }
@@ -100,7 +100,7 @@ namespace unBand.Cloud
             HeartRate      = new HeartRateSummary((int)eventSummary.AverageHeartRate, (int)eventSummary.LowestHeartRate, (int)eventSummary.PeakHeartRate);
             Flags          = eventSummary.Flags;
 
-            Segments = new List<BandEventInfoItem>();
+            InfoSegments = new List<BandEventInfoItem>();
             Sequences = new List<EventBaseSequenceItem>();
         }
 
@@ -133,7 +133,7 @@ namespace unBand.Cloud
             // parse out the "Info" section
             foreach (dynamic infoData in fullEvent.value[0].Info)
             {
-                Segments.Add(new BandEventInfoItem(infoData));
+                InfoSegments.Add(new BandEventInfoItem(infoData));
             }
         }
 
