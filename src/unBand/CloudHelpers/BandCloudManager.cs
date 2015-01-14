@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Shapes;
 using unBand.Cloud;
+using unBand.Cloud.Exporters.EventExporters.Helpers;
 
 namespace unBand.CloudHelpers
 {
@@ -112,10 +113,8 @@ namespace unBand.CloudHelpers
             }
         }
 
-        public async Task ExportEventsSummary(int? count, CloudDataExporter exporter, string fileName, IProgress<BandCloudExportProgress> progress)
+        public async Task ExportEventsSummaryToCSV(int? count, CloudDataExporterSettings settings, string fileName, IProgress<BandCloudExportProgress> progress)
         {
-            var settings = exporter.Settings;
-
             // TODO: Still need to find a better way to load events incrementally
             if (count == null)
                 count = 10000000; // suitably large number to encompass "everything".
@@ -141,13 +140,13 @@ namespace unBand.CloudHelpers
                         }
                     )
                     .Take((int)count), 
-                exporter, 
+                settings, 
                 fileName, 
                 progress
             );
         }
 
-        private async Task ExportEventsSummary(IEnumerable<BandEventViewModel> bandEvents, CloudDataExporter exporter, string fileName, IProgress<BandCloudExportProgress> progress)
+        private async Task ExportEventsSummary(IEnumerable<BandEventViewModel> bandEvents, CloudDataExporterSettings settings, string filePath, IProgress<BandCloudExportProgress> progress)
         {
             // TODO: set more logical initial capacity?
             var csv = new StringBuilder(500000);
@@ -174,10 +173,7 @@ namespace unBand.CloudHelpers
                 await Task.Yield(); // since we need to update progress, make sure to yield for a bit
             }
 
-            exporter.ExportToFile(dataToDump, fileName);
-
-            //TODO: dump data
-            System.Diagnostics.Debug.WriteLine(dataToDump.Count);
+            CSVExporter.ExportToFile(dataToDump, filePath);
         }
 
         /// <summary>

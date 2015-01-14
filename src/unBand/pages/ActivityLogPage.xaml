@@ -65,7 +65,7 @@
 
                     <Expander Header="Options" ExpandDirection="Right" IsExpanded="True" Style="{StaticResource RightVerticalExpanderHeader}">
                         <StackPanel>
-                            <StackPanel Margin="5" Orientation="Horizontal">
+                            <StackPanel Margin="5" Orientation="Horizontal" Visibility="Collapsed">
                                 <TextBlock Height="15">Format:</TextBlock>
                                 <ComboBox Margin="5,0,5,0" HorizontalAlignment="Left" x:Name="cmbFormat" ItemsSource="{Binding Path=Exporters}" DisplayMemberPath="Key" SelectedValue="{Binding ElementName=this, Path=Exporter}" Width="70">
                                 </ComboBox>

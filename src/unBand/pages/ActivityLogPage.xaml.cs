@@ -109,18 +109,12 @@ namespace unBand.pages
             Settings.Current.Save();
         }
 
-        private async void ExportEvents(int? count = null)
+        private async void ExportEventSummaryToCSV(int? count = null)
         {
-            if (_exporter.Value == null)
-            {
-                MessageBox.Show("Coming soon...");
-                return;
-            }
-
             var saveDialog = new SaveFileDialog();
             saveDialog.AddExtension = true;
             saveDialog.FileName = "band_export.csv";
-            saveDialog.DefaultExt = _exporter.Value.DefaultExt;
+            saveDialog.DefaultExt = ".csv";
 
             var result = saveDialog.ShowDialog();
 
@@ -132,9 +126,7 @@ namespace unBand.pages
 
                 var progressIndicator = new Progress<BandCloudExportProgress>(ReportProgress);
 
-                _exporter.Value.Settings = ExportSettings;
-
-                await BandCloudManager.Instance.ExportEventsSummary(count, _exporter.Value, saveDialog.FileName, progressIndicator);
+                await BandCloudManager.Instance.ExportEventsSummaryToCSV(count, ExportSettings, saveDialog.FileName, progressIndicator);
 
                 _progressDialog.CloseAsync();
 
@@ -166,7 +158,7 @@ namespace unBand.pages
 
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
-            ExportEvents(ExportSettings.ExportAll ? (int?)null : 100);
+            ExportEventSummaryToCSV(ExportSettings.ExportAll ? (int?)null : 100);
         }
 
         private async void btnLoadEvents_Click(object sender, RoutedEventArgs e)
