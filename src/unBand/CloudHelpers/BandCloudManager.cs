@@ -51,6 +51,12 @@ namespace unBand.CloudHelpers
         // TODO: this event needs to convey success or failure
         public event BandCloudAuthComplete AuthenticationCompleted;
 
+        /// <summary>
+        /// Signal that any ongoing full export should be cancelled.
+        /// This will be flipped back to false when the request has been acknowledged
+        /// </summary>
+        public bool CancelFullExport { get; set; }
+
         public ObservableCollection<BandEventViewModel> Events { get; set; }
 
         private bool _isLoggedIn;
@@ -179,15 +185,26 @@ namespace unBand.CloudHelpers
         /// <summary>
         /// Make sure to call LoadEvents() first, this will then dump everything in Events
         /// </summary>
-        public async Task ExportFullEventData(string folder, CloudDataExporterSettings settings) 
+        public async Task ExportFullEventData(string folder, CloudDataExporterSettings settings, IProgress<BandCloudExportProgress> progress) 
         {
             // TODO: there is a limit to how quickly we can hit the service. This limit should be enforced at 
             //       a global level
-            var count = 1;
+            var progressReport = new BandCloudExportProgress() { TotalEventsToExport = Events.Count };
 
             foreach (var eventViewModel in Events)
             {
-                System.Diagnostics.Debug.WriteLine("loading " + count);
+                if (CancelFullExport)
+                {
+                    CancelFullExport = false;
+
+                    return;
+                }
+
+                ++progressReport.ExportedEventsCount;
+                progressReport.StatusMessage = "Loading data for activity " + progressReport.ExportedEventsCount + "/" + Events.Count + " (" + eventViewModel.Event.FriendlyEventType + ")\n\nNote: This can take a while, we are restricted to loading full data for one Activity per 10 seconds.";
+                progress.Report(progressReport);
+
+                System.Diagnostics.Debug.WriteLine("loading " + progressReport.ExportedEventsCount);
 
                 await eventViewModel.LoadFull();
 

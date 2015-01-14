@@ -36,7 +36,8 @@ namespace unBand.pages
     {
 
         private BandManager _band;
-        ProgressDialogController _progressDialog;
+        ProgressDialogController _summaryExportProgressDialog;
+        ProgressDialogController _fullExportProgressDialog;
 
         public Dictionary<string, CloudDataExporter> Exporters { get { return _exporters; } }
 
@@ -120,15 +121,15 @@ namespace unBand.pages
 
             if (result == true)
             {
-                _progressDialog = await ((MetroWindow)(Window.GetWindow(this))).ShowProgressAsync("Exporting Data", "...");
-                _progressDialog.SetCancelable(true); // TODO: this needs to be implemented. No event?
-                _progressDialog.SetProgress(0);
+                _summaryExportProgressDialog = await ((MetroWindow)(Window.GetWindow(this))).ShowProgressAsync("Exporting Data", "...");
+                _summaryExportProgressDialog.SetCancelable(true); // TODO: this needs to be implemented. No event?
+                _summaryExportProgressDialog.SetProgress(0);
 
-                var progressIndicator = new Progress<BandCloudExportProgress>(ReportProgress);
+                var progressIndicator = new Progress<BandCloudExportProgress>(ReportSummaryExportProgress);
 
                 await BandCloudManager.Instance.ExportEventsSummaryToCSV(count, ExportSettings, saveDialog.FileName, progressIndicator);
 
-                _progressDialog.CloseAsync();
+                _summaryExportProgressDialog.CloseAsync();
 
                 if (ExportSettings.OpenFileAfterExport)
                 {
@@ -139,21 +140,21 @@ namespace unBand.pages
             }
         }
 
-        void ReportProgress(BandCloudExportProgress value)
+        void ReportSummaryExportProgress(BandCloudExportProgress value)
         {
             // TODO: handle 0 events to export
 
             if (value.TotalEventsToExport <= 0)
             {
-                _progressDialog.SetIndeterminate();
+                _summaryExportProgressDialog.SetIndeterminate();
             }
             else
             {
-                _progressDialog.SetProgress(((double)(value.ExportedEventsCount) / value.TotalEventsToExport));
+                _summaryExportProgressDialog.SetProgress(((double)(value.ExportedEventsCount) / value.TotalEventsToExport));
             }
 
             if (!string.IsNullOrEmpty(value.StatusMessage))
-                _progressDialog.SetMessage(value.StatusMessage);
+                _summaryExportProgressDialog.SetMessage(value.StatusMessage);
         }
 
         private void btnExport_Click(object sender, RoutedEventArgs e)
@@ -210,13 +211,13 @@ namespace unBand.pages
         {
             var folderDialog = new CommonOpenFileDialog();
             folderDialog.Title = "Where should I save your data?";
-            folderDialog.IsFolderPicker   = true;
+            folderDialog.IsFolderPicker = true;
             folderDialog.EnsureFileExists = true;
             folderDialog.EnsurePathExists = true;
             folderDialog.EnsureValidNames = true;
-            folderDialog.EnsureReadOnly   = false;
-            folderDialog.Multiselect      = false;
-            folderDialog.ShowPlacesList   = true;
+            folderDialog.EnsureReadOnly = false;
+            folderDialog.Multiselect = false;
+            folderDialog.ShowPlacesList = true;
 
             if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
@@ -224,13 +225,57 @@ namespace unBand.pages
 
                 BandCloudManager.Instance.Events.Clear();
 
+                _fullExportProgressDialog = await ((MetroWindow)(Window.GetWindow(this))).ShowProgressAsync("Exporting Full Activity Data", "Loading Activities list...");
+                _fullExportProgressDialog.SetCancelable(true); // TODO: this needs to be implemented. No event?
+                _fullExportProgressDialog.SetIndeterminate();
+
+                // HACK HACK HACK HACK
+                // TODO: add a Cancelled Event into the MahApps.Metro library
+
+                // polling method to cancel the export if the user requests that it be cancelled
+                Task.Run(async () =>
+                {
+                    while (_fullExportProgressDialog != null && _fullExportProgressDialog.IsOpen)
+                    {
+                        if (_fullExportProgressDialog.IsCanceled)
+                        {
+                            BandCloudManager.Instance.CancelFullExport = true;
+                        }
+
+                        await Task.Delay(500);
+                    }
+                });
+
                 await LoadEvents();
 
+                var progressIndicator = new Progress<BandCloudExportProgress>(ReportFullExportProgress);
+                
                 // TODO: progress reporter
-                await BandCloudManager.Instance.ExportFullEventData(folder, ExportSettings);
+                await BandCloudManager.Instance.ExportFullEventData(folder, ExportSettings, progressIndicator);
+
+                _fullExportProgressDialog.CloseAsync();
+
+                SaveExportSettings();
             }
-            
         }
+
+        void ReportFullExportProgress(BandCloudExportProgress value)
+        {
+            // TODO: handle 0 events to export
+
+            if (value.TotalEventsToExport <= 0)
+            {
+                _fullExportProgressDialog.SetIndeterminate();
+            }
+            else
+            {
+                _fullExportProgressDialog.SetProgress(((double)(value.ExportedEventsCount) / value.TotalEventsToExport));
+            }
+
+            if (!string.IsNullOrEmpty(value.StatusMessage))
+                _fullExportProgressDialog.SetMessage(value.StatusMessage);
+        }
+
 
         #region INotifyPropertyChanged
 
