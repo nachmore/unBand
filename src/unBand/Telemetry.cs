@@ -12,7 +12,7 @@ namespace unBand
     {
         General,
         Theme,
-
+        Export,
     }
 
     public static class Telemetry
@@ -84,6 +84,13 @@ namespace unBand
 
             public const string ChangeBackground = "Change Background";
             public const string ChangeThemeColor = "Change Theme Color";
+
+            public static class Export
+            {
+                public const string Summary = "Export Summary";
+                public const string Full = "Export Full";
+                public const string FullCancelled = "Full Export Cancelled";
+            }
         }
     }
 }

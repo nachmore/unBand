@@ -112,6 +112,8 @@ namespace unBand.pages
 
         private async void ExportEventSummaryToCSV(int? count = null)
         {
+            Telemetry.TrackEvent(TelemetryCategory.Export, Telemetry.TelemetryEvent.Export.Summary);
+
             var saveDialog = new SaveFileDialog();
             saveDialog.AddExtension = true;
             saveDialog.FileName = "band_export.csv";
@@ -221,6 +223,8 @@ namespace unBand.pages
 
             if (folderDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
+                Telemetry.TrackEvent(TelemetryCategory.Export, Telemetry.TelemetryEvent.Export.Full);
+
                 var folder = folderDialog.FileName;
 
                 BandCloudManager.Instance.Events.Clear();
@@ -240,6 +244,10 @@ namespace unBand.pages
                         if (_fullExportProgressDialog.IsCanceled)
                         {
                             BandCloudManager.Instance.CancelFullExport = true;
+
+                            Telemetry.TrackEvent(TelemetryCategory.Export, Telemetry.TelemetryEvent.Export.FullCancelled);
+
+                            return; 
                         }
 
                         await Task.Delay(500);
