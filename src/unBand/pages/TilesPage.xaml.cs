@@ -92,5 +92,10 @@ namespace unBand.pages
         {
             _band.Tiles.Save();
         }
+
+        private void btnClearCounts_Click(object sender, RoutedEventArgs e)
+        {
+            _band.Tiles.ClearAllCounts();
+        }
     }
 }

@@ -16,7 +16,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="75"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Margin="0,5,0,0" TextWrapping="Wrap">You can reorder your tiles by dragging them around below.<LineBreak /><LineBreak />
@@ -46,7 +47,12 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Button Grid.Row="2" Margin="5,5,5,5" Content="Save to Band" Click="ButtonSave_Click"></Button>
+            <Button Grid.Row="2" Margin="5,5,5,15" Content="Save to Band" Click="ButtonSave_Click"></Button>
+
+            <StackPanel Grid.Row="3">
+                <TextBlock>Do you have too many Tiles with unread counts that you'd like to clear all at once?</TextBlock>
+                <Button Content="Clear Unread Counts" Click="btnClearCounts_Click" Width="150" HorizontalAlignment="Left" Margin="0,10,0,0"></Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

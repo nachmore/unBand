@@ -36,5 +36,13 @@ namespace unBand.BandHelpers
             return _client.SetStartStripAsync(strip);
         }
 
+
+        public async Task ClearAllCounts()
+        {
+            foreach (var strapp in Strip)
+            {
+                await _client.ClearStrappAsync(strapp.StrappID);
+            }
+        }
     }
 }
