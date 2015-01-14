@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace unBand.Cloud
 {
-    public enum ExcerciseEventSequenceType
+    public enum ExerciseEventSequenceType
     {
         Workout,
         GuidedWorkout,
         Running,
     }
 
-    public class ExcerciseEventSequenceItem : EventBaseSequenceItem
+    public class ExerciseEventSequenceItem : EventBaseSequenceItem
     {
-        public ExcerciseEventSequenceType SequenceType { get; internal set; }
+        public ExerciseEventSequenceType SequenceType { get; internal set; }
         public int CaloriesFromCarbs { get; internal set; }
         public int CaloriesFromFat { get; internal set; }
         public int StressBalance { get; internal set; }
@@ -24,7 +24,7 @@ namespace unBand.Cloud
 
         public double TrainingEffect { get; internal set; }
 
-        public ExcerciseEventSequenceItem(JObject json) : base(json)
+        public ExerciseEventSequenceItem(JObject json) : base(json)
         {
             dynamic rawSequence = (dynamic)json;
 

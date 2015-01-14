@@ -11,9 +11,9 @@ using unBand.Cloud.Exporters.EventExporters;
 
 namespace unBand.Cloud
 {
-    // for now this looks to be a superset of ExcerciseEventSequenceItem. If it diverges significantly
-    // then we'll need to split ExcerciseEventSequenceItem back into a Base abstract class.
-    public class RunEventSequenceItem : ExcerciseEventSequenceItem
+    // for now this looks to be a superset of ExerciseEventSequenceItem. If it diverges significantly
+    // then we'll need to split ExerciseEventSequenceItem back into a Base abstract class.
+    public class RunEventSequenceItem : ExerciseEventSequenceItem
     {
         public int TotalDistance { get; private set; }
         public int SplitDistance { get; private set; }
@@ -90,7 +90,7 @@ namespace unBand.Cloud
             {
                 if (_exporters == null)
                 {
-                    _exporters = new List<IEventExporter>() { GPXExporter.Instance };
+                    _exporters = new List<IEventExporter>() { RunSequencesToCSVExporter.Instance, GPXExporter.Instance };
                     _exporters.AddRange(base.Exporters);
                 }
 

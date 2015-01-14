@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using unBand.Cloud.Exporters.EventExporters;
 
 namespace unBand.Cloud
 {
@@ -29,6 +30,22 @@ namespace unBand.Cloud
     [TypeConverter(typeof(UserGuidedWorkoutEventConverter))]
     public class UserGuidedWorkoutEvent : BandExerciseEventBase
     {
+        private static List<IEventExporter> _exporters;
+
+        public override List<IEventExporter> Exporters
+        {
+            get
+            {
+                if (_exporters == null)
+                {
+                    _exporters = new List<IEventExporter>() { ExerciseSequencesToCSVExporter.Instance };
+                    _exporters.AddRange(base.Exporters);
+                }
+
+                return _exporters;
+            }
+        }
+
         public override BandEventExpandType[] Expanders
         {
             get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences }; }
@@ -58,7 +75,7 @@ namespace unBand.Cloud
 
             foreach (dynamic sequenceData in fullEvent.value[0].Sequences)
             {
-                Sequences.Add(new ExcerciseEventSequenceItem(sequenceData));
+                Sequences.Add(new ExerciseEventSequenceItem(sequenceData));
             }
         }
     }

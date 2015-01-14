@@ -53,13 +53,16 @@
     <Compile Include="Events\BandEventInfoItem.cs" />
     <Compile Include="Events\BandExerciseEventBase.cs" />
     <Compile Include="Events\BandEventBase.cs" />
-    <Compile Include="Events\ExcerciseEventSequenceItem.cs" />
+    <Compile Include="Events\ExerciseEventSequenceItem.cs" />
     <Compile Include="Events\UserWorkoutEvent.cs" />
     <Compile Include="Events\UserGuidedWorkoutEvent.cs" />
     <Compile Include="Events\RunEvent.cs" />
     <Compile Include="Exporters\EventExporters\EventInfoToCSVExporter.cs" />
+    <Compile Include="Exporters\EventExporters\Helpers\ExerciseSequenceDumper.cs" />
     <Compile Include="Exporters\EventExporters\Helpers\BaseSequenceDumper.cs" />
     <Compile Include="Exporters\EventExporters\Helpers\CSVExporter.cs" />
+    <Compile Include="Exporters\EventExporters\ExerciseSequencesToCSVExporter.cs" />
+    <Compile Include="Exporters\EventExporters\RunSequencesToCSVExporter.cs" />
     <Compile Include="Exporters\EventExporters\SleepSequencesToCSVExporter.cs" />
     <Compile Include="Exporters\EventExporters\GPXExporter.cs" />
     <Compile Include="Exporters\EventExporters\IEventExporter.cs" />
