@@ -247,6 +247,8 @@ namespace unBand.pages
 
                             Telemetry.TrackEvent(TelemetryCategory.Export, Telemetry.TelemetryEvent.Export.FullCancelled);
 
+                            // we'd exit from the while loop anyway, but only when the progress dialog finally exits
+                            // which can take up to 10 seconds, so might as well shut this down asap
                             return; 
                         }
 
