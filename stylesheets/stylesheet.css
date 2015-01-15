@@ -379,7 +379,13 @@ Full-Width Styles
   padding-top: 40px;
 }
 
-#warning {
+#release_status {
+  border: 1px solid darkblue;
+  background: lightblue;
+  padding: 5px;
+}
+
+.warning {
   border: 2px solid #E37261;
   background: #E37261;
   padding: 5px;

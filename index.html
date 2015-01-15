@@ -31,7 +31,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
       
-      <h3 id="warning">Release Status: Early Beta</h3>
+      <h3 id="release_status">Release Status: Beta</h3>
       
       <h3>Welcome to unBand</h3>
 
@@ -43,15 +43,17 @@
       <ol>
         <li>Change Theme colours to arbitrary colours</li>
         <li>Change Background to arbitrary backgrounds</li>
-        <ul><li>Note: There is a known bug (likely in the software from Microsoft) that tints all images Blue. We have a workaround which we're testing right now...</li></ul>
+        <li>Export all of your activity data from the Microsoft Health cloud service
+          <ul><li>We also support exporting GPX files for those of you who like viewing your runs elsewhere</li></ul>
+        </li>
+        
       </ol>
         
       <h3>Coming Soon</h3>
 
       <ol>
-        <li>Fix for the blue-tinted backgrounds</li>
         <li>Graph live sensor outputs</li>
-        <li>Pull more general info from the device</li>
+        <li>A bunch more fun stuff</li>
         <li>Dunno - <a href="https://github.com/nachmore/unBand/issues">suggest something!</a></li>
       </ol>
 
@@ -60,8 +62,7 @@
       <ol>
         <li>
           <p class="faq_question">"Windows protected your PC" - is this Malware?</p>
-          <p>Nope, we just haven't coughed up the big bucks for someone to sign our code. That said, our code is completely Open Source (you can grab it <a href="http://github.com/nachmore/unband/">here</a>
-          so hopefully you can take a look and keep and reassure yourselves that nothing scary is going on.</p>
+          <p>Nope, you'll notice that the code is full signed (which means it's trusted, and someone has verified that I am who I say I am), but it takes a while for Windows to begin trusting the new software. With time this will disappear.</p>
         </li>
         <li>
           <p class="faq_question">What data does the app collect?</p>
@@ -81,7 +82,7 @@
         <li>
           <p class="faq_question">App Still Crashes on Start</p>
           <p>Even though you have the Sync app installed, unBand still crashes. This is likely due to us not being able to find the Sync app.</p>
-          <p>To solve this, copy <code>Microsoft.Cargo.Client.Desktop8.dll</code> to <code>c:\Program Files(x86)\Microsoft Band Sync</code>.</p>
+          <p>To solve this, copy <code>Microsoft.Cargo.Client.Desktop8.dll</code> from wherever it is installed to <code>c:\Program Files(x86)\Microsoft Band Sync</code>.</p>
           <p>You can also copy it to the same directory as unBand, search for it under <code>%userprofile%\AppData\Local\Apps\2.0</code></p>
           <p>Yup, we're going to work on a better solution...</p>
         </li>
