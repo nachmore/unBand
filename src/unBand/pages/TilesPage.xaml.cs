@@ -38,8 +38,8 @@ namespace unBand.pages
         private void ListBox_Drop(object sender, DragEventArgs e)
         {
             ListBox parent = sender as ListBox;
-            CargoStrapp data = e.Data.GetData(typeof(CargoStrapp)) as CargoStrapp;
-            CargoStrapp objectToPlaceBefore = GetObjectDataFromPoint(parent, e.GetPosition(parent)) as CargoStrapp;
+            BandStrapp data = e.Data.GetData(typeof(BandStrapp)) as BandStrapp;
+            BandStrapp objectToPlaceBefore = GetObjectDataFromPoint(parent, e.GetPosition(parent)) as BandStrapp;
 
             if (data != null && objectToPlaceBefore != null)
             {
@@ -55,7 +55,7 @@ namespace unBand.pages
         {
             ListBox parent = sender as ListBox;
 
-            CargoStrapp data = GetObjectDataFromPoint(parent, e.GetPosition(parent)) as CargoStrapp;
+            BandStrapp data = GetObjectDataFromPoint(parent, e.GetPosition(parent)) as BandStrapp;
 
             if (data != null)
             {

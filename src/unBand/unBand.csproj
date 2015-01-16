@@ -165,6 +165,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BandHelpers\BandLogger.cs" />
+    <Compile Include="BandHelpers\BandStrapp.cs" />
     <Compile Include="BandHelpers\BandTiles.cs" />
     <Compile Include="Controls\WaitingForMSA.xaml.cs">
       <DependentUpon>WaitingForMSA.xaml</DependentUpon>
