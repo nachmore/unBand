@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using unBand.BandHelpers;
+using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.Controls;
 
 namespace unBand.pages
 {
@@ -96,6 +98,16 @@ namespace unBand.pages
         private void btnClearCounts_Click(object sender, RoutedEventArgs e)
         {
             _band.Tiles.ClearAllCounts();
+        }
+
+        private async void linkCustomInformation_Click(object sender, RoutedEventArgs e)
+        {
+
+            await ((MetroWindow)(Window.GetWindow(this))).ShowMessageAsync("Custom Tile Icons",
+@"For best results, you a single color, transparent 46x46 image. 
+
+Any non-transparent pixels will be converted to white on the Band, so an image without transparency will just show up as a white box.
+");
         }
     }
 }

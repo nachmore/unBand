@@ -26,7 +26,7 @@
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="150"/>
                 </Grid.ColumnDefinitions>
                 
                 <ListBox x:Name="lstStrapps" Grid.Column="0" ItemsSource="{Binding Tiles.Strip}" AllowDrop="True" Drop="ListBox_Drop" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -46,9 +46,10 @@
                     </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="0,5,0,5" Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.Theme.BaseColor}" Height="40" Width="40">
-                                <Image Margin="2,2,2,2" Source="{Binding Strapp.TileImage}" Height="36" Width="36" ToolTip="{Binding Strapp.Name}"></Image>
-                            </StackPanel>
+                            <Canvas Margin="0,5,0,5" Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.Theme.BaseColor}" Height="40" Width="40">
+                                <Ellipse Canvas.Left="4" Canvas.Top="4" Height="32" Width="32" Fill="Green" Visibility="{Binding IsStarbucks, Converter={StaticResource BoolToVisibilityConverter}}"></Ellipse>
+                                <Image Canvas.Left="4" Canvas.Top="4" Source="{Binding Strapp.TileImage}" Height="32" Width="32" ToolTip="{Binding Strapp.Name}"></Image>
+                            </Canvas>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -58,8 +59,12 @@
                     
                     <TextBlock Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}" TextWrapping="Wrap">This is a default app (icon is locked)</TextBlock>
 
-                    <Button Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true, FallbackValue=Collapsed}">Customize Tile</Button>
-                    
+                    <StackPanel Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true, FallbackValue=Collapsed}">
+                        <Button >Customize Tile</Button>
+                        <TextBlock><Hyperlink Click="linkCustomInformation_Click">Custom Icon Information</Hyperlink></TextBlock>
+                        
+                    </StackPanel>
+
                 </StackPanel>
             </Grid>
 
