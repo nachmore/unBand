@@ -1,7 +1,9 @@
 ﻿using Microsoft.Cargo.Client;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -142,13 +144,68 @@ namespace unBand.BandHelpers
         {
             if (args.Name.StartsWith("Microsoft.Cargo.Client.Desktop8"))
             {
-                // there are dependencies (primarily Newtonsoft.Json) but we don't use those yet.
                 AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
 
-                return Assembly.LoadFrom(@"C:\Program Files (x86)\Microsoft Band Sync\Microsoft.Cargo.Client.Desktop8.dll"); 
+                var dllName = "Microsoft.Cargo.Client.Desktop8.dll";
+
+                // let's try and find the dll
+                var dllLocations = new List<string>()
+                {
+                    GetDllLocationFromRegistry(),
+
+                    // fallback path
+                    Path.Combine(GetProgramFilesx86(), "Microsoft Band Sync", dllName)
+                };
+
+                foreach (string location in dllLocations)
+                {
+                    if (File.Exists(location))
+                    {
+                        return Assembly.LoadFrom(location);
+                    }
+                }
+
+                throw new FileNotFoundException("Could not find Band Sync app on your machine. I looked in:\n\n" + string.Join("\n", dllLocations));
             }
 
             return null;
+        }
+
+        private static string GetDllLocationFromRegistry()
+        {
+            var sid = System.Security.Principal.WindowsIdentity.GetCurrent().User.ToString();
+
+            var regRoot = Microsoft.Win32.RegistryHive.LocalMachine;
+            string regKeyName = @"SOFTWARE\MICROSOFT\Windows\CurrentVersion\Installer\UserData\" + sid + @"\Components\1C4501C98808F3A5CBF549E17D39406F";
+            string regValueName = "D9E6F917E27BA454F9E448BCA68562DE";
+
+            RegistryKey regKey;
+
+            if (Environment.Is64BitOperatingSystem) 
+            {
+                regKey = RegistryKey.OpenBaseKey(regRoot, RegistryView.Registry64);
+            } 
+            else 
+            {
+                regKey = RegistryKey.OpenBaseKey(regRoot, RegistryView.Default);
+            }
+
+            regKey = regKey.OpenSubKey(regKeyName);
+
+            if (regKey != null)
+            {
+                return regKey.GetValue(regValueName).ToString();
+            }
+
+            return "[not found] " + regKeyName + "\\" + regValueName;
+
+        }
+
+        private static string GetProgramFilesx86()
+        {
+            var envVar = (Environment.Is64BitProcess ? "ProgramFiles(x86)" : "ProgramFiles");
+
+            return Environment.GetEnvironmentVariable(envVar);
         }
 
         public static void Start() 
