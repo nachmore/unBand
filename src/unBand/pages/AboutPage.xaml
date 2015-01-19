@@ -28,6 +28,22 @@
 
                 <RichTextBox Background="Transparent" IsReadOnly="True" Margin="0,10,0,0" BorderBrush="Transparent">
                     <FlowDocument>
+                        <Paragraph FontWeight="Bold">v0.62 - Jan 19, 2015</Paragraph>
+                        <List>
+                            <ListItem>
+                                <Paragraph>You can now customize Tile icons (at least the non-default ones, details on the Tiles page)</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>You can now clear all Tile unread counters from the Tiles page (useful if you have lots of them and don't want to tap on them all)</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>More robust detection of the Microsoft Band Sync application, which should help with Issue #9 and its friends</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>Various UI updates to the Tiles page and small optimizations / bug fixes</Paragraph>
+                            </ListItem>
+                        </List>
+
                         <Paragraph FontWeight="Bold">v0.6 - Jan 14, 2015</Paragraph>
                         <List>
                             <ListItem>
