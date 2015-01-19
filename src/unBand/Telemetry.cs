@@ -79,6 +79,8 @@ namespace unBand
             public const string Exception = "Exception";
 
             public const string AppLaunch = "Launch";
+            public const string AppUpgraded = "App Upgraded";
+
             public const string DeclinedFirstRunWarning = "Declined First Run Warning";
             public const string DeclinedTelemetry = "Declined Telemetry";
 

@@ -62,6 +62,7 @@ namespace unBand
 
             if (About.Current.WasUpdated)
             {
+                Telemetry.TrackEvent(TelemetryCategory.General, Telemetry.TelemetryEvent.AppUpgraded);
                 PageContent.Content = new AboutPage(true);
             }
             else
