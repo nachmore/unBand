@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using unBand.BandHelpers;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.Controls;
+using Microsoft.Win32;
 
 namespace unBand.pages
 {
@@ -104,10 +105,26 @@ namespace unBand.pages
         {
 
             await ((MetroWindow)(Window.GetWindow(this))).ShowMessageAsync("Custom Tile Icons",
-@"For best results, you a single color, transparent 46x46 image. 
+@"For best results, use a single color, transparent 46x46 image. 
 
 Any non-transparent pixels will be converted to white on the Band, so an image without transparency will just show up as a white box.
 ");
+        }
+
+        private void btnCustomizeIcon_Click(object sender, RoutedEventArgs e)
+        {
+            var bandStrapp = ((Button)sender).DataContext as BandStrapp;
+
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "Images|*.jpg;*.jpeg;*.png";
+
+            if (dialog.ShowDialog() == true)
+            {
+                Telemetry.TrackEvent(TelemetryCategory.Theme, Telemetry.TelemetryEvent.ChangeStrappIcon, bandStrapp.Strapp.Name);
+
+                bandStrapp.SetIcon(dialog.FileName);
+            }
+
         }
     }
 }

@@ -57,10 +57,10 @@
                 <StackPanel Grid.Column="1" DataContext="{Binding SelectedItem, ElementName=lstStrapps}">
                     <TextBlock Text="{Binding Strapp.Name, StringFormat=Name: {0}}" Margin="0,0,0,10"></TextBlock>
                     
-                    <TextBlock Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}" TextWrapping="Wrap">This is a default app (icon is locked)</TextBlock>
+                    <TextBlock Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}" TextWrapping="Wrap">This is a default app (icon is locked).</TextBlock>
 
                     <StackPanel Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true, FallbackValue=Collapsed}">
-                        <Button >Customize Tile</Button>
+                        <Button Click="btnCustomizeIcon_Click">Customize Tile</Button>
                         <TextBlock><Hyperlink Click="linkCustomInformation_Click">Custom Icon Information</Hyperlink></TextBlock>
                         
                     </StackPanel>

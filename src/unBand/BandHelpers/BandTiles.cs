@@ -34,33 +34,6 @@ namespace unBand.BandHelpers
             Strip = new ObservableCollection<BandStrapp>(bandStrip);
 
             DefaultStrapps = (List<CargoStrapp>)(await _client.GetDefaultStrappsAsync());
-            
-            /*
-            var bitmapSource = new BitmapImage();
-
-            bitmapSource.BeginInit();
-            bitmapSource.UriSource = new Uri(@"c:\temp\band_logos\test.png");
-
-            // ensure that we resize to the correct dimensions
-            bitmapSource.DecodePixelHeight = 46;
-            bitmapSource.DecodePixelWidth = 46;
-
-            bitmapSource.EndInit();
-
-            var pbgra32Image = new FormatConvertedBitmap(bitmapSource, System.Windows.Media.PixelFormats.Pbgra32, null, 0);
-
-            var bmp = new System.Windows.Media.Imaging.WriteableBitmap(pbgra32Image);
-
-            var idx = Strip.Count - 2;
-
-            var images = new List<System.Windows.Media.Imaging.WriteableBitmap>() { bmp, bmp };
-            //System.Diagnostics.Debug.WriteLine("Switching " + Strip[idx].Name + " with: " + Strip[0].Name);
-            Strip[idx].SetImageList(Strip[idx].StrappID, images, 0);
-
-            _client.UpdateStrapp(Strip[idx]);
-
-            var defaults = _client.GetDefaultStrappsNoImages();
-             */
         }
 
         public Task Save()
@@ -78,6 +51,17 @@ namespace unBand.BandHelpers
             {
                 await _client.ClearStrappAsync(bandStrapp.Strapp.StrappID);
             }
+        }
+
+        internal void UpdateStrapp(CargoStrapp strapp)
+        {
+            _client.UpdateStrapp(strapp);
+
+            // here is where it gets a bit hairy. If we just call UpdateStrapp alone
+            // it will shove the updated Tile at the end of the strip, which is undesirable
+            // so let's resave the strip so that the tiles go back to the same location
+            Save();
+                
         }
     }
 }

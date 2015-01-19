@@ -84,6 +84,7 @@ namespace unBand
 
             public const string ChangeBackground = "Change Background";
             public const string ChangeThemeColor = "Change Theme Color";
+            public const string ChangeStrappIcon = "Change Strapp Icon";
 
             public static class Export
             {
