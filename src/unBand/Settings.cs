@@ -71,8 +71,6 @@ namespace unBand
                 {
                     var xmlSerializer = new XmlSerializer(typeof(Settings));
 
-                
-
                     try
                     {
                         deserialized = xmlSerializer.Deserialize(sr) as Settings;
@@ -238,7 +236,7 @@ namespace unBand
             AgreedToFirstRunWarning = false;
             AgreedToTelemetry = false;
             Device = Guid.NewGuid();
-            FirstRun = false;
+            FirstRun = true;
 
             // set this to the current version so that we only see "updated" notifications
             // on an actual update and not on first install
