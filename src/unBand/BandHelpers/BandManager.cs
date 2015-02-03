@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
+using unBand.CargoClientExtender;
 
 namespace unBand.BandHelpers
 {
@@ -138,6 +139,8 @@ namespace unBand.BandHelpers
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             Instance = new BandManager();
+
+            Instance.InitializeCargoLogging();
         }
 
         static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
@@ -146,66 +149,10 @@ namespace unBand.BandHelpers
             {
                 AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
 
-                var dllName = "Microsoft.Cargo.Client.Desktop8.dll";
-
-                // let's try and find the dll
-                var dllLocations = new List<string>()
-                {
-                    GetDllLocationFromRegistry(),
-
-                    // fallback path
-                    Path.Combine(GetProgramFilesx86(), "Microsoft Band Sync", dllName)
-                };
-
-                foreach (string location in dllLocations)
-                {
-                    if (File.Exists(location))
-                    {
-                        return Assembly.LoadFrom(location);
-                    }
-                }
-
-                throw new FileNotFoundException("Could not find Band Sync app on your machine. I looked in:\n\n" + string.Join("\n", dllLocations));
+                return Assembly.LoadFrom(CargoDll.GetUnBandCargoDll());
             }
 
             return null;
-        }
-
-        private static string GetDllLocationFromRegistry()
-        {
-            var sid = System.Security.Principal.WindowsIdentity.GetCurrent().User.ToString();
-
-            var regRoot = Microsoft.Win32.RegistryHive.LocalMachine;
-            string regKeyName = @"SOFTWARE\MICROSOFT\Windows\CurrentVersion\Installer\UserData\" + sid + @"\Components\1C4501C98808F3A5CBF549E17D39406F";
-            string regValueName = "D9E6F917E27BA454F9E448BCA68562DE";
-
-            RegistryKey regKey;
-
-            if (Environment.Is64BitOperatingSystem) 
-            {
-                regKey = RegistryKey.OpenBaseKey(regRoot, RegistryView.Registry64);
-            } 
-            else 
-            {
-                regKey = RegistryKey.OpenBaseKey(regRoot, RegistryView.Default);
-            }
-
-            regKey = regKey.OpenSubKey(regKeyName);
-
-            if (regKey != null)
-            {
-                return regKey.GetValue(regValueName).ToString();
-            }
-
-            return "[not found] " + regKeyName + "\\" + regValueName;
-
-        }
-
-        private static string GetProgramFilesx86()
-        {
-            var envVar = (Environment.Is64BitProcess ? "ProgramFiles(x86)" : "ProgramFiles");
-
-            return Environment.GetEnvironmentVariable(envVar);
         }
 
         public static void Start() 
@@ -222,22 +169,21 @@ namespace unBand.BandHelpers
             {
                 if (!Instance.IsConnected)
                 {
-                    await Instance.DiscoverDevices();
-
+                    await Instance.ConnectDevice();
                 }
                 else
                 {
-                    // make sure we still have devices
-                    var devices = await CargoClient.GetConnectedDevicesAsync();
+                    // make sure we still have the current device
+                    var devices = await GetConnectedDevicesAsync();
 
-                    if (!(devices.Count() > 0 && devices[0].Id == Instance._deviceInfo.Id))
+                    if (!devices.Any(i => i.Id == Instance._deviceInfo.Id))
                     {
                         Instance.IsConnected = false;
                     }
                 }
 
                 // only reset once we finished processing
-                timer.Interval = 1000;
+                timer.Interval = 100000;
                 timer.Start();
             };
 
@@ -245,33 +191,99 @@ namespace unBand.BandHelpers
             timer.Start();
         }
 
-        private async Task DiscoverDevices()
+        private async Task ConnectDevice()
         {
             if (DesktopSyncAppIsRunning())
                 return;
 
-            var devices = await CargoClient.GetConnectedDevicesAsync();
+            // We support connecting to a device over USB and Bluetooth.
+            // Since USB is super fast (the device is either there or not), search there first and then fallback
+            // on Bluetooth, since that can take a little longer.
 
-            if (devices.Count() > 0)
+            var device = await GetUSBBand();
+
+            if (device == null)
             {
-                // must create on the UI thread for various Binding reasons
-                _deviceInfo = devices[0];
+                // now try Bluetooth
+                device = await GetBluetoothBand();
+            }
 
+            if (device != null)
+            {
+                // since this will trigger binding, invoke on the UI thread
                 Application.Current.Dispatcher.BeginInvoke(new Action(async () =>
                 {
                     // TODO: support more than one device?
-                    InitializeCargoLogging();
-                    CargoClient = await CargoClient.CreateAsync(_deviceInfo);
-                
+                    CargoClient = device;
+
                     IsConnected = true;
 
                     //TODO: call an "OnConnected" function
+
+                    // Bluetooth is sensitive to multiple things going on at once across different threads
+                    // so let's make sure we go about this serially
+
                     Properties = new BandProperties(CargoClient);
+                    await Properties.InitAsync();
+                    
                     Theme = new BandTheme(CargoClient);
+                    await Theme.InitAsync();
+
                     Sensors = new BandSensors(CargoClient);
+                    await Sensors.InitAsync();
+
                     Tiles = new BandTiles(CargoClient);
+                    await Tiles.InitAsync();
                 }));
             }
+        }
+
+        private static async Task<DeviceInfo[]> GetConnectedDevicesAsync()
+        {
+            var devices = new List<DeviceInfo>();
+
+            devices.AddRange(await GetConnectedUSBDevicesAsync());
+            devices.AddRange(await GetConnectedBluetoothDevicesAsync());
+
+            return devices.ToArray();
+        }
+
+        private static async Task<DeviceInfo[]> GetConnectedUSBDevicesAsync()
+        {
+            return await CargoClient.GetConnectedDevicesAsync();
+        }
+
+        private static async Task<DeviceInfo[]> GetConnectedBluetoothDevicesAsync()
+        {
+            return await CargoClientExtender.BluetoothClient.GetConnectedDevicesAsync();
+        }
+
+        private async Task<CargoClient> GetUSBBand()
+        {
+            var devices = await GetConnectedUSBDevicesAsync();
+
+            if (devices != null && devices.Length > 0)
+            {
+                _deviceInfo = devices[0];
+
+                return await CargoClient.CreateAsync(_deviceInfo);
+            }
+
+            return null;
+        }
+
+        private async Task<CargoClient> GetBluetoothBand()
+        {
+            var btDevices = await GetConnectedBluetoothDevicesAsync();
+
+            if (btDevices != null && btDevices.Length > 0)
+            {
+                _deviceInfo = btDevices[0];
+
+                return await BluetoothClient.CreateAsync(_deviceInfo);
+            }
+
+            return null;
         }
 
         private bool DesktopSyncAppIsRunning()

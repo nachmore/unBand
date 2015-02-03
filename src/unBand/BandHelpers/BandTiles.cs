@@ -20,11 +20,9 @@ namespace unBand.BandHelpers
         public BandTiles(CargoClient client)
         {
             _client = client;
-
-            Init();
         }
 
-        private async void Init()
+        public async Task InitAsync()
         {
             var strip = await _client.GetStartStripAsync();
 

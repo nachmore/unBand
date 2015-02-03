@@ -182,19 +182,21 @@ namespace unBand.BandHelpers
         public BandTheme(CargoClient client)
         {
             _client = client;
-
-            Init();
         }
 
-        private async void Init()
+        public async Task InitAsync()
         {
-            // TODO: make the inner call async?
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    _background = _client.GetMeTileBmp();
-                }));
-        
+            // check if there is a MeTile to grab (otherwise you get an exception
+            // that will also kill the BT connection for daring to read to far beyond the Stream)
+            var tileId = _client.GetMeTileId();
+
+            if (tileId > 0) 
+            {
+                _background = _client.GetMeTileBmp();
+            }
+            
             _themeColor = await _client.GetDeviceThemeAsync();
+
             SetColorProperties();
 
             // Notify that all properties have changed

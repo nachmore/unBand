@@ -82,11 +82,9 @@ namespace unBand.BandHelpers
         internal BandProperties(CargoClient client)
         {
             _client = client;
-
-            Init();
         }
 
-        private async void Init()
+        public async Task InitAsync()
         {
             PermanentSerialNumber = await _client.GetPermanentSerialNumberAsync();
             ProductSerialNumber   = await _client.GetProductSerialNumberAsync();

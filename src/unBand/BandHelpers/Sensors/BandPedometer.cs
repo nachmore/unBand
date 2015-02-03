@@ -46,20 +46,18 @@ namespace unBand.BandHelpers.Sensors
         public BandPedometer(CargoClient client)
         {
             _client = client;
-
-            Init();
         }
 
-        private void Init()
+        public async Task InitAsync()
         {
-            OneTimePedometerReading();
+            await OneTimePedometerReading();
         }
 
         /// <summary>
         /// To start us off we get an initial, one-off, Pedometer reading.
         /// To get consistent updates use TODO: StartPedometer();
         /// </summary>
-        private async void OneTimePedometerReading()
+        private async Task OneTimePedometerReading()
         {
             _client.PedometerUpdated += _client_OneTimePedometerUpdated;
             await _client.SensorSubscribeAsync(SensorType.Pedometer);

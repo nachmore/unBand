@@ -18,13 +18,12 @@ namespace unBand.BandHelpers
         public BandSensors(CargoClient client)
         {
             _client = client;
-
-            Init();
         }
 
-        private void Init()
+        public async Task InitAsync()
         {
             Pedometer = new BandPedometer(_client);
+            await Pedometer.InitAsync();
         }
 
     }
