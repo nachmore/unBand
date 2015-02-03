@@ -59,7 +59,11 @@ namespace unBand.Cloud
 
             foreach (var filter in _filters)
             {
-                if (!first)
+                if (first)
+                {
+                    sb.Append("$filter=");
+                } 
+                else
                 {
                     sb.Append("+and+");
                 }
