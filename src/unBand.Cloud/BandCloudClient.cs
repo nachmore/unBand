@@ -32,6 +32,7 @@ namespace unBand.Cloud
         private const string EVENTS_TOP_100_URL = "v1/Events(eventType='None')?$top={0}";
         private const string GET_EVENTS_URL = "v1/Events(eventType='None')?";
         private const string GET_EVENT_URL = "v1/Events(EventId='{0}',selectedSplitDistance=100000)?$expand={1}";
+        private const string GET_USER_ACTIVITY_URL = "v1/UserActivities(period='h')?";
 
         private LiveAuthTokens _tokens;
         private BandCloudAuthentication _cloudAuthentication;
@@ -100,7 +101,7 @@ namespace unBand.Cloud
                 AuthenticationCompleted();
         }
 
-        private string GenerateEventsQuery(int? topCount = null, DateTime? startDate = null, DateTime? endDate = null)
+        private string GenerateEventsQuery(int? topCount = null, DateTime? startDate = null, DateTime? endDate = null, string timeField = "StartTime")
         {
             var query = new ODataQuery();
 
@@ -124,16 +125,50 @@ namespace unBand.Cloud
                         op2 = ODataOperator.le;
                     }
 
-                    query.AddFilter("StartTime", op1, (DateTime)startDate);
-                    query.AddFilter("EndTime", op2, (DateTime)endDate);
+                    query.AddFilter(timeField, op1, (DateTime)startDate);
+                    query.AddFilter(timeField, op2, (DateTime)endDate);
                 }
                 else // only StartDate is specified
                 {
-                    query.AddFilter("StartTime", ODataOperator.le, (DateTime)startDate);
+                    query.AddFilter(timeField, ODataOperator.le, (DateTime)startDate);
                 }
             }
 
             return query.GenerateQuery();
+        }
+
+        public async Task<List<BandEventBase>> GetUserActivity(int? topCount = null, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            var url = GET_USER_ACTIVITY_URL + GenerateEventsQuery(topCount, startDate, endDate, "TimeOfDay");
+            var response = await AuthenticatedRequest(url);
+
+            var rv = new List<BandEventBase>();
+
+            dynamic json = JObject.Parse(response);
+
+            var curDay = DateTime.MinValue;
+            UserActivity curActivity = null;
+
+            foreach (var rawUserActivity in json.value)
+            {
+                if (curDay.Date != rawUserActivity.TimeOfDay.Value.Date)
+                {
+                    if (curActivity != null)
+                    {
+                        rv.Add(curActivity);
+                    }
+
+                    curActivity = UserActivity.Create(rawUserActivity);
+
+                    curDay = rawUserActivity.TimeOfDay.Value;
+                }
+                else
+                {
+                    curActivity.AddSegment(rawUserActivity);
+                }
+            }
+
+            return rv;
         }
 
         public async Task<List<BandEventBase>> GetEvents(int? topCount = null, DateTime? startDate = null, DateTime? endDate = null)

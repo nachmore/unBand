@@ -31,7 +31,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>32</ApplicationRevision>
+    <ApplicationRevision>33</ApplicationRevision>
     <ApplicationVersion>0.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -396,6 +396,7 @@
     <Resource Include="assets\activity_details\heartrate.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="assets\icons\user_activity.png" />
     <Resource Include="assets\actions\load_activities.png" />
     <Resource Include="assets\actions\export_full.png" />
     <Resource Include="assets\actions\export_summary.png" />

@@ -46,6 +46,8 @@ namespace unBand.CloudHelpers
 
         #endregion
 
+        private const int MAX_TOP_REQUEST = 1500;
+
         private BandCloudClient _cloud;
 
         // TODO: this event needs to convey success or failure
@@ -105,18 +107,38 @@ namespace unBand.CloudHelpers
         /// Proxy for BandCloudClient.GetEvents which wraps loaded Events into a wrapper which is a little more
         /// friendly for Binding against objects which are often only partially loaded.
         /// </summary>
-        /// <param name="topCount"></param>
+        /// <param name="topCount">Limited for some requests (in particular /UserActivities) to 1500</param>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns>Nothing. DataBind against Events.</returns>
         public async Task LoadEvents(int? topCount = null, DateTime? startDate = null, DateTime? endDate = null)
         {
+            // for now, don't limit the request limit, since we're hitting requests that don't care
+            // topCount = (topCount > MAX_TOP_REQUEST ? MAX_TOP_REQUEST : topCount);
+
             var events = await _cloud.GetEvents(topCount, startDate, endDate);
 
             foreach (var cloudEvent in events)
             {
                 Events.Add(new BandEventViewModel(_cloud, cloudEvent));
             }
+
+            // using topCount for dailyEvents makes no sense, since it seems to return (topCount)hours since the Band started
+            // reporting data, which is somewhat useless. So if the dates weren't provided, let's just load up the max range (7 days)
+            // Note: there seems to be a bug in the Health cloud service that lets you pull of the data in one swoop, but I don't
+            //       want to be naughty (and at some point that will be a ton of data for one request)
+            if (startDate == null && endDate == null)
+            {
+                var end = DateTime.UtcNow;
+                var start = end.AddDays(-7);
+                var dailyEvents = await _cloud.GetUserActivity(0, start, end);
+
+                foreach (var dailyEvent in dailyEvents)
+                {
+                    Events.Add(new BandEventViewModel(_cloud, dailyEvent));
+                }
+            }
+                       
         }
 
         public async Task ExportEventsSummaryToCSV(int? count, CloudDataExporterSettings settings, string fileName, IProgress<BandCloudExportProgress> progress)

@@ -49,6 +49,13 @@ namespace unBand.CloudHelpers
             _cloud = cloud;
 
             Event = cloudEvent;
+
+            if (Event is UserActivity)
+            {
+                // this event type is considered "Loaded" already since we get all of the information
+                // from the initial API call
+                Loaded = true;
+            }
         }
 
         public async Task LoadFull()

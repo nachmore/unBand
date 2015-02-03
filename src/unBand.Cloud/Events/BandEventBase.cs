@@ -82,6 +82,15 @@ namespace unBand.Cloud
         public FeelingType Feeling { get; set; }
         public HeartRateSummary HeartRate { get; set; }
         public int Flags { get; set; } // unclear what this means
+
+        /// <summary>
+        /// Used by special event types that still want to play in the same collections but
+        /// need special handling. Any event using this constructor will have to do all of its
+        /// own initial parsing
+        /// </summary>
+        internal BandEventBase()
+        {
+        }
             
         public BandEventBase(JObject json)
         {

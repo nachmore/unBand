@@ -16,6 +16,7 @@ namespace unBand
         private static BitmapImage _imageGuidedWorkout = new BitmapImage(new Uri("/assets/icons/activity_guided_workout.png", UriKind.RelativeOrAbsolute));
         private static BitmapImage _imageSleeping = new BitmapImage(new Uri("/assets/icons/activity_sleep.png", UriKind.RelativeOrAbsolute));
         private static BitmapImage _imageRunning = new BitmapImage(new Uri("/assets/icons/activity_run.png", UriKind.RelativeOrAbsolute));
+        private static BitmapImage _imageDailyActivity = new BitmapImage(new Uri("/assets/icons/user_activity.png", UriKind.RelativeOrAbsolute));
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -35,6 +36,8 @@ namespace unBand
                     return _imageSleeping;
                 case BandEventType.Running:
                     return _imageRunning;
+                case BandEventType.UserActivity:
+                    return _imageDailyActivity;
                 default:
                     return null;
             }
