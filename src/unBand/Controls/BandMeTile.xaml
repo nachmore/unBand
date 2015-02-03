@@ -10,8 +10,8 @@
     
     <!-- according to various articles the resolution of the screen is 320x106 
          but based on the image background dimensions we're looking at 320x102 -->
-    
-    <Border BorderThickness="1" BorderBrush="Black" Background="Black">
+
+    <Border BorderThickness="1" BorderBrush="Black" Background="{Binding Theme.BaseColor}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="310"/>
@@ -42,7 +42,7 @@
                 </StackPanel>
             </Grid>
             
-            <Border Grid.Column="2" BorderThickness="0" Background="{Binding Theme.BaseColor}"></Border>
+            <Border Grid.Column="2" BorderThickness="2,0,0,0" BorderBrush="Black" Background="{Binding Theme.BaseColor}"></Border>
         </Grid>
     </Border>
 </UserControl>

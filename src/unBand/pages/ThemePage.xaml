@@ -43,8 +43,8 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Column="0" Grid.Row="0" TextWrapping="Wrap">Background (for best results use a 310x102 image)</TextBlock>
-                <Border Grid.Column="0" Grid.Row="1" Background="Black" Height="51" Width="155">
-                    <Image Source="{Binding Theme.Background}" Height="51" Width="155" MouseUp="Background_MouseUp" />
+                <Border Grid.Column="0" Grid.Row="1" Background="{Binding Theme.BaseColor}" Height="51" Width="155"  MouseUp="Background_MouseUp">
+                    <Image Source="{Binding Theme.Background}" Height="51" Width="155" />
                 </Border>
 
                 <TextBlock Grid.Column="1" Grid.Row="0"><Run Text="Tapped Item Color"/></TextBlock>
