@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E80BF517-3574-48A1-A419-22427D087586}</ProjectGuid>
+    <ProjectGuid>{3BD070E3-1D3C-437D-B079-81879654F228}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>unBand.CargoClientExtender</RootNamespace>
-    <AssemblyName>unBand.CargoClientExtender</AssemblyName>
+    <RootNamespace>unBand.CargoClientEditor</RootNamespace>
+    <AssemblyName>unBand.CargoClientEditor</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,33 +30,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <TargetPlatformVersion>8.1</TargetPlatformVersion>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Cargo.Client.Desktop8.unBand">
-      <HintPath>..\Microsoft.Cargo.Client.Desktop8.unBand.dll</HintPath>
+    <Reference Include="Mono.Cecil">
+      <HintPath>Mono.Cecil\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Runtime.InteropServices.WindowsRuntime" />
-    <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\Microsoft.NET\Framework64\v4.0.30319\System.Runtime.WindowsRuntime.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Windows" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BluetoothClient.cs" />
-    <Compile Include="BluetoothDeviceInfo.cs" />
-    <Compile Include="BluetoothDeviceTransport.cs" />
-    <Compile Include="BluetoothStreamWrapper.cs" />
+    <Compile Include="CargoDll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

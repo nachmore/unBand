@@ -101,7 +101,7 @@
       <HintPath>..\packages\MahApps.Metro.1.0.1-ALPHA008\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Cargo.Client.Desktop8.unBand">
-      <HintPath>C:\Users\orena\AppData\Roaming\unBand\Microsoft.Cargo.Client.Desktop8.unBand.dll</HintPath>
+      <HintPath>..\Microsoft.Cargo.Client.Desktop8.unBand.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack">
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
@@ -363,6 +363,10 @@
     <ProjectReference Include="..\Microsoft.Live.Desktop\Microsoft.Live.Desktop.csproj">
       <Project>{5c8c880f-fb9b-40ca-955d-b460e7b3af6d}</Project>
       <Name>Microsoft.Live.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\unBand.CargoClientEditor\unBand.CargoClientEditor.csproj">
+      <Project>{3bd070e3-1d3c-437d-b079-81879654f228}</Project>
+      <Name>unBand.CargoClientEditor</Name>
     </ProjectReference>
     <ProjectReference Include="..\unBand.CargoClientExtender\unBand.CargoClientExtender.csproj">
       <Project>{e80bf517-3574-48a1-a419-22427d087586}</Project>
