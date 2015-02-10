@@ -24,7 +24,7 @@ namespace unBand.Cloud
         Running,
         GuidedWorkout,
         Workout,
-        UserActivity
+        UserDailyActivity
     }
 
     public enum FeelingType

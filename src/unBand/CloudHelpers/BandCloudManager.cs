@@ -188,7 +188,9 @@ namespace unBand.CloudHelpers
                         {
                             return (settings.IncludeRuns && e.Event.EventType == BandEventType.Running) ||
                                    (settings.IncludeSleep && e.Event.EventType == BandEventType.Sleeping) ||
-                                   (settings.IncludeWorkouts && (e.Event.EventType == BandEventType.GuidedWorkout || e.Event.EventType == BandEventType.Workout));
+                                   (settings.IncludeWorkouts && (e.Event.EventType == BandEventType.GuidedWorkout || e.Event.EventType == BandEventType.Workout)) ||
+                                   (settings.IncludeSteps && (e.Event.EventType == BandEventType.UserDailyActivity))
+                                   ;
                         }
                     )
                     .Take((int)count), 

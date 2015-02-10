@@ -36,7 +36,7 @@ namespace unBand
                     return _imageSleeping;
                 case BandEventType.Running:
                     return _imageRunning;
-                case BandEventType.UserActivity:
+                case BandEventType.UserDailyActivity:
                     return _imageDailyActivity;
                 default:
                     return null;

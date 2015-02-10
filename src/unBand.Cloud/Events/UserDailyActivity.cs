@@ -47,6 +47,9 @@ namespace unBand.Cloud
         public int UvExposure { get; set; }
         public int TotalDistance { get; set; }
 
+        private int _aggregateAverageHeartRate = 0;
+        private int _averageHeartRateSampleCount = 0;
+
         /// <summary>
         /// Returns a UserActivity object that tracks a User's activity across a given day
         /// </summary>
@@ -66,7 +69,7 @@ namespace unBand.Cloud
 
         /// <summary>
         /// Called to indicate that this is the constructor for a UserActivity that will be part of a segment, not a top level
-        /// which we then treat a little different
+        /// which we then treat a little different (in other words, call Create() to toplevel)
         /// </summary>
         /// <param name="json"></param>
         /// <param name="toplevel"></param>
@@ -82,13 +85,14 @@ namespace unBand.Cloud
             CaloriesBurned = eventSummary.CaloriesBurned;
             UvExposure = eventSummary.UvExposure;
             TotalDistance = eventSummary.TotalDistance;
+            DayId = StartTime; // TODO: we could 0 this out to be 0:00 UTC based like other activities?
             
             // Location is always null, so ignore for now
             // ItCal always seems to be 0?
 
-            EventType = BandEventType.UserActivity;
+            EventType = BandEventType.UserDailyActivity;
         }
-
+        
         public void AddSegment(JObject json)
         {
             // 1. Add the segment as a new UserActivity segment to this one
@@ -105,11 +109,32 @@ namespace unBand.Cloud
             StepsTaken += segment.StepsTaken;
             TotalDistance += segment.TotalDistance;
             CaloriesBurned += segment.CaloriesBurned;
+
+            if (HeartRate.Lowest == 0 || HeartRate.Lowest > segment.HeartRate.Lowest)
+                HeartRate.Lowest = segment.HeartRate.Lowest;
+
+            if (HeartRate.Peak < segment.HeartRate.Peak)
+                HeartRate.Peak = segment.HeartRate.Peak;
+
+            // calculate average heart rate, ignoring segments that have no value
+            if (segment.HeartRate.Average != 0)
+            {
+                _averageHeartRateSampleCount++;
+                _aggregateAverageHeartRate += segment.HeartRate.Average;
+
+                HeartRate.Average = _aggregateAverageHeartRate / _averageHeartRateSampleCount;
+            }
         }
 
         public override Dictionary<string, object> DumpBasicEventData()
         {
-            return base.DumpBasicEventData();
+            var rv = new Dictionary<string, object>(base.DumpBasicEventData());
+
+            rv.Add("Steps Taken", StepsTaken);
+            rv.Add("UV Exposure", UvExposure);
+            rv.Add("Total Distance (cm)", TotalDistance);
+
+            return rv;
         }
 
         public override void InitFullEventData(JObject json)
