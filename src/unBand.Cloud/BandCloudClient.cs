@@ -147,7 +147,7 @@ namespace unBand.Cloud
             dynamic json = JObject.Parse(response);
 
             var curDay = DateTime.MinValue;
-            UserActivity curActivity = null;
+            UserDailyActivity curActivity = null;
 
             foreach (var rawUserActivity in json.value)
             {
@@ -158,7 +158,7 @@ namespace unBand.Cloud
                         rv.Add(curActivity);
                     }
 
-                    curActivity = UserActivity.Create(rawUserActivity);
+                    curActivity = UserDailyActivity.Create(rawUserActivity);
 
                     curDay = rawUserActivity.TimeOfDay.Value;
                 }

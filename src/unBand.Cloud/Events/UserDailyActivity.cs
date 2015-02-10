@@ -12,7 +12,7 @@ namespace unBand.Cloud
 {
     // This class is unique in that doesn't have a TypeConverter, since it comes from its own Cloud request, so
     // we don't need to guess the type dynamically
-    public class UserActivity : BandEventBase
+    public class UserDailyActivity : BandEventBase
     {
         private static List<IEventExporter> _exporters;
 
@@ -52,9 +52,9 @@ namespace unBand.Cloud
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        public static UserActivity Create(JObject json)
+        public static UserDailyActivity Create(JObject json)
         {
-            var activity = new UserActivity(json);
+            var activity = new UserDailyActivity(json);
 
             activity.Segments = new List<BandEventBase>();
 
@@ -70,7 +70,7 @@ namespace unBand.Cloud
         /// </summary>
         /// <param name="json"></param>
         /// <param name="toplevel"></param>
-        private UserActivity(JObject json) : base()
+        private UserDailyActivity(JObject json) : base()
         {
             dynamic eventSummary = (dynamic)json;
 
@@ -94,7 +94,7 @@ namespace unBand.Cloud
             // 1. Add the segment as a new UserActivity segment to this one
             // 2. Add the values to the running tally for the day
 
-            var segment = new UserActivity(json);
+            var segment = new UserDailyActivity(json);
 
             Segments.Add(segment);
 

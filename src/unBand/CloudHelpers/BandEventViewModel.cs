@@ -50,7 +50,7 @@ namespace unBand.CloudHelpers
 
             Event = cloudEvent;
 
-            if (Event is UserActivity)
+            if (Event is UserDailyActivity)
             {
                 // this event type is considered "Loaded" already since we get all of the information
                 // from the initial API call
