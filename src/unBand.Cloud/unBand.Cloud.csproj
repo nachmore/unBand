@@ -58,6 +58,7 @@
     <Compile Include="Events\UserWorkoutEvent.cs" />
     <Compile Include="Events\UserGuidedWorkoutEvent.cs" />
     <Compile Include="Events\RunEvent.cs" />
+    <Compile Include="Exporters\EventExporters\UserDailyActivityToCSVExporter.cs" />
     <Compile Include="Exporters\EventExporters\EventInfoToCSVExporter.cs" />
     <Compile Include="Exporters\EventExporters\Helpers\ExerciseSequenceDumper.cs" />
     <Compile Include="Exporters\EventExporters\Helpers\BaseSequenceDumper.cs" />

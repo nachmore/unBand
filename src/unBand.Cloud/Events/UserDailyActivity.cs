@@ -16,23 +16,11 @@ namespace unBand.Cloud
     {
         private static List<IEventExporter> _exporters;
 
-        public override List<IEventExporter> Exporters
-        {
-            get
-            {
-                if (_exporters == null)
-                {
-                    _exporters = new List<IEventExporter>() { };
-                    _exporters.AddRange(base.Exporters);
-                }
-
-                return _exporters;
-            }
-        }
+        public override List<IEventExporter> Exporters { get { return new List<IEventExporter>() { UserDailyActivityToCSVExporter.Instance }; } }
 
         public override BandEventExpandType[] Expanders
         {
-            get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences }; }
+            get { return new BandEventExpandType[] { }; } // nothing to expand for this type
         }
 
         public List<BandEventBase> Segments { get; private set; }
@@ -46,6 +34,7 @@ namespace unBand.Cloud
         public int StepsTaken { get; set; }
         public int UvExposure { get; set; }
         public int TotalDistance { get; set; }
+        public int ItCal { get; set; }
 
         private int _aggregateAverageHeartRate = 0;
         private int _averageHeartRateSampleCount = 0;
@@ -86,9 +75,9 @@ namespace unBand.Cloud
             UvExposure = eventSummary.UvExposure;
             TotalDistance = eventSummary.TotalDistance;
             DayId = StartTime; // TODO: we could 0 this out to be 0:00 UTC based like other activities?
-            
+            ItCal = eventSummary.ItCal;
+
             // Location is always null, so ignore for now
-            // ItCal always seems to be 0?
 
             EventType = BandEventType.UserDailyActivity;
         }
