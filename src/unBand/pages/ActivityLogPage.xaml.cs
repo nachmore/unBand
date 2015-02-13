@@ -1,4 +1,7 @@
-﻿using MahApps.Metro.Controls;
+﻿using GMap.NET;
+using GMap.NET.MapProviders;
+using GMap.NET.WindowsPresentation;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Cargo.Client;
 using Microsoft.Live;
@@ -26,6 +29,7 @@ using unBand.BandHelpers;
 using unBand.Cloud;
 using unBand.Cloud.Exporters.EventExporters;
 using unBand.CloudHelpers;
+using unBand.MapHelpers;
 
 namespace unBand.pages
 {
@@ -186,6 +190,9 @@ namespace unBand.pages
             {
                 await item.LoadFull();
             }
+
+            if(item.Event.EventType == BandEventType.Running && item.HasGPSPoints)
+                UpdateMap(item.Event as RunEvent);
         }
         private void btnExportToGPX_Click(object sender, RoutedEventArgs e)
         {
@@ -206,6 +213,53 @@ namespace unBand.pages
                 {
                     exporter.ExportToFile(runEvent, saveDialog.FileName);
                 }
+            }
+        }
+        
+        private async void UpdateMap(RunEvent inputIvent)
+        {
+            MapControl.Markers.Clear();
+            MapControl.MapProvider = GMapProviders.GoogleMap;
+            MapControl.Manager.Mode = GMap.NET.AccessMode.ServerOnly;
+
+            var points = inputIvent.MapPoints.Select(x => new PointLatLng(Convert.ToDouble(x.Latitude), Convert.ToDouble(x.Longitude)));
+
+            foreach (var pnt in points)
+            {
+                var mrk = new GMapMarker(pnt);
+
+                if (points.First() == pnt)
+                    mrk.Shape = MapShapes.GetStartShape("Start!");
+                else if (points.Last() == pnt)
+                    mrk.Shape = MapShapes.GetEndShape("End!");
+                else
+                    mrk.Shape = MapShapes.GetDataPointShape();
+
+                mrk.ZIndex = 1000;
+                MapControl.Markers.Add(mrk);
+            }
+
+            MapControl.IgnoreMarkerOnMouseWheel = true;
+            MapControl.DragButton = MouseButton.Left;
+            MapControl.ZoomAndCenterMarkers(null);
+        }
+
+        private void RdbMap_Click(object sender, RoutedEventArgs e)
+        {
+            var SrcBtn = sender as RadioButton;
+
+            switch (SrcBtn.Name)
+            {
+                case "RdbMapHybrid":
+                    MapControl.MapProvider = GMapProviders.GoogleHybridMap;
+                    break;
+                case "RdbMapSatellite":
+                    MapControl.MapProvider = GMapProviders.GoogleSatelliteMap;
+                    break;
+                case "RdbMapTerrain":
+                default:
+                    MapControl.MapProvider = GMapProviders.GoogleTerrainMap;
+                    break;
             }
         }
 
