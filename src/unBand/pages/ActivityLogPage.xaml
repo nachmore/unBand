@@ -134,18 +134,20 @@
 
                     <Grid Visibility="{Binding Event.EventType, ConverterParameter=Running, Converter={StaticResource PropValueToVisibilityConverter}}">
 
-                        <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="false">
+                        <Grid local:DesignHelpers.IsHidden="false">
                             <Image Source="/assets/activity_details/map_gps.png" Height="32" Width="32" Margin="3,10,315,231"/>
-                            <TextBlock TextWrapping="Wrap" Margin="40,0,0,0">Your GPS was on and recording during this run.<LineBreak/>You can export these points to a generic GPX file which can be opened or imported into a variety of other services.</TextBlock>
+                            <TextBlock TextWrapping="Wrap" Margin="40,0,0,0">You can export running data to a generic GPX or TCX file which can be opened or imported into a variety of other services.</TextBlock>
 
-                            <Button Click="btnExportToGPX_Click" Content="Export GPX File" Margin="40,55,206,192"/>
+                            <StackPanel Orientation="Horizontal" Margin="40,55,0,192">
+                                <Button Click="btnExportToGPX_Click" Visibility="{Binding HasGPSPoints, Converter={StaticResource BoolToVisibilityConverter}}" Content="Export GPX File" Margin="0,0,10,0" />
+                                <Button Click="btnExportToTCX_Click" Content="Export TCX File" />
+                            </StackPanel>
+                            
+                            <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource OppositeBoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true" Margin="0,95,0,0">
+                                <TextBlock TextWrapping="Wrap" Margin="40,0,0,0"><Run Text="No GPS location points recorded during this run"/></TextBlock>
+                            </Grid>
                         </Grid>
-
-                        <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource OppositeBoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true">
-                            <Image Source="/assets/activity_details/map_gps.png" Height="32" Width="32" Margin="0,0,318,241"/>
-                            <TextBlock TextWrapping="Wrap" Margin="37,6,-2,247"><Run Text="No GPS location points recorded during this run"/></TextBlock>
-                        </Grid>
-
+                        
                     </Grid>
 
                 </StackPanel>
