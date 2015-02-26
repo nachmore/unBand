@@ -16,21 +16,35 @@ namespace unBand.CargoClientEditor
         private const string CARGO_DLL_NAME = "Microsoft.Cargo.Client.Desktop8.dll";
         public const string UNBAND_CARGO_DLL_NAME = "Microsoft.Cargo.Client.Desktop8.unBand.dll";
 
-        public static string GetUnBandCargoDll(string unBandCargoDll = null)
+        private static List<string> _bandDlls = new List<string>()
         {
-            var officialDll = GetOfficialCargoDll();
+            "Microsoft.Band.Admin.Desktop.dll",
+            "Microsoft.Band.Admin.dll",
+            "Microsoft.Band.Desktop.dll",
+            "Microsoft.Band.dll"
+        };
 
-            if (unBandCargoDll == null)
+        public static string GetUnBandCargoDll(string unbandBandDllPath = null)
+        {
+            var officialDllPath = GetOfficialBandDllPath();
+
+            if (unbandBandDllPath == null)
             {
-                unBandCargoDll = Path.Combine(GetUnBandAppDataDir(), UNBAND_CARGO_DLL_NAME);
+                unbandBandDllPath = GetUnBandAppDataDir();
             }
 
-            if (!(File.Exists(unBandCargoDll) && (GetVersion(officialDll) == GetVersion(unBandCargoDll))))
+            foreach (var dllName in _bandDlls)
             {
-                CreateUnBandCargoDll(officialDll, unBandCargoDll);
-            }
+                var officialDll = Path.Combine(officialDllPath, dllName);
+                var unbandDll = Path.Combine(unbandBandDllPath, dllName);
 
-            return unBandCargoDll;
+                if (!(File.Exists(unbandDll) && GetVersion(officialDll) == GetVersion(unbandDll)))
+                {
+                    CreateUnBandCargoDll(officialDll, unbandDll);
+                }
+            }
+            
+            return unbandBandDllPath;
         }
 
         private static void CreateUnBandCargoDll(string officialDll, string unBandCargoDll)
@@ -72,9 +86,16 @@ namespace unBand.CargoClientEditor
 
         private static string GetVersion(string dllPath)
         {
-            var assembly = AssemblyDefinition.ReadAssembly(dllPath);
+            try
+            {
+                var assembly = AssemblyDefinition.ReadAssembly(dllPath);
 
-            return assembly.Name.Version.ToString();
+                return assembly.Name.Version.ToString();
+            }
+            catch 
+            {
+                return "Invalid DLL";
+            }
         }
 
         private static string GetUnBandAppDataDir()
@@ -88,7 +109,7 @@ namespace unBand.CargoClientEditor
             return Path.Combine(dir);
         }
 
-        private static string GetOfficialCargoDll()
+        public static string GetOfficialBandDllPath()
         {
             // let's try and find the dll
             var dllLocations = new List<string>()
@@ -96,14 +117,15 @@ namespace unBand.CargoClientEditor
                     GetDllLocationFromRegistry(),
 
                     // fallback path
-                    Path.Combine(GetProgramFilesx86(), "Microsoft Band Sync", CARGO_DLL_NAME)
+                    Path.Combine(GetProgramFilesx86(), "Microsoft Band Sync")
                 };
 
             foreach (string location in dllLocations)
             {
-                if (File.Exists(location))
+                var path = Path.GetDirectoryName(location);
+                if (Directory.Exists(path))
                 {
-                    return location;
+                    return path;
                 }
             }
 
@@ -115,8 +137,8 @@ namespace unBand.CargoClientEditor
             var sid = System.Security.Principal.WindowsIdentity.GetCurrent().User.ToString();
 
             var regRoot = Microsoft.Win32.RegistryHive.LocalMachine;
-            string regKeyName = @"SOFTWARE\MICROSOFT\Windows\CurrentVersion\Installer\UserData\" + sid + @"\Components\1C4501C98808F3A5CBF549E17D39406F";
-            string regValueName = "D9E6F917E27BA454F9E448BCA68562DE";
+            string regKeyName = @"SOFTWARE\MICROSOFT\Windows\CurrentVersion\Installer\UserData\" + sid + @"\Components\23439AC101C46D55BBCE6A082085E137";
+            string regValueName = "6A5C0F782DABC24499D24EB7E14D7951";
 
             RegistryKey regKey;
 

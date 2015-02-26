@@ -182,3 +182,7 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 src/Microsoft.Cargo.Client.Desktop8.unBand.dll
+src/Microsoft.Band.Admin.Desktop.dll
+src/Microsoft.Band.Desktop.dll
+src/Microsoft.Band.dll
+src/Microsoft.Band.Admin.dll
