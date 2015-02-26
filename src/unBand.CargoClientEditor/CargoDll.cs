@@ -13,15 +13,12 @@ namespace unBand.CargoClientEditor
     public static class CargoDll
     {
 
-        private const string CARGO_DLL_NAME = "Microsoft.Cargo.Client.Desktop8.dll";
-        public const string UNBAND_CARGO_DLL_NAME = "Microsoft.Cargo.Client.Desktop8.unBand.dll";
-
         private static List<string> _bandDlls = new List<string>()
         {
-            "Microsoft.Band.Admin.Desktop.dll",
-            "Microsoft.Band.Admin.dll",
-            "Microsoft.Band.Desktop.dll",
-            "Microsoft.Band.dll"
+            "Microsoft.Band.Admin.Desktop",
+            "Microsoft.Band.Admin",
+            "Microsoft.Band.Desktop",
+            "Microsoft.Band"
         };
 
         public static string GetUnBandCargoDll(string unbandBandDllPath = null)
@@ -35,8 +32,8 @@ namespace unBand.CargoClientEditor
 
             foreach (var dllName in _bandDlls)
             {
-                var officialDll = Path.Combine(officialDllPath, dllName);
-                var unbandDll = Path.Combine(unbandBandDllPath, dllName);
+                var officialDll = Path.Combine(officialDllPath, dllName + ".dll");
+                var unbandDll = Path.Combine(unbandBandDllPath, dllName + ".unband.dll");
 
                 if (!(File.Exists(unbandDll) && GetVersion(officialDll) == GetVersion(unbandDll)))
                 {

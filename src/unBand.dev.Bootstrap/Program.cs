@@ -37,7 +37,7 @@ namespace unBand.dev.Bootstrap
             foreach (var file in files)
             {
                 var destination = Path.Combine(destinationDir, file.Name);
-                File.Copy(file.FullName, destination);
+                File.Copy(file.FullName, destination, overwrite: true);
             }
         }
 
