@@ -181,7 +181,7 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
-src/Microsoft.Band.Admin.Desktop.unband.dll
-src/Microsoft.Band.Desktop.unband.dll
-src/Microsoft.Band.unband.dll
-src/Microsoft.Band.Admin.unband.dll
+Microsoft.Band.Admin.Desktop.dll
+Microsoft.Band.Desktop.dll
+Microsoft.Band.dll
+Microsoft.Band.Admin.dll

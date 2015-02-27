@@ -100,17 +100,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MahApps.Metro.1.0.1-ALPHA008\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Band.Admin.Desktop.unband">
-      <HintPath>..\Microsoft.Band.Admin.Desktop.unband.dll</HintPath>
+    <Reference Include="Microsoft.Band">
+      <HintPath>..\Microsoft.Band.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Band.Admin.unband">
-      <HintPath>..\Microsoft.Band.Admin.unband.dll</HintPath>
+    <Reference Include="Microsoft.Band.Admin">
+      <HintPath>..\Microsoft.Band.Admin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Band.Desktop.unband">
-      <HintPath>..\Microsoft.Band.Desktop.unband.dll</HintPath>
+    <Reference Include="Microsoft.Band.Admin.Desktop">
+      <HintPath>..\Microsoft.Band.Admin.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Band.unband">
-      <HintPath>..\Microsoft.Band.unband.dll</HintPath>
+    <Reference Include="Microsoft.Band.Desktop">
+      <HintPath>..\Microsoft.Band.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack">
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
@@ -376,10 +376,6 @@
     <ProjectReference Include="..\unBand.CargoClientEditor\unBand.CargoClientEditor.csproj">
       <Project>{3bd070e3-1d3c-437d-b079-81879654f228}</Project>
       <Name>unBand.CargoClientEditor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\unBand.CargoClientExtender\unBand.CargoClientExtender.csproj">
-      <Project>{e80bf517-3574-48a1-a419-22427d087586}</Project>
-      <Name>unBand.CargoClientExtender</Name>
     </ProjectReference>
     <ProjectReference Include="..\unBand.Cloud\unBand.Cloud.csproj">
       <Project>{c65bd296-f5e1-400e-886e-bc3def6476ef}</Project>
