@@ -21,7 +21,7 @@ namespace unBand.CargoClientEditor
             "Microsoft.Band"
         };
 
-        public static string GetUnBandCargoDll(string dllName, string outputPath = null) 
+        public static string GetUnBandBandDll(string dllName, string outputPath = null) 
         {
             if (outputPath == null)
             {
@@ -31,7 +31,7 @@ namespace unBand.CargoClientEditor
             var officialDllPath = GetOfficialBandDllPath();
 
             var officialDll = Path.Combine(officialDllPath, dllName + ".dll");
-            var unbandDll = Path.Combine(outputPath, dllName + ".unband.dll");
+            var unbandDll = Path.Combine(outputPath, dllName + ".dll");
 
             if (!(File.Exists(unbandDll) && GetVersion(officialDll) == GetVersion(unbandDll)))
             {
@@ -50,7 +50,7 @@ namespace unBand.CargoClientEditor
 
             foreach (var dllName in _bandDlls)
             {
-                GetUnBandCargoDll(dllName, unbandBandDllPath);
+                GetUnBandBandDll(dllName, unbandBandDllPath);
 
             }
             

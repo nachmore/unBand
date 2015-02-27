@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
+using System.Windows.Threading;
 using unBand.CargoClientEditor;
 using unBand.CargoClientExtender;
 
@@ -138,8 +139,16 @@ namespace unBand.BandHelpers
 
         public static void Create()
         {
+            //AppDomain.CurrentDomain.SetupInformation.DisallowApplicationBaseProbing = true;
+            //AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_AssemblyResolve;
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
+            /*
+            AppDomain.CurrentDomain.Load("Microsoft.Band.dll");
+            AppDomain.CurrentDomain.Load("Microsoft.Band.Desktop.dll");
+            AppDomain.CurrentDomain.Load("Microsoft.Band.Admin.Desktop.dll");
+            AppDomain.CurrentDomain.Load("Microsoft.Band.Admin.dll");
+            */
             Instance = new BandManager();
 
             Instance.InitializeCargoLogging();
@@ -149,26 +158,45 @@ namespace unBand.BandHelpers
         {
             if (args.Name.StartsWith("Microsoft.Band"))
             {
-                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+                // an exception will be thrown on Microsoft.Band.Desktop.resources, ignore it
+                try
+                {
+                    //AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+                    var curDir = Directory.GetCurrentDirectory();
+                    Directory.SetCurrentDirectory(CargoDll.GetOfficialBandDllPath());
 
-                return Assembly.LoadFrom(CargoDll.GetUnBandCargoDll(args.Name.Substring(0, args.Name.IndexOf(','))));
+                    var asm = Assembly.LoadFrom(CargoDll.GetUnBandBandDll(args.Name.Substring(0, args.Name.IndexOf(','))));
+
+                    Directory.SetCurrentDirectory(curDir);
+
+                    return asm;
+                }
+                catch
+                {
+                    // TODO: log exception?
+                }
             }
 
             return null;
         }
 
+        private static DispatcherTimer _timer;
+        
         public static void Start() 
         {
             if (Instance == null)
                 Create();
 
-            // While I don't love the whole Timer(1) thing, it simply means that we trigger the first run immediately
+            // While I don't love the whole Interval = 1ms thing, it simply means that we trigger the first run immediately
             // TODO: Since this could potentially cause race conditions if someone really wanted to garauntee order
             //       of execution we could split out object creation from Start().
-            Timer timer = new Timer(1);
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(1);
 
-            timer.Elapsed += async (sender, e) =>
+            _timer.Tick += async (sender, e) =>
             {
+                _timer.IsEnabled = false;
+
                 if (!Instance.IsConnected)
                 {
                     await Instance.ConnectDevice();
@@ -185,12 +213,11 @@ namespace unBand.BandHelpers
                 }
 
                 // only reset once we finished processing
-                timer.Interval = 100000;
-                timer.Start();
+                _timer.Interval = TimeSpan.FromSeconds(10);
+                _timer.IsEnabled = true;
             };
 
-            timer.AutoReset = false;
-            timer.Start();
+            _timer.Start();
         }
 
         private async Task ConnectDevice()

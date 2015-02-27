@@ -11,7 +11,7 @@
         <Grid Visibility="{Binding IsDesktopSyncAppRunning, ConverterParameter=true, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true">
             <StackPanel Margin="0,25,0,0">
                 <TextBlock FontSize="24">Searching for your Band...</TextBlock>
-                <TextBlock FontSize="16" Margin="0,10,0,0" TextWrapping="Wrap">If you're Band is on your hand now is the time to plug it in! Alternatively, you can still export your data without your Band.</TextBlock>
+                <TextBlock FontSize="16" Margin="0,10,0,0" TextWrapping="Wrap">If your Band is on your hand now is the time to plug it in! Alternatively, you can still export your data without your Band.</TextBlock>
             </StackPanel>
             <Controls:ProgressRing IsActive="True" Margin="120,200,120,70"></Controls:ProgressRing>
         </Grid>
