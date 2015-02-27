@@ -17,10 +17,10 @@ namespace unBand
         private static BitmapImage _imageSleeping = new BitmapImage(new Uri("/assets/icons/activity_sleep.png", UriKind.RelativeOrAbsolute));
         private static BitmapImage _imageRunning = new BitmapImage(new Uri("/assets/icons/activity_run.png", UriKind.RelativeOrAbsolute));
         private static BitmapImage _imageDailyActivity = new BitmapImage(new Uri("/assets/icons/user_activity.png", UriKind.RelativeOrAbsolute));
+        private static BitmapImage _imageBiking = new BitmapImage(new Uri("/assets/icons/activity_biking.png", UriKind.RelativeOrAbsolute));
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-
             var eventType = value as BandEventType?;
 
             if (eventType == null) 
@@ -38,6 +38,8 @@ namespace unBand
                     return _imageRunning;
                 case BandEventType.UserDailyActivity:
                     return _imageDailyActivity;
+                case BandEventType.Biking:
+                    return _imageBiking;
                 default:
                     return null;
             }

@@ -38,14 +38,14 @@ namespace unBand.Cloud.Exporters.EventExporters
         
         public async Task ExportToFile(BandEventBase eventBase, string filePath)
         {
-            if (!(eventBase is RunEvent))
+            if (!(eventBase is IBandEventWithMapPoints))
             {
-                throw new ArgumentException("eventBase must be of type RunEvent to use the GPXExporter");
+                throw new ArgumentException("eventBase must implement IBandEventWithMapPoints to use the GPXExporter");
             }
 
-            var runEvent = eventBase as RunEvent;
+            var eventWithMapPoints = eventBase as IBandEventWithMapPoints;
 
-            if (!runEvent.HasGPSPoints)
+            if (!eventWithMapPoints.HasGPSPoints)
             {
                 // nothing to do here, no point in piping out an empty file
                 return;
@@ -71,9 +71,9 @@ namespace unBand.Cloud.Exporters.EventExporters
                     new XAttribute("creator", "unBand - http://unband.nachmore.com/"),
                     new XAttribute("version", "1.1"),
                     new XElement(nsRoot + "metadata",
-                        new XElement(nsRoot + "name", runEvent.Name),
-                        new XElement(nsRoot + "description", runEvent.EventID),
-                        new XElement(nsRoot + "time", runEvent.StartTime.ToUniversalTime().ToString("s"))
+                        new XElement(nsRoot + "name", eventBase.Name),
+                        new XElement(nsRoot + "description", eventBase.EventID),
+                        new XElement(nsRoot + "time", eventBase.StartTime.ToUniversalTime().ToString("s"))
                     ),
                     new XElement(nsRoot + "trk",
                         new XElement(nsRoot + "src", "Microsoft Band"),
@@ -81,12 +81,12 @@ namespace unBand.Cloud.Exporters.EventExporters
                     )
                 );
 
-                foreach (var mp in runEvent.MapPoints)
+                foreach (var mp in eventWithMapPoints.MapPoints)
                 {
                     xroot.Element(nsRoot + "trk").Element(nsRoot + "trkseg").Add(
                         new XElement(nsRoot + "trkpt",
                             new XElement(nsRoot + "ele", mp.Altitude.ToString("0.0000000000000000", new CultureInfo("en-US", false))),
-                            new XElement(nsRoot + "time", runEvent.StartTime.AddSeconds(mp.SecondsSinceStart).ToUniversalTime().ToString("s")),
+                            new XElement(nsRoot + "time", eventBase.StartTime.AddSeconds(mp.SecondsSinceStart).ToUniversalTime().ToString("s")),
                             new XElement(nsRoot + "geoidheight", mp.Altitude.ToString("0.0000000000000000", new CultureInfo("en-US", false))),
                             new XElement(nsRoot + "extensions",
                                 new XElement(gpxtpx + "TrackPointExtension",

@@ -187,24 +187,27 @@ namespace unBand.pages
                 await item.LoadFull();
             }
         }
+
         private void btnExportToGPX_Click(object sender, RoutedEventArgs e)
         {
-            var runEvent = ((BandEventViewModel)lstEvents.SelectedItem).Event as RunEvent;
+            var eventWithMapPoints = ((BandEventViewModel)lstEvents.SelectedItem).Event as IBandEventWithMapPoints;
 
-            if (runEvent != null)
+            if (eventWithMapPoints != null)
             {
+                var eventBase = (((BandEventViewModel)lstEvents.SelectedItem).Event as BandExerciseEventBase);
+
                 var exporter = GPXExporter.Instance;
 
                 var saveDialog = new SaveFileDialog();
                 saveDialog.AddExtension = true;
-                saveDialog.FileName = "run_" + runEvent.EventID + ".gpx"; // TODO: better auto-generated name?
+                saveDialog.FileName = eventBase.EventType + "_" + eventBase.EventID + ".gpx"; // TODO: better auto-generated name?
                 saveDialog.DefaultExt = exporter.DefaultExtension;
 
                 var result = saveDialog.ShowDialog();
 
                 if (result == true)
                 {
-                    exporter.ExportToFile(runEvent, saveDialog.FileName);
+                    exporter.ExportToFile(eventWithMapPoints as BandEventBase, saveDialog.FileName);
                 }
             }
         }

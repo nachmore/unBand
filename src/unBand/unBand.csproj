@@ -411,6 +411,7 @@
     <Resource Include="assets\activity_details\heartrate.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="assets\icons\activity_biking.png" />
     <Resource Include="assets\icons\user_activity.png" />
     <Resource Include="assets\actions\load_activities.png" />
     <Resource Include="assets\actions\export_full.png" />

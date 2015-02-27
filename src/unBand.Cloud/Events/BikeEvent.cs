@@ -13,43 +13,39 @@ namespace unBand.Cloud
 {
     // for now this looks to be a superset of ExerciseEventSequenceItem. If it diverges significantly
     // then we'll need to split ExerciseEventSequenceItem back into a Base abstract class.
-    public class RunEventSequenceItem : ExerciseEventSequenceItem
+    public class BikeEventSequenceItem : ExerciseEventSequenceItem
     {
         public int TotalDistance { get; private set; }
         public int SplitDistance { get; private set; }
-        public int SplitPace { get; private set; }
-        public int OverallPace { get; private set; }
         public int ActualDistance { get; private set; }
         public int PausedTime { get; private set; }
         
-        public RunEventSequenceItem(JObject json) : base(json)
+        public BikeEventSequenceItem(JObject json) : base(json)
         {
             dynamic rawSequence = (dynamic)json;
 
             TotalDistance = rawSequence.TotalDistance;
             SplitDistance = rawSequence.SplitDistance;
-            SplitPace = rawSequence.SplitPace;
-            OverallPace = rawSequence.OverallPace;
             ActualDistance = rawSequence.ActualDistance;
             PausedTime = rawSequence.PausedTime;
         }
     }
 
-    public class RunEventConverter : TypeConverter 
+    public class BikeEventConverter : TypeConverter 
     {
         public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
         {
             if (value is JObject) 
             {
-                return new RunEvent((JObject)value);
+                return new BikeEvent((JObject)value);
             }
 
             return null;
         }
     }
 
-    [TypeConverter(typeof(RunEventConverter))]
-    public class RunEvent : BandExerciseEventBase, IBandEventWithMapPoints
+    [TypeConverter(typeof(BikeEventConverter))]
+    public class BikeEvent : BandExerciseEventBase, IBandEventWithMapPoints
     {
 
         private static List<IEventExporter> _exporters;
@@ -81,7 +77,7 @@ namespace unBand.Cloud
         /// </summary>
         public bool HasGPSPoints { get; set; }
 
-        public override string FriendlyEventType { get { return "Run"; } }
+        public override string FriendlyEventType { get { return "Biking"; } }
         public override string PrimaryMetric { get { return (TotalDistance / 100000.0).ToString("N", CultureInfo.InvariantCulture) + "km"; } }
 
         public int TotalDistance { get; set; }
@@ -89,7 +85,7 @@ namespace unBand.Cloud
         public int WayPointDistance { get; set; }
         public int Pace { get; set; }
 
-        public RunEvent(JObject json) : base(json)
+        public BikeEvent(JObject json) : base(json)
         {
             MapPoints = new List<BandMapPoint>();
             
@@ -98,7 +94,6 @@ namespace unBand.Cloud
             TotalDistance     = eventSummary.TotalDistance;
             ActualDistance    = eventSummary.ActualDistance;
             WayPointDistance  = eventSummary.WayPointDistance;
-            Pace              = eventSummary.Pace;
         }
 
         public override Dictionary<string, object> DumpBasicEventData()
@@ -121,7 +116,7 @@ namespace unBand.Cloud
 
             foreach (dynamic sequenceData in fullEvent.value[0].Sequences)
             {
-                Sequences.Add(new RunEventSequenceItem(sequenceData));
+                Sequences.Add(new BikeEventSequenceItem(sequenceData));
             }
 
             // parse out map points

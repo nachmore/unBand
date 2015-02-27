@@ -118,7 +118,8 @@ namespace unBand.Cloud
             {"Microsoft.Khronos.Cloud.Ods.Data.Entities.SleepEventDTO", typeof(SleepEvent)},
             {"Microsoft.Khronos.Cloud.Ods.Data.Entities.UserRunEventDTO", typeof(RunEvent)},
             {"Microsoft.Khronos.Cloud.Ods.Data.Entities.UserGuidedWorkoutEventDTO", typeof(UserGuidedWorkoutEvent)},
-            {"Microsoft.Khronos.Cloud.Ods.Data.Entities.UserWorkoutEventDTO", typeof(UserWorkoutEvent)}
+            {"Microsoft.Khronos.Cloud.Ods.Data.Entities.UserWorkoutEventDTO", typeof(UserWorkoutEvent)},
+            {"Microsoft.Khronos.Cloud.Ods.Data.Entities.UserBikeEventDTO", typeof(BikeEvent)}
         };
 
         internal static BandEventBase FromDynamic(dynamic rawBandEvent)

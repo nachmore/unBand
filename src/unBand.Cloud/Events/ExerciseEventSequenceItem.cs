@@ -12,6 +12,7 @@ namespace unBand.Cloud
         Workout,
         GuidedWorkout,
         Running,
+        Biking,
     }
 
     public class ExerciseEventSequenceItem : EventBaseSequenceItem

@@ -24,6 +24,7 @@ namespace unBand.Cloud
         Running,
         GuidedWorkout,
         Workout,
+        Biking,
         UserDailyActivity
     }
 

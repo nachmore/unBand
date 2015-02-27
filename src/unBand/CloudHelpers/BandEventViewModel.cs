@@ -66,7 +66,7 @@ namespace unBand.CloudHelpers
 
                 Loaded = true;
 
-                HasGPSPoints = (Event is RunEvent) && ((RunEvent)Event).HasGPSPoints;
+                HasGPSPoints = (Event is IBandEventWithMapPoints) && ((IBandEventWithMapPoints)Event).HasGPSPoints;
             }
         }
 

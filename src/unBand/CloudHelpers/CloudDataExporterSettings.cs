@@ -19,6 +19,7 @@ namespace unBand.CloudHelpers
         public bool IncludeWorkouts { get; set; }
         public bool IncludeSleep { get; set; }
         public bool IncludeRuns { get; set; }
+        public bool IncludeBiking { get; set; }
 
         /// <summary>
         /// If true, overrides ExportCount
@@ -37,6 +38,7 @@ namespace unBand.CloudHelpers
             IncludeSleep = true;
             IncludeSteps = true;
             IncludeWorkouts = true;
+            IncludeBiking = true;
 
             ExportAll = true;
             ExportCount = 100;
