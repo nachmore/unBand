@@ -21,6 +21,10 @@ namespace unBand.BandHelpers
 
         public CargoStrapp Strapp { get; private set; }
 
+        public WriteableBitmap TileImage { get; private set; }
+
+        private BandTiles _tiles;
+
         public bool IsDefault
         {
             get
@@ -34,12 +38,12 @@ namespace unBand.BandHelpers
             get { return Strapp.StrappID == STARBUCKS_GUID; }
         }
 
-        private BandTiles _tiles;
-
         public BandStrapp(BandTiles tiles, CargoStrapp strapp)
         {
             Strapp = strapp;
             _tiles = tiles;
+
+            TileImage = strapp.Image.ToWriteableBitmap();
         }
 
         internal void SetIcon(string fileName)

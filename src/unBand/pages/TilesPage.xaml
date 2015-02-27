@@ -48,7 +48,7 @@
                         <DataTemplate>
                             <Canvas Margin="0,5,0,5" Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.Theme.BaseColor}" Height="40" Width="40">
                                 <Ellipse Canvas.Left="4" Canvas.Top="4" Height="32" Width="32" Fill="Green" Visibility="{Binding IsStarbucks, Converter={StaticResource BoolToVisibilityConverter}}"></Ellipse>
-                                <Image Canvas.Left="4" Canvas.Top="4" Source="{Binding Strapp.TileImage}" Height="32" Width="32" ToolTip="{Binding Strapp.Name}"></Image>
+                                <Image Canvas.Left="4" Canvas.Top="4" Source="{Binding TileImage}" Height="32" Width="32" ToolTip="{Binding Strapp.Name}"></Image>
                             </Canvas>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
