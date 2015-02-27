@@ -209,6 +209,28 @@ namespace unBand.pages
             }
         }
 
+        private void btnExportToTCX_Click(object sender, RoutedEventArgs e)
+        {
+            var runEvent = ((BandEventViewModel)lstEvents.SelectedItem).Event as RunEvent;
+
+            if (runEvent != null)
+            {
+                var exporter = TCXExporter.Instance;
+
+                var saveDialog = new SaveFileDialog();
+                saveDialog.AddExtension = true;
+                saveDialog.FileName = "run_" + runEvent.EventID + ".tcx"; // TODO: better auto-generated name?
+                saveDialog.DefaultExt = exporter.DefaultExtension;
+
+                var result = saveDialog.ShowDialog();
+
+                if (result == true)
+                {
+                    exporter.ExportToFile(runEvent, saveDialog.FileName);
+                }
+            }
+        }
+
         private async void btnExportAll_Click(object sender, RoutedEventArgs e)
         {
             var folderDialog = new CommonOpenFileDialog();
