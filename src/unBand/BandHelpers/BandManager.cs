@@ -14,7 +14,6 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Threading;
 using unBand.CargoClientEditor;
-using unBand.CargoClientExtender;
 
 namespace unBand.BandHelpers
 {

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Band.Admin;
 using Microsoft.Band;
+using Microsoft.Band.Personalization;
 
 namespace unBand.BandHelpers
 {
@@ -187,14 +188,21 @@ namespace unBand.BandHelpers
 
         public async Task InitAsync()
         {
-            // check if there is a MeTile to grab (otherwise you get an exception
+            // NEEDS BT VERIFICATION IF THIS STILL HAPPENS: check if there is a MeTile to grab (otherwise you get an exception
             // that will also kill the BT connection for daring to read to far beyond the Stream)
             // Need to find a workaround, since this is not exposed in the new lib: var tileId = _client.GetMeTileId();
 
-            //if (tileId > 0) 
-            //{
-            _background = (await _client.PersonalizationManager.GetMeTileImageAsync()).ToWriteableBitmap();
-            //}
+            BandImage meTileImage = null;
+
+            try
+            {
+                meTileImage = await _client.PersonalizationManager.GetMeTileImageAsync();
+            }
+            catch (InvalidOperationException)
+            { } // no background image
+
+            if (meTileImage != null)
+                _background = meTileImage.ToWriteableBitmap();
 
             _themeColor = await _client.PersonalizationManager.GetThemeAsync();
 
@@ -272,52 +280,8 @@ namespace unBand.BandHelpers
 
         private async Task SetMeTileImageAsync(WriteableBitmap wb)
         {
-            byte[] myBgr565 = ConvertToBGR565(wb);
-
-            var method = typeof(CargoClient).GetMethod("InstalledAppListStartStripSyncStart", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            await Task.Run(() => { method.Invoke(_client, null); });
-
-            method = typeof(CargoClient).GetMethod("ProtocolWrite", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            await Task.Run(() => { method.Invoke(_client, new object[] { (ushort)49937, new byte[] { 255, 255, 255, 255 }, myBgr565, 30000, false, 2 }); });
-
-            method = typeof(CargoClient).GetMethod("InstalledAppListStartStripSyncEnd", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            await Task.Run(() => { method.Invoke(_client, null); });
-        }
-
-        // Using the built in WB conversion fails, but doing it manually seems to work:
-        private byte[] ConvertToBGR565(WriteableBitmap wb)
-        {
-            int width = wb.PixelWidth;
-            int height = wb.PixelHeight;
-
-            int[] pixels = new int[width * height];
-
-            short[] shortArray = new short[pixels.Length];
-            byte[] byteArray = new byte[pixels.Length * 2];
-
-            wb.CopyPixels(pixels, width * 4, 0);
-
-            for (int i = 0; i < pixels.Length; i++)
-            {
-                byte[] colors = BitConverter.GetBytes(pixels[i]);
-
-                // extract the RGB component of the pixel, bit shifted to the correct number of
-                // bits for BGR565
-                // PS: I believe this is the step where the bug in the actual Cargo library exists
-                //     since r and b seem to be transposed
-                byte r = (byte)(colors[2] >> 3);
-                byte g = (byte)(colors[1] >> 2);
-                byte b = (byte)(colors[0] >> 3);
-
-                // place the components into their correct 565 locations
-                shortArray[i] = (short)(r << 11 | g << 5 | b);
-            }
-
-            // Band commands expect an array of bytes so convert the Int16 (short) 
-            // to bytes and return that
-            Buffer.BlockCopy(shortArray, 0, byteArray, 0, byteArray.Length);
-
-            return byteArray;
+            var bandImage = wb.ToBandImage();
+            await _client.PersonalizationManager.SetMeTileImageAsync(bandImage);
         }
 
         #region INotifyPropertyChanged
