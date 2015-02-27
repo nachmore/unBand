@@ -28,6 +28,19 @@
 
                 <RichTextBox Background="Transparent" IsReadOnly="True" Margin="0,10,0,0" BorderBrush="Transparent">
                     <FlowDocument>
+                        <Paragraph FontWeight="Bold">v0.7 - Feb 27, 2015</Paragraph>
+                        <List>
+                            <ListItem>
+                                <Paragraph>Updated to work with the latest version of the Band Desktop Sync application</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>Your Daily activity summary (i.e. steps and calorie counter) can now be exported</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>Added support for Biking events</Paragraph>
+                            </ListItem>
+                        </List>
+                        
                         <Paragraph FontWeight="Bold">v0.62 - Jan 19, 2015</Paragraph>
                         <List>
                             <ListItem>

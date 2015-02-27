@@ -138,16 +138,8 @@ namespace unBand.BandHelpers
 
         public static void Create()
         {
-            //AppDomain.CurrentDomain.SetupInformation.DisallowApplicationBaseProbing = true;
-            //AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_AssemblyResolve;
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-            /*
-            AppDomain.CurrentDomain.Load("Microsoft.Band.dll");
-            AppDomain.CurrentDomain.Load("Microsoft.Band.Desktop.dll");
-            AppDomain.CurrentDomain.Load("Microsoft.Band.Admin.Desktop.dll");
-            AppDomain.CurrentDomain.Load("Microsoft.Band.Admin.dll");
-            */
             Instance = new BandManager();
 
             Instance.InitializeCargoLogging();
@@ -160,7 +152,6 @@ namespace unBand.BandHelpers
                 // an exception will be thrown on Microsoft.Band.Desktop.resources, ignore it
                 try
                 {
-                    //AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
                     var curDir = Directory.GetCurrentDirectory();
                     Directory.SetCurrentDirectory(CargoDll.GetOfficialBandDllPath());
 
