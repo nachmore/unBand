@@ -1,4 +1,5 @@
-﻿using Microsoft.Cargo.Client;
+﻿using Microsoft.Band;
+using Microsoft.Band.Admin;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace unBand.BandHelpers
 
         private bool _isConnected = false;
         private bool _isDesktopSyncAppRunning = false;
-        private DeviceInfo _deviceInfo;
+        private IBandInfo _deviceInfo;
         private CargoClient _cargoClient;
         private BandProperties _properties;
         private BandTheme _theme;
@@ -146,11 +147,11 @@ namespace unBand.BandHelpers
 
         static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            if (args.Name.StartsWith("Microsoft.Cargo.Client.Desktop8"))
+            if (args.Name.StartsWith("Microsoft.Band"))
             {
                 AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
 
-                return Assembly.LoadFrom(CargoDll.GetUnBandCargoDll());
+                return Assembly.LoadFrom(CargoDll.GetUnBandCargoDll(args.Name.Substring(0, args.Name.IndexOf(','))));
             }
 
             return null;
@@ -177,7 +178,7 @@ namespace unBand.BandHelpers
                     // make sure we still have the current device
                     var devices = await GetConnectedDevicesAsync();
 
-                    if (!devices.Any(i => i.Id == Instance._deviceInfo.Id))
+                    if (!devices.Any(i => i.Name == Instance._deviceInfo.Name))
                     {
                         Instance.IsConnected = false;
                     }
@@ -239,24 +240,24 @@ namespace unBand.BandHelpers
             }
         }
 
-        private static async Task<DeviceInfo[]> GetConnectedDevicesAsync()
+        private static async Task<IBandInfo[]> GetConnectedDevicesAsync()
         {
-            var devices = new List<DeviceInfo>();
-
+            var devices = new List<IBandInfo>();
+            
             devices.AddRange(await GetConnectedUSBDevicesAsync());
             devices.AddRange(await GetConnectedBluetoothDevicesAsync());
 
             return devices.ToArray();
         }
 
-        private static async Task<DeviceInfo[]> GetConnectedUSBDevicesAsync()
+        private static async Task<IBandInfo[]> GetConnectedUSBDevicesAsync()
         {
-            return await CargoClient.GetConnectedDevicesAsync();
+            return await BandAdminClientManager.Instance.GetBandsAsync();
         }
 
-        private static async Task<DeviceInfo[]> GetConnectedBluetoothDevicesAsync()
+        private static async Task<IBandInfo[]> GetConnectedBluetoothDevicesAsync()
         {
-            return await CargoClientExtender.BluetoothClient.GetConnectedDevicesAsync();
+            return new IBandInfo[] {};// Temporary BT removal: await CargoClientExtender.BluetoothClient.GetConnectedDevicesAsync();
         }
 
         private async Task<CargoClient> GetUSBBand()
@@ -267,7 +268,7 @@ namespace unBand.BandHelpers
             {
                 _deviceInfo = devices[0];
 
-                return await CargoClient.CreateAsync(_deviceInfo);
+                return (await BandAdminClientManager.Instance.ConnectAsync(_deviceInfo)) as CargoClient;
             }
 
             return null;
@@ -275,6 +276,7 @@ namespace unBand.BandHelpers
 
         private async Task<CargoClient> GetBluetoothBand()
         {
+            /* temporarily removed until BT can be re-enabled on the new DLLs
             var btDevices = await GetConnectedBluetoothDevicesAsync();
 
             if (btDevices != null && btDevices.Length > 0)
@@ -283,7 +285,7 @@ namespace unBand.BandHelpers
 
                 return await BluetoothClient.CreateAsync(_deviceInfo);
             }
-
+            */
             return null;
         }
 

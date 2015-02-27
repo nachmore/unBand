@@ -46,7 +46,7 @@ namespace unBand.dev.Bootstrap
             // noop if it already exists
             Directory.CreateDirectory(path);
 
-            CargoDll.GetUnBandCargoDll(path);
+            CargoDll.GenerateUnbandDlls(path);
 
             System.Console.WriteLine("Final (modified) Band Dlls placed in: " + path);
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Cargo.Client;
+﻿using Microsoft.Band;
+using Microsoft.Band.Admin;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

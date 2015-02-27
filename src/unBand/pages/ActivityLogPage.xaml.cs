@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Cargo.Client;
+using Microsoft.Band;
 using Microsoft.Live;
 using Microsoft.Live.Desktop;
 using Microsoft.Win32;

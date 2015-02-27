@@ -1,5 +1,4 @@
-﻿using Microsoft.Cargo.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Microsoft.Band.Admin;
+using Microsoft.Band;
+using Microsoft.Band.Tiles;
 
 namespace unBand.BandHelpers
 {
@@ -57,7 +59,7 @@ namespace unBand.BandHelpers
 
             var bmp = new System.Windows.Media.Imaging.WriteableBitmap(pbgra32Image);
 
-            var images = new List<System.Windows.Media.Imaging.WriteableBitmap>() { bmp, bmp };
+            var images = new List<BandIcon>() { bmp.ToBandIcon(), bmp.ToBandIcon() };
 
             Strapp.SetImageList(Strapp.StrappID, images, 0);
 

@@ -100,8 +100,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MahApps.Metro.1.0.1-ALPHA008\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Cargo.Client.Desktop8.unBand">
-      <HintPath>..\Microsoft.Cargo.Client.Desktop8.unBand.dll</HintPath>
+    <Reference Include="Microsoft.Band.Admin.Desktop.unband">
+      <HintPath>..\Microsoft.Band.Admin.Desktop.unband.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Band.Admin.unband">
+      <HintPath>..\Microsoft.Band.Admin.unband.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Band.Desktop.unband">
+      <HintPath>..\Microsoft.Band.Desktop.unband.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Band.unband">
+      <HintPath>..\Microsoft.Band.unband.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack">
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>

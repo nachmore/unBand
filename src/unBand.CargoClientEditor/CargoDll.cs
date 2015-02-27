@@ -21,10 +21,28 @@ namespace unBand.CargoClientEditor
             "Microsoft.Band"
         };
 
-        public static string GetUnBandCargoDll(string unbandBandDllPath = null)
+        public static string GetUnBandCargoDll(string dllName, string outputPath = null) 
         {
+            if (outputPath == null)
+            {
+                outputPath = GetUnBandAppDataDir();
+            }
+
             var officialDllPath = GetOfficialBandDllPath();
 
+            var officialDll = Path.Combine(officialDllPath, dllName + ".dll");
+            var unbandDll = Path.Combine(outputPath, dllName + ".unband.dll");
+
+            if (!(File.Exists(unbandDll) && GetVersion(officialDll) == GetVersion(unbandDll)))
+            {
+                CreateUnBandCargoDll(officialDll, unbandDll);
+            }
+
+            return unbandDll;
+        }
+
+        public static string GenerateUnbandDlls(string unbandBandDllPath)
+        {
             if (unbandBandDllPath == null)
             {
                 unbandBandDllPath = GetUnBandAppDataDir();
@@ -32,13 +50,8 @@ namespace unBand.CargoClientEditor
 
             foreach (var dllName in _bandDlls)
             {
-                var officialDll = Path.Combine(officialDllPath, dllName + ".dll");
-                var unbandDll = Path.Combine(unbandBandDllPath, dllName + ".unband.dll");
+                GetUnBandCargoDll(dllName, unbandBandDllPath);
 
-                if (!(File.Exists(unbandDll) && GetVersion(officialDll) == GetVersion(unbandDll)))
-                {
-                    CreateUnBandCargoDll(officialDll, unbandDll);
-                }
             }
             
             return unbandBandDllPath;
@@ -74,6 +87,13 @@ namespace unBand.CargoClientEditor
                         {
                             field.IsPublic = true;
                         }
+                    }
+                }
+                else if (type.Name == "CargoStreamReader" || type.Name == "CargoStreamWriter" || type.Name == "BufferServer")
+                {
+                    foreach (var method in type.Methods)
+                    {
+                        method.IsPublic = true;
                     }
                 }
             }

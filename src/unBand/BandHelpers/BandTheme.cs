@@ -1,5 +1,4 @@
-﻿using Microsoft.Cargo.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -11,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Microsoft.Band.Admin;
+using Microsoft.Band;
 
 namespace unBand.BandHelpers
 {
@@ -37,7 +38,7 @@ namespace unBand.BandHelpers
         private bool _inited;
 
         private WriteableBitmap _background;
-        private StrappColorPalette _themeColor;
+        private Microsoft.Band.Personalization.BandTheme _themeColor;
 
         private SolidColorBrush _baseColor;
         private SolidColorBrush _highlightColor;
@@ -188,14 +189,14 @@ namespace unBand.BandHelpers
         {
             // check if there is a MeTile to grab (otherwise you get an exception
             // that will also kill the BT connection for daring to read to far beyond the Stream)
-            var tileId = _client.GetMeTileId();
+            // Need to find a workaround, since this is not exposed in the new lib: var tileId = _client.GetMeTileId();
 
-            if (tileId > 0) 
-            {
-                _background = _client.GetMeTileBmp();
-            }
-            
-            _themeColor = await _client.GetDeviceThemeAsync();
+            //if (tileId > 0) 
+            //{
+            _background = (await _client.PersonalizationManager.GetMeTileImageAsync()).ToWriteableBitmap();
+            //}
+
+            _themeColor = await _client.PersonalizationManager.GetThemeAsync();
 
             SetColorProperties();
 
@@ -210,19 +211,12 @@ namespace unBand.BandHelpers
         /// </summary>
         private void SetColorProperties()
         {
-            BaseColor          = new SolidColorBrush(GetColorFromBGRA(_themeColor.Base));
-            HighlightColor     = new SolidColorBrush(GetColorFromBGRA(_themeColor.Highlight));
-            LowlightColor      = new SolidColorBrush(GetColorFromBGRA(_themeColor.Lowlight));
-            MutedColor         = new SolidColorBrush(GetColorFromBGRA(_themeColor.Muted));
-            SecondaryTextColor = new SolidColorBrush(GetColorFromBGRA(_themeColor.SecondaryText));
-            HighContrastColor  = new SolidColorBrush(GetColorFromBGRA(_themeColor.HighContrast));
-        }
-
-        private Color GetColorFromBGRA(uint bgra)
-        {
-            var pixel = new PixelColor() { ColorBGRA = bgra };
-
-            return Color.FromArgb(255, pixel.Red, pixel.Green, pixel.Blue);
+            BaseColor          = new SolidColorBrush(_themeColor.Base.ToColor());
+            HighlightColor     = new SolidColorBrush(_themeColor.Highlight.ToColor());
+            LowlightColor      = new SolidColorBrush(_themeColor.Lowlight.ToColor());
+            MutedColor         = new SolidColorBrush(_themeColor.Muted.ToColor());
+            SecondaryTextColor = new SolidColorBrush(_themeColor.SecondaryText.ToColor());
+            HighContrastColor  = new SolidColorBrush(_themeColor.HighContrast.ToColor());
         }
 
         /// Known Colors:
@@ -238,27 +232,14 @@ namespace unBand.BandHelpers
             if (!_inited) return;
 
             //TODO: all of these properties should be of type Color and the XAML should use a Converter
-            _themeColor.Base          = GetBGRA(BaseColor);
-            _themeColor.Highlight     = GetBGRA(HighlightColor);
-            _themeColor.Lowlight      = GetBGRA(LowlightColor);
-            _themeColor.Muted         = GetBGRA(MutedColor);
-            _themeColor.SecondaryText = GetBGRA(SecondaryTextColor);
-            _themeColor.HighContrast  = GetBGRA(HighContrastColor);
+            _themeColor.Base          = BaseColor.Color.ToBandColor();
+            _themeColor.Highlight     = HighlightColor.Color.ToBandColor();
+            _themeColor.Lowlight      = LowlightColor.Color.ToBandColor();
+            _themeColor.Muted         = MutedColor.Color.ToBandColor();
+            _themeColor.SecondaryText = SecondaryTextColor.Color.ToBandColor();
+            _themeColor.HighContrast  = HighContrastColor.Color.ToBandColor();
  
             _client.SetDeviceThemeAsync(_themeColor);
-        }
-
-        private uint GetBGRA(SolidColorBrush color)
-        {
-            var colorStruct = new PixelColor()
-            {
-                Blue = color.Color.B,
-                Green = color.Color.G,
-                Red = color.Color.R,
-                Alpha = color.Color.A
-            };
-
-            return colorStruct.ColorBGRA;
         }
 
         public async Task ResetThemeAsync()
