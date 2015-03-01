@@ -139,21 +139,44 @@
                         <Image Grid.Column="0" Grid.Row="3" Source="/assets/activity_details/heartrate.png" Height="32" Width="32"/>
                         <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Event.HeartRate.Average}" VerticalAlignment="Center"/>
                     </Grid>
-
-                    <Grid Visibility="{Binding Event.EventType, ConverterParameter=Running|Biking, Converter={StaticResource PropValueToVisibilityConverter}}">
-                        <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="false">
-                            <Image Source="/assets/activity_details/map_gps.png" Height="32" Width="32" Margin="3,10,315,231"/>
-                            <TextBlock TextWrapping="Wrap" Margin="40,0,0,0">Your GPS was on and recording during this activity.<LineBreak/>You can export these points to a generic GPX file which can be opened or imported into a variety of other services.</TextBlock>
-
-                            <Button Click="btnExportToGPX_Click" Content="Export GPX File" Margin="40,55,206,192"/>
+                    
+                    <StackPanel Visibility="{Binding Event.EventType, ConverterParameter=Running|Biking, Converter={StaticResource PropValueToVisibilityConverter}}">
+                        <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource BoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true" Height="90">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="36"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Image Grid.Column="0" Source="/assets/activity_details/map_gps.png" Height="32" Width="32" />
+                            <StackPanel Grid.Column="1">
+                                <TextBlock TextWrapping="Wrap">Your GPS was on and recording during this activity.<LineBreak/>You can export these points to a generic GPX file which can be opened or imported into a variety of other services.</TextBlock>
+                                <Button Click="btnExportToGPX_Click" Content="Export GPX File" Margin="0,10,220,0"/>
+                            </StackPanel>
                         </Grid>
 
-                        <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource OppositeBoolToVisibilityConverter}}" local:DesignHelpers.IsHidden="true">
-                            <Image Source="/assets/activity_details/map_gps.png" Height="32" Width="32" Margin="0,0,318,241"/>
-                            <TextBlock TextWrapping="Wrap" Margin="37,6,-2,247">No GPS location points recorded during this activity</TextBlock>
+                        <Grid Visibility="{Binding HasGPSPoints, Converter={StaticResource OppositeBoolToVisibilityConverter}}" Height="40">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="36"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Image Grid.Column="0" Source="/assets/activity_details/map_gps.png" Height="32" Width="32"/>
+                            <TextBlock Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center">No GPS location points recorded during this activity</TextBlock>
                         </Grid>
 
-                    </Grid>
+                        <Grid Height="80">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="36"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Column="0" Source="/assets/activity_details/map.png" Height="32" Width="32" />
+                            <StackPanel Grid.Column="1">
+                                <TextBlock TextWrapping="Wrap" Margin="0,0,0,0">You can export this activity to a "Training Center XML" (TCX) file.</TextBlock>
+                                <Button Click="btnExportToTCX_Click" Content="Export TCX File" Margin="0,10,220,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
 
                 </StackPanel>
             </Grid>

@@ -212,6 +212,32 @@ namespace unBand.pages
             }
         }
 
+        private void btnExportToTCX_Click(object sender, RoutedEventArgs e)
+        {
+            // even though this doesn't require MapPoints, implementing MapPoints is a good indicator that 
+            // this event has TCX support.
+            // TODO: do this based on supported exporters
+            var eventWithMapPoints = ((BandEventViewModel)lstEvents.SelectedItem).Event as IBandEventWithMapPoints;
+
+            if (eventWithMapPoints != null)
+            {
+                var exporter = TCXExporter.Instance;
+                var eventBase = (((BandEventViewModel)lstEvents.SelectedItem).Event as BandExerciseEventBase);
+
+                var saveDialog = new SaveFileDialog();
+                saveDialog.AddExtension = true;
+                saveDialog.FileName = eventBase.EventType + "_" + eventBase.EventID + ".tcx"; // TODO: better auto-generated name?
+                saveDialog.DefaultExt = exporter.DefaultExtension;
+
+                var result = saveDialog.ShowDialog();
+
+                if (result == true)
+                {
+                    exporter.ExportToFile(eventWithMapPoints as BandEventBase, saveDialog.FileName);
+                }
+            }
+        }
+
         private async void btnExportAll_Click(object sender, RoutedEventArgs e)
         {
             var folderDialog = new CommonOpenFileDialog();

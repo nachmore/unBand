@@ -71,6 +71,7 @@
     <Compile Include="Exporters\EventExporters\SleepSequencesToCSVExporter.cs" />
     <Compile Include="Exporters\EventExporters\GPXExporter.cs" />
     <Compile Include="Exporters\EventExporters\IEventExporter.cs" />
+    <Compile Include="Exporters\EventExporters\TCXExporter.cs" />
     <Compile Include="ODataQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Events\SleepEvent.cs" />

@@ -16,7 +16,7 @@ namespace unBand
 
             if (source == null)
             {
-                return true;
+                return System.Windows.Visibility.Visible;
             }
 
             return (!(bool)source ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed);
