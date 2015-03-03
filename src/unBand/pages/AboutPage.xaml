@@ -27,7 +27,31 @@
                 <TextBlock FontWeight="Bold" FontSize="18" Text="{Binding Path=Heading, ElementName=this}"></TextBlock>
 
                 <RichTextBox Background="Transparent" IsReadOnly="True" Margin="0,10,0,0" BorderBrush="Transparent">
-                    <FlowDocument>
+                    <FlowDocument x:Name="flowAbout">
+                        <Paragraph FontWeight="Bold">v0.72 - Mar 3, 2015</Paragraph>
+                        <List>
+                            <ListItem>
+                                <Paragraph>You can now export your activites to TCX - big thanks again to Emanuele Curati (@ProH4Ck)!</Paragraph>
+                            </ListItem>
+                            <ListItem>
+                                <Paragraph>Fixed a ton of bugs. Highlights:</Paragraph>
+                                <List Margin="0">
+                                    <ListItem>
+                                        <Paragraph>Pretty, descriptive message when the Band Desktop app is not installed / up to date</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>Biking is now included in summary exports</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>Fixed a crash for people with lots of events who tried to export full data</Paragraph>
+                                    </ListItem>
+                                    <ListItem>
+                                        <Paragraph>MSA login can be re-triggered if you cancel it by mistake</Paragraph>
+                                    </ListItem>
+                                </List>
+                            </ListItem>
+                        </List>
+
                         <Paragraph FontWeight="Bold">v0.7 - Feb 27, 2015</Paragraph>
                         <List>
                             <ListItem>
@@ -40,7 +64,7 @@
                                 <Paragraph>Added support for Biking events</Paragraph>
                             </ListItem>
                         </List>
-                        
+
                         <Paragraph FontWeight="Bold">v0.62 - Jan 19, 2015</Paragraph>
                         <List>
                             <ListItem>
