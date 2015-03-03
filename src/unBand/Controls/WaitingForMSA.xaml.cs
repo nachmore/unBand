@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using unBand.CloudHelpers;
 
 namespace unBand.Controls
 {
@@ -25,6 +26,11 @@ namespace unBand.Controls
         public WaitingForMSA()
         {
             InitializeComponent();
+        }
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            BandCloudManager.Instance.Login();
         }
     }
 }

@@ -39,23 +39,30 @@ namespace unBand.Cloud
 
         public event BandCloudAuthComplete AuthenticationCompleted;
 
+        private LiveAuthWindow _loginWindow;
+
         public BandCloudClient() { }
 
         // TODO: REMOVE Login() / Logout() / OnLiveAuthCompleted() / etc. from this library, as they should not take a dependency
         //       specifically on the Desktop Live ID library
         public void Login()
         {
+            if (_loginWindow != null)
+            {
+                _loginWindow.Close();
+            }
+
             var liveAuthClient = new LiveAuthClient("000000004811DB42");
 
             string startUrl = liveAuthClient.GetLoginUrl(new List<string>() { "service::prodkds.dns-cargo.com::MBI_SSL" });
 
-            var authForm = new LiveAuthWindow(
+            _loginWindow = new LiveAuthWindow(
                 startUrl,
                 this.OnLiveAuthCompleted,
                 "Login to the Microsoft Account associated with your Band"
             );
 
-            authForm.Login();
+            _loginWindow.Login();
         }
 
         public void Logout()
