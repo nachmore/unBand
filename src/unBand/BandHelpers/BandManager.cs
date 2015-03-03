@@ -136,6 +136,18 @@ namespace unBand.BandHelpers
         {
         }
 
+        public static bool CanRun(out string message)
+        {
+            if (!CargoDll.BandDllsExist())
+            {
+                message = "Couldn't find the latest Microsoft Band Desktop Sync app.\n\nInstall it from: http://bit.ly/desktopband and try again.\n\nSadly we're going to have to exit now.";
+                return false;
+            }
+
+            message = "";
+            return true;
+        }
+
         public static void Create()
         {
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;

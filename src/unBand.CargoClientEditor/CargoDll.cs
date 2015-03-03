@@ -21,6 +21,19 @@ namespace unBand.CargoClientEditor
             "Microsoft.Band"
         };
 
+        public static bool BandDllsExist()
+        {
+            var path = GetOfficialBandDllPath();
+
+            foreach (var dll in _bandDlls)
+            {
+                if (!File.Exists(Path.Combine(path, dll + ".dll")))
+                    return false;
+            }
+            
+            return true;
+        }
+
         public static string GetUnBandBandDll(string dllName, string outputPath = null) 
         {
             if (outputPath == null)

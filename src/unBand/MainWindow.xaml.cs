@@ -33,6 +33,17 @@ namespace unBand
 
             Telemetry.TrackEvent(TelemetryCategory.General, Telemetry.TelemetryEvent.AppLaunch, Settings.Current.Device);
 
+            string message;
+
+            if (!BandManager.CanRun(out message))
+            {
+                MessageBox.Show(message, "unBand Startup Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+
+                Application.Current.Shutdown();
+
+                return;
+            }
+
             // Create just creates the singleton - call Start() to actually get things rolling
             BandManager.Create();
         }
