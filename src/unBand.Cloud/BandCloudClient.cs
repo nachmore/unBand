@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace unBand.Cloud
@@ -33,6 +34,10 @@ namespace unBand.Cloud
         private const string GET_EVENTS_URL = "v1/Events(eventType='None')?";
         private const string GET_EVENT_URL = "v1/Events(EventId='{0}',selectedSplitDistance=100000)?$expand={1}";
         private const string GET_USER_ACTIVITY_URL = "v1/UserActivities(period='h')?";
+
+        private const int SLEEP_BETWEEN_REQUESTS = 11 * 1000;
+        private const int SLEEP_AFTER_WEBEXCEPTION = 30 * 1000;
+        private DateTime _lastRequest = DateTime.MinValue;
 
         private LiveAuthTokens _tokens;
         private BandCloudAuthentication _cloudAuthentication;
@@ -205,27 +210,53 @@ namespace unBand.Cloud
             return JObject.Parse(response);
         }
 
-        private async Task<string> AuthenticatedRequest(string relativeUrl)
+        private async Task<string> AuthenticatedRequest(string relativeUrl, int retries = 3)
         {
+            string rv = null;
+
             string url = _cloudAuthentication.EndPoint + relativeUrl;
             var request = HttpWebRequest.Create(url);
             request.Headers.Add("Authorization", _cloudAuthentication.AuthorizationHeader);
 
-            using (var response = await request.GetResponseAsync())
+            try
             {
-                using (var stream = response.GetResponseStream())
+                using (var response = await request.GetResponseAsync())
                 {
-                    using (var reader = new StreamReader(stream))
+                    using (var stream = response.GetResponseStream())
                     {
-                        var responseText = await reader.ReadToEndAsync();
+                        using (var reader = new StreamReader(stream))
+                        {
+                            var responseText = await reader.ReadToEndAsync();
 
-                        return responseText;
+                            rv = responseText;
+                        }
                     }
                 }
+
+                if (_lastRequest.Subtract(DateTime.Now).TotalSeconds < SLEEP_BETWEEN_REQUESTS)
+                {
+                    // TODO: does this have to be globally thread safe with a lock?
+                    Thread.Sleep(SLEEP_BETWEEN_REQUESTS);
+                }
+
+                _lastRequest = DateTime.Now;
+            }
+            catch (WebException e)
+            {
+                // there are multiple reasons to end up here, for now it doesn't matter which ones they are, just retry
+                if (retries == 1)
+                    throw;
+            }
+
+            // an exception occurred. Here's to the next version of C# which allows await in catch blocks
+            if (rv == null)
+            {
+                await Task.Delay(SLEEP_AFTER_WEBEXCEPTION);
+                return await AuthenticatedRequest(relativeUrl, retries - 1);
             }
 
             // TODO: exceptions etc.
-            return null;
+            return rv;
         }
     }
 

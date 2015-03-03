@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -236,6 +237,8 @@ namespace unBand.CloudHelpers
         /// </summary>
         public async Task ExportFullEventData(string folder, CloudDataExporterSettings settings, IProgress<BandCloudExportProgress> progress) 
         {
+            bool wasError = false;
+
             // TODO: there is a limit to how quickly we can hit the service. This limit should be enforced at 
             //       a global level
             var progressReport = new BandCloudExportProgress() { TotalEventsToExport = Events.Count };
@@ -250,12 +253,30 @@ namespace unBand.CloudHelpers
                 }
 
                 ++progressReport.ExportedEventsCount;
-                progressReport.StatusMessage = "Loading data for activity " + progressReport.ExportedEventsCount + "/" + Events.Count + " (" + eventViewModel.Event.FriendlyEventType + ")\n\nNote: This can take a while, we are restricted to loading full data for one Activity per 10 seconds.";
+                progressReport.StatusMessage = "Loading data for activity " + progressReport.ExportedEventsCount + "/" + Events.Count + " (" + eventViewModel.Event.FriendlyEventType + ")\n\nNote: This can take a while as the Health service imposes limits on how fast we can pull data.";
                 progress.Report(progressReport);
 
                 System.Diagnostics.Debug.WriteLine("loading " + progressReport.ExportedEventsCount);
 
-                await eventViewModel.LoadFull();
+                try {
+                    await eventViewModel.LoadFull();
+                } 
+                catch (WebException e) 
+                {
+                    progressReport.StatusMessage = "Sadly there was an error downloading your data on activity number " + progressReport.ExportedEventsCount + "/" + Events.Count + ". We're going to try to continue in just a moment...\n\nError: " + e.Message;
+                    progress.Report(progressReport);
+                    
+                    wasError = true;
+                }
+
+                // TODO: display error count?
+                // TODO: abort after X number of errors?
+                if (wasError)
+                {
+                    await Task.Delay(10000);
+
+                    wasError = false;
+                }
 
                 var bandEvent = eventViewModel.Event;
 
@@ -267,10 +288,6 @@ namespace unBand.CloudHelpers
                     // export in the background, no await
                     exporter.ExportToFile(bandEvent, filePath);
                 }
-
-                // we are restricted to loading an event / 10 seconds (approximately). See https://github.com/nachmore/unBand/issues/20
-                // for more details
-                await Task.Delay(10000);
             }
         }
 

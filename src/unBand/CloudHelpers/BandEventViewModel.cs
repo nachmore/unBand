@@ -62,7 +62,9 @@ namespace unBand.CloudHelpers
         {
             if (!Loaded)
             {
-                Event.InitFullEventData(await _cloud.GetFullEventData(Event.EventID, Event.Expanders));
+                var fullData = await _cloud.GetFullEventData(Event.EventID, Event.Expanders);
+
+                Event.InitFullEventData(fullData);
 
                 Loaded = true;
 
