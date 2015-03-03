@@ -60,7 +60,7 @@ namespace unBand.Cloud
             {
                 if (_exporters == null)
                 {
-                    _exporters = new List<IEventExporter>() { RunSequencesToCSVExporter.Instance, GPXExporter.Instance };
+                    _exporters = new List<IEventExporter>() { RunSequencesToCSVExporter.Instance, GPXExporter.Instance, TCXExporter.Instance };
                     _exporters.AddRange(base.Exporters);
                 }
 
