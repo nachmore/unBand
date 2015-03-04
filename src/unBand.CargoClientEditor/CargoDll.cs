@@ -185,11 +185,13 @@ namespace unBand.CargoClientEditor
 
             if (regKey != null)
             {
-                return regKey.GetValue(regValueName).ToString();
+                var value = regKey.GetValue(regValueName);
+
+                if (value != null)
+                    return regKey.GetValue(regValueName).ToString();
             }
 
             return "[not found] " + regKeyName + "\\" + regValueName;
-
         }
 
         private static string GetProgramFilesx86()
