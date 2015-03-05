@@ -25,18 +25,7 @@ namespace unBand.CargoClientEditor
         {
             try
             {
-                var path = GetOfficialBandDllPath();
-
-                foreach (var dll in _bandDlls)
-                {
-                    var file = Path.Combine(path, dll + ".dll");
-
-                    if (!File.Exists(file)) 
-                    {
-                        message = "Missing file: " + file;
-                        return false;
-                    }
-                }
+                GetOfficialBandDllPath();
             }
             catch (Exception e)
             {
@@ -164,16 +153,34 @@ namespace unBand.CargoClientEditor
                     Path.Combine(GetProgramFilesx86(), "Microsoft Band Sync")
                 };
 
-            foreach (string location in dllLocations)
+            string errors = "";
+
+            foreach (string path in dllLocations)
             {
-                var path = Path.GetDirectoryName(location);
-                if (Directory.Exists(path))
-                {
+                if (IsValidBandDesktopAppPath(path, ref errors))
                     return path;
+            }
+
+            throw new FileNotFoundException("Could not find Band Sync app on your machine. I looked in:\n\n" + string.Join("\n", dllLocations) + "\n\nExtra errors:\n" + errors);
+        }
+
+        private static bool IsValidBandDesktopAppPath(string path, ref string message)
+        {
+            if (!Directory.Exists(path))
+                return false;
+
+            foreach (var dll in _bandDlls)
+            {
+                var file = Path.Combine(path, dll + ".dll");
+
+                if (!File.Exists(file))
+                {
+                    message += "Could not find file: " + file + "\n";
+                    return false;
                 }
             }
 
-            throw new FileNotFoundException("Could not find Band Sync app on your machine. I looked in:\n\n" + string.Join("\n", dllLocations));
+            return true;
         }
 
         private static string GetDllLocationFromRegistry()
@@ -202,7 +209,16 @@ namespace unBand.CargoClientEditor
                 var value = regKey.GetValue(regValueName);
 
                 if (value != null)
-                    return regKey.GetValue(regValueName).ToString();
+                {
+                    var path = Path.GetDirectoryName(value.ToString());
+
+                    if (!Directory.Exists(path))
+                    {
+                        return "[key found, but dir invalid] " + path;
+                    }
+
+                    return path;
+                }
             }
 
             return "[not found] " + regKeyName + "\\" + regValueName;
