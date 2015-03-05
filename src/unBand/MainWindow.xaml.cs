@@ -33,9 +33,9 @@ namespace unBand
 
             Telemetry.TrackEvent(TelemetryCategory.General, Telemetry.TelemetryEvent.AppLaunch, Settings.Current.Device);
 
-            string message;
+            string message = null;
 
-            if (!BandManager.CanRun(out message))
+            if (!BandManager.CanRun(ref message))
             {
                 MessageBox.Show(message, "unBand Startup Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
