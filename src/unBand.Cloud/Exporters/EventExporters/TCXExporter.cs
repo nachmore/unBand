@@ -65,7 +65,7 @@ namespace unBand.Cloud.Exporters.EventExporters
                             new XAttribute("Sport", "Running"),
                             new XElement(nsRoot + "Id", eventBase.EventID),
                             new XElement(nsRoot + "Lap",
-                                new XAttribute("StartTime", eventBase.StartTime.ToUniversalTime().ToString("s")),
+                                new XAttribute("StartTime", eventBase.StartTime.ToUniversalTime().ToString("o")),
                                 new XElement(nsRoot + "TotalTimeSeconds", eventBase.Duration),
                                 new XElement(nsRoot + "Calories", eventBase.CaloriesBurned),
                                 new XElement(nsRoot + "AverageHeartRateBpm",
@@ -93,7 +93,7 @@ namespace unBand.Cloud.Exporters.EventExporters
                     foreach (var mp in runEvent.MapPoints)
                     {
                         var trackpoint = new XElement(nsRoot + "Trackpoint",
-                            new XElement(nsRoot + "Time", runEvent.StartTime.AddSeconds(mp.SecondsSinceStart).ToUniversalTime().ToString("s")),
+                            new XElement(nsRoot + "Time", runEvent.StartTime.AddSeconds(mp.SecondsSinceStart).ToUniversalTime().ToString("o")),
                             new XElement(nsRoot + "HeartRateBpm",
                                 new XElement(nsRoot + "Value", mp.HeartRate)
                             )

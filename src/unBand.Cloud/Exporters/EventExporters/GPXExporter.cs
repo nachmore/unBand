@@ -73,7 +73,7 @@ namespace unBand.Cloud.Exporters.EventExporters
                     new XElement(nsRoot + "metadata",
                         new XElement(nsRoot + "name", eventBase.Name),
                         new XElement(nsRoot + "description", eventBase.EventID),
-                        new XElement(nsRoot + "time", eventBase.StartTime.ToUniversalTime().ToString("s"))
+                        new XElement(nsRoot + "time", eventBase.StartTime.ToUniversalTime().ToString("o"))
                     ),
                     new XElement(nsRoot + "trk",
                         new XElement(nsRoot + "src", "Microsoft Band"),
@@ -86,7 +86,7 @@ namespace unBand.Cloud.Exporters.EventExporters
                     xroot.Element(nsRoot + "trk").Element(nsRoot + "trkseg").Add(
                         new XElement(nsRoot + "trkpt",
                             new XElement(nsRoot + "ele", mp.Altitude.ToString("0.0000000000000000", new CultureInfo("en-US", false))),
-                            new XElement(nsRoot + "time", eventBase.StartTime.AddSeconds(mp.SecondsSinceStart).ToUniversalTime().ToString("s")),
+                            new XElement(nsRoot + "time", eventBase.StartTime.AddSeconds(mp.SecondsSinceStart).ToUniversalTime().ToString("o")),
                             new XElement(nsRoot + "geoidheight", mp.Altitude.ToString("0.0000000000000000", new CultureInfo("en-US", false))),
                             new XElement(nsRoot + "extensions",
                                 new XElement(gpxtpx + "TrackPointExtension",
