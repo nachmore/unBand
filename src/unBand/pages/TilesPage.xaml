@@ -14,21 +14,22 @@
 
         <Grid Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="75"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="88"/>
+                <RowDefinition/>
+                <RowDefinition Height="38"/>
                 <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Margin="0,5,0,0" TextWrapping="Wrap">You can reorder your tiles by dragging them around below.<LineBreak /><LineBreak />
-                Note that the Settings tile is not shown because it is unfortunately locked to the end of your tiles strip.</TextBlock>
-            
+                Note that the Settings tile is not shown because it is unfortunately locked to the end of your tiles strip. <LineBreak/>
+                If there are no Tiles below you are running into a Band bug that we are waiting on a fix for.</TextBlock>
+
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="150"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <ListBox x:Name="lstStrapps" Grid.Column="0" ItemsSource="{Binding Tiles.Strip}" AllowDrop="True" Drop="ListBox_Drop" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListBox.Resources>
                         <Style TargetType="ListBoxItem">
@@ -53,22 +54,22 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                
+
                 <StackPanel Grid.Column="1" DataContext="{Binding SelectedItem, ElementName=lstStrapps}">
                     <TextBlock Text="{Binding Strapp.Name, StringFormat=Name: {0}}" Margin="0,0,0,10"></TextBlock>
-                    
+
                     <TextBlock Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}" TextWrapping="Wrap">This is a default app (icon is locked).</TextBlock>
 
                     <StackPanel Visibility="{Binding IsDefault, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true, FallbackValue=Collapsed}">
                         <Button Click="btnCustomizeIcon_Click">Customize Tile</Button>
                         <TextBlock><Hyperlink Click="linkCustomInformation_Click">Custom Icon Information</Hyperlink></TextBlock>
-                        
+
                     </StackPanel>
 
                 </StackPanel>
             </Grid>
 
-            <Button Grid.Row="2" Margin="5,5,5,15" Content="Save to Band" Click="ButtonSave_Click"></Button>
+            <Button Grid.Row="2" Margin="5,5,5,8" Content="Save to Band" Click="ButtonSave_Click"></Button>
 
             <StackPanel Grid.Row="3">
                 <TextBlock>Do you have too many Tiles with unread counts that you'd like to clear all at once?</TextBlock>

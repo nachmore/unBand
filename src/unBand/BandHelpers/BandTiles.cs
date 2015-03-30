@@ -24,7 +24,18 @@ namespace unBand.BandHelpers
 
         public async Task InitAsync()
         {
-            var strip = await _client.GetStartStripAsync();
+            StartStrip strip = null;
+
+            try
+            {
+                strip = await _client.GetStartStripAsync();
+            }
+            catch (ArgumentException)
+            {
+                // on some Bands the StartStrip errors out due to a bug somewhere in the Band library
+                // that returns Tiles with no names. See #58 and many others.
+                strip = new StartStrip();
+            }
 
             // move the StartStrip into a ObservableCollection so that it can be easily manipulated
             var bandStrip = strip.Select(i => new BandStrapp(this, i));
