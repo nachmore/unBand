@@ -48,7 +48,7 @@ namespace unBand.CargoClientExtender
 
             if (deviceService == null)
             {
-                throw new Exception("Failed to create RfcommDeviceService with id: " + _deviceInfo.Id.ToString());
+                throw new Exception("Failed to create RfcommDeviceService with name: " + _deviceInfo.Name.ToString());
             }
 
             var streamSocket = new StreamSocket();

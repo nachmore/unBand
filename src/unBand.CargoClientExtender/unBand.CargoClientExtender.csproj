@@ -35,20 +35,21 @@
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Band.Admin.Desktop.unband">
-      <HintPath>..\Microsoft.Band.Admin.Desktop.unband.dll</HintPath>
+    <Reference Include="Microsoft.Band">
+      <HintPath>..\Microsoft.Band.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Band.Admin.unband">
-      <HintPath>..\Microsoft.Band.Admin.unband.dll</HintPath>
+    <Reference Include="Microsoft.Band.Admin">
+      <HintPath>..\Microsoft.Band.Admin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Band.Desktop.unband">
-      <HintPath>..\Microsoft.Band.Desktop.unband.dll</HintPath>
+    <Reference Include="Microsoft.Band.Admin.Desktop">
+      <HintPath>..\Microsoft.Band.Admin.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Band.unband">
-      <HintPath>..\Microsoft.Band.unband.dll</HintPath>
+    <Reference Include="Microsoft.Band.Desktop">
+      <HintPath>..\Microsoft.Band.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO" />
     <Reference Include="System.Runtime" />
     <Reference Include="System.Runtime.InteropServices.WindowsRuntime" />
     <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
