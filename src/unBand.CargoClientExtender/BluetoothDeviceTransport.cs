@@ -21,7 +21,7 @@ namespace unBand.CargoClientExtender
         private bool _disposed;
         
         public CargoStreamReader CargoReader { get; private set; }
-        public Stream CargoStream { get; private set; }
+        public ICargoStream CargoStream { get; private set; }
         public CargoStreamWriter CargoWriter { get; private set; }
         public bool IsConnected { get; private set; }
         public int MaxDataPayloadSize { get; private set; }
