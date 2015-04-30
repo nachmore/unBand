@@ -39,7 +39,7 @@ namespace unBand.BandHelpers
         private bool _inited;
 
         private WriteableBitmap _background;
-        private Microsoft.Band.Personalization.BandTheme _themeColor;
+        private Microsoft.Band.BandTheme _themeColor;
 
         private SolidColorBrush _baseColor;
         private SolidColorBrush _highlightColor;
@@ -203,6 +203,7 @@ namespace unBand.BandHelpers
 
             if (meTileImage != null)
                 _background = meTileImage.ToWriteableBitmap();
+
 
             _themeColor = await _client.PersonalizationManager.GetThemeAsync();
 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Networking.Sockets;
+using Microsoft.Band;
 
 namespace unBand.CargoClientExtender
 {
@@ -13,7 +14,7 @@ namespace unBand.CargoClientExtender
     /// Small StreamSocket wrapper (really around Stream, but implemented on top of a StreamSocket)
     /// that implemented Read/Write Timeouts
     /// </summary>
-    internal class BluetoothStreamWrapper : Stream
+    internal class BluetoothStreamWrapper : Stream, ICargoStream
     {
         const int DEFAULT_WRITE_TIMEOUT = 1000;
         const int DEFAULT_READ_TIMEOUT = 1000;
@@ -32,6 +33,12 @@ namespace unBand.CargoClientExtender
 
         public override int ReadTimeout { get; set; }
         public override int WriteTimeout { get; set; }
+
+        public CancellationToken Cancel
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
 
         public override long Length { get { throw new NotImplementedException(); } }
 

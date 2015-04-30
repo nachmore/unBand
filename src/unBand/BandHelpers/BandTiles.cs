@@ -15,7 +15,7 @@ namespace unBand.BandHelpers
 
         public ObservableCollection<BandStrapp> Strip { get; private set; }
 
-        public List<CargoStrapp> DefaultStrapps { get; private set; }
+        public List<AdminBandTile> DefaultStrapps { get; private set; }
 
         public BandTiles(CargoClient client)
         {
@@ -42,7 +42,7 @@ namespace unBand.BandHelpers
             
             Strip = new ObservableCollection<BandStrapp>(bandStrip);
 
-            DefaultStrapps = (List<CargoStrapp>)(await _client.GetDefaultStrappsAsync());
+            DefaultStrapps = (List<AdminBandTile>)(await _client.GetDefaultTilesAsync());
         }
 
         public Task Save()
@@ -58,13 +58,13 @@ namespace unBand.BandHelpers
         {
             foreach (var bandStrapp in Strip)
             {
-                await _client.ClearStrappAsync(bandStrapp.Strapp.StrappID);
+                await _client.ClearTileAsync(bandStrapp.Strapp.TileId);
             }
         }
 
-        internal void UpdateStrapp(CargoStrapp strapp)
+        internal void UpdateStrapp(AdminBandTile strapp)
         {
-            _client.UpdateStrapp(strapp);
+            _client.UpdateTile(strapp);
 
             // here is where it gets a bit hairy. If we just call UpdateStrapp alone
             // it will shove the updated Tile at the end of the strip, which is undesirable
