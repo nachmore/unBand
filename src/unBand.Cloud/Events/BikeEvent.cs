@@ -7,7 +7,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using unBand.Cloud.Events;
 using unBand.Cloud.Exporters.EventExporters;
 
 namespace unBand.Cloud
@@ -48,7 +47,7 @@ namespace unBand.Cloud
     [TypeConverter(typeof(BikeEventConverter))]
     public class BikeEvent : BandExerciseEventBase, IBandEventWithMapPoints
     {
-        private readonly BandMapPointCollection _mapPoints = new BandMapPointCollection();
+
         private static List<IEventExporter> _exporters;
 
         public override List<IEventExporter> Exporters
@@ -70,7 +69,7 @@ namespace unBand.Cloud
             get { return new BandEventExpandType[] { BandEventExpandType.Info, BandEventExpandType.Sequences, BandEventExpandType.MapPoints }; }
         }
 
-        public IEnumerable<BandMapPoint> MapPoints { get{return _mapPoints;} }
+        public List<BandMapPoint> MapPoints { get; private set; }
 
         /// <summary>
         /// Calculated property which indicates whether or not any actual GPS points were
@@ -87,7 +86,9 @@ namespace unBand.Cloud
         public int Pace { get; set; }
 
         public BikeEvent(JObject json) : base(json)
-        {           
+        {
+            MapPoints = new List<BandMapPoint>();
+            
             dynamic eventSummary = (dynamic)json;
 
             TotalDistance     = eventSummary.TotalDistance;
@@ -145,7 +146,7 @@ namespace unBand.Cloud
                     HasGPSPoints = true;
                 }
 
-                _mapPoints.Add(runMapPoint);
+                MapPoints.Add(runMapPoint);
             }
         }
     }

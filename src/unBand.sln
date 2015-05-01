@@ -1,6 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unBand", "unBand\unBand.csproj", "{37740797-A1D3-4452-AB73-DC24EAD9CFBF}"
 EndProject
@@ -13,10 +14,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unBand.dev.Bootstrap", "unBand.dev.Bootstrap\unBand.dev.Bootstrap.csproj", "{3E06AE5E-340A-4240-A233-EECCF718EB8A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unBand.CargoClientEditor", "unBand.CargoClientEditor\unBand.CargoClientEditor.csproj", "{3BD070E3-1D3C-437D-B079-81879654F228}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{681082A6-0D5C-47BA-BA85-D4B91E0D1A52}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unBand.Cloud.Tests", "unBand.Cloud.Tests\unBand.Cloud.Tests.csproj", "{32DEEBC3-DB59-4D5C-AE4B-FB7CE2E96B41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,15 +45,8 @@ Global
 		{3BD070E3-1D3C-437D-B079-81879654F228}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BD070E3-1D3C-437D-B079-81879654F228}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BD070E3-1D3C-437D-B079-81879654F228}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32DEEBC3-DB59-4D5C-AE4B-FB7CE2E96B41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32DEEBC3-DB59-4D5C-AE4B-FB7CE2E96B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32DEEBC3-DB59-4D5C-AE4B-FB7CE2E96B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32DEEBC3-DB59-4D5C-AE4B-FB7CE2E96B41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{32DEEBC3-DB59-4D5C-AE4B-FB7CE2E96B41} = {681082A6-0D5C-47BA-BA85-D4B91E0D1A52}
 	EndGlobalSection
 EndGlobal
