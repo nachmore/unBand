@@ -171,9 +171,11 @@ namespace unBand.pages
             await LoadEvents();
         }
 
-        private async Task LoadEvents() 
+        private async Task LoadEvents()
         {
+            ProgressRing.IsActive = true;
             await BandCloudManager.Instance.LoadEvents(ExportSettings.ExportAll ? 1000000 : 100);
+            ProgressRing.IsActive = false;
         }
 
         private async void lstEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
