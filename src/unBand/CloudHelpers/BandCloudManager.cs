@@ -105,6 +105,7 @@ namespace unBand.CloudHelpers
         {
             var events = await LoadEventsAsync(topCount, startDate, endDate);
 
+            Events.Clear();
             foreach (var evnt in events)
             {
                 Events.Add(evnt);
