@@ -173,9 +173,9 @@ namespace unBand.pages
 
         private async Task LoadEvents()
         {
-            ProgressRing.IsActive = true;
+            ProgressRing.Visibility = Visibility.Visible;
             await BandCloudManager.Instance.LoadEvents(ExportSettings.ExportAll ? 1000000 : 100);
-            ProgressRing.IsActive = false;
+            ProgressRing.Visibility = Visibility.Hidden;
         }
 
         private async void lstEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)

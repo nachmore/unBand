@@ -15,6 +15,7 @@
         <Grid Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="110"/>
+                <RowDefinition Height="10"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -86,14 +87,15 @@
                 </StackPanel>
 
             </Grid>
-
-            <Grid Grid.Row="1" DataContext="{Binding Events}" Margin="0,10,0,0">
+            <Grid Grid.Row ="1">
+                <ProgressBar Name="ProgressRing" Grid.ColumnSpan="2" VerticalAlignment="Top" Panel.ZIndex="1" IsIndeterminate="True" Visibility="Hidden"/>
+            </Grid>
+            <Grid Grid.Row="2" DataContext="{Binding Events}" Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" MaxWidth="600"></ColumnDefinition>
                     <ColumnDefinition Width="350"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Controls:ProgressRing Name="ProgressRing" Grid.ColumnSpan="2" Margin="0,0,0,0" Panel.ZIndex="1" IsActive="False"></Controls:ProgressRing>
                 <ListBox x:Name="lstEvents" Grid.Column="0" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" SelectionChanged="lstEvents_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
