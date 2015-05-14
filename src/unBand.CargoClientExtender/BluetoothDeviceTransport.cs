@@ -14,89 +14,89 @@ using System.IO; // gets us nifty extension methods like AsStreamForRead/Write
 
 namespace unBand.CargoClientExtender
 {
-    public class BluetoothDeviceTransport : IDeviceTransport, IDisposable
-    {
-        public event EventHandler Disconnected;
+    //public class BluetoothDeviceTransport : IDeviceTransport, IDisposable
+    //{
+    //    public event EventHandler Disconnected;
 
-        private bool _disposed;
+    //    private bool _disposed;
         
-        public CargoStreamReader CargoReader { get; private set; }
-        public ICargoStream CargoStream { get; private set; }
-        public CargoStreamWriter CargoWriter { get; private set; }
-        public bool IsConnected { get; private set; }
-        public int MaxDataPayloadSize { get; private set; }
-        public BandConnectionType ConnectionType { get; private set; }
+    //    public CargoStreamReader CargoReader { get; private set; }
+    //    public ICargoStream CargoStream { get; private set; }
+    //    public CargoStreamWriter CargoWriter { get; private set; }
+    //    public bool IsConnected { get; private set; }
+    //    public int MaxDataPayloadSize { get; private set; }
+    //    public BandConnectionType ConnectionType { get; private set; }
 
-        private BluetoothDeviceInfo _deviceInfo;
-        public BluetoothDeviceTransport(BluetoothDeviceInfo deviceInfo)
-        {
-            _deviceInfo = deviceInfo;
+    //    private BluetoothDeviceInfo _deviceInfo;
+    //    public BluetoothDeviceTransport(BluetoothDeviceInfo deviceInfo)
+    //    {
+    //        _deviceInfo = deviceInfo;
 
-            Connect();
-        }
+    //        Connect();
+    //    }
 
-        public void Connect(ushort maxConnectAttempts = 1)
-        {
-            ConnectAsync().Wait();
-        }
+    //    public void Connect(ushort maxConnectAttempts = 1)
+    //    {
+    //        ConnectAsync().Wait();
+    //    }
 
-        public async Task ConnectAsync(ushort maxConnectAttempts = 1)
-        {
-            System.Diagnostics.Debug.WriteLine("BluetoothDeviceTransport::Connect() called");
+    //    public async Task ConnectAsync(ushort maxConnectAttempts = 1)
+    //    {
+    //        System.Diagnostics.Debug.WriteLine("BluetoothDeviceTransport::Connect() called");
 
-            var deviceService = await RfcommDeviceService.FromIdAsync(_deviceInfo.Device.Id);
+    //        var deviceService = await RfcommDeviceService.FromIdAsync(_deviceInfo.Device.Id);
 
-            if (deviceService == null)
-            {
-                throw new Exception("Failed to create RfcommDeviceService with name: " + _deviceInfo.Name.ToString());
-            }
+    //        if (deviceService == null)
+    //        {
+    //            throw new Exception("Failed to create RfcommDeviceService with name: " + _deviceInfo.Name.ToString());
+    //        }
 
-            var streamSocket = new StreamSocket();
+    //        var streamSocket = new StreamSocket();
 
-            await streamSocket.ConnectAsync(deviceService.ConnectionHostName, deviceService.ConnectionServiceName);
+    //        await streamSocket.ConnectAsync(deviceService.ConnectionHostName, deviceService.ConnectionServiceName);
 
-            CargoStream = new BluetoothStreamWrapper(streamSocket);
+    //        CargoStream = new BluetoothStreamWrapper(streamSocket);
 
-            // we could have used streamSocket.Input/OutputStream.AsStreamForRead/Write but they don't support timeouts
-            // and it turns out those are super important if you don't want to lock up constantly on random calls (like
-            // trying to get the background when there isn't one :( ).
+    //        // we could have used streamSocket.Input/OutputStream.AsStreamForRead/Write but they don't support timeouts
+    //        // and it turns out those are super important if you don't want to lock up constantly on random calls (like
+    //        // trying to get the background when there isn't one :( ).
             
-            CargoReader = new CargoStreamReader(CargoStream, BufferServer.GetPoolInternal(8152));
-            CargoWriter = new CargoStreamWriter(CargoStream, BufferServer.GetPoolInternal(8152));
-        }
+    //        CargoReader = new CargoStreamReader(CargoStream, BufferServer.GetPoolInternal(8152));
+    //        CargoWriter = new CargoStreamWriter(CargoStream, BufferServer.GetPoolInternal(8152));
+    //    }
 
-        public void Disconnect()
-        {
-            throw new NotImplementedException();
-        }
+    //    public void Disconnect()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
 
-        public void WriteCommandPacket(CargoCommand packetHeader, byte[] argBuf, bool flush)
-        {
-            // Note: turns out argBuf can be null
-            var bufLength = (argBuf == null ? 0 : argBuf.Length);
+    //    public void WriteCommandPacket(CargoCommand packetHeader, byte[] argBuf, bool flush)
+    //    {
+    //        // Note: turns out argBuf can be null
+    //        var bufLength = (argBuf == null ? 0 : argBuf.Length);
 
-            this.CargoWriter.WriteByte((byte)((System.Runtime.InteropServices.Marshal.SizeOf(packetHeader)) + bufLength));
+    //        this.CargoWriter.WriteByte((byte)((System.Runtime.InteropServices.Marshal.SizeOf(packetHeader)) + bufLength));
 
-            this.CargoWriter.WriteStruct<CargoCommand>(ref packetHeader);
+    //        this.CargoWriter.WriteStruct<CargoCommand>(ref packetHeader);
 
-            if (bufLength > 0)
-            {
-                this.CargoWriter.Write(argBuf);
-            }
+    //        if (bufLength > 0)
+    //        {
+    //            this.CargoWriter.Write(argBuf);
+    //        }
 
-            if (flush)
-            {
-                this.CargoWriter.Flush();
-            }
-        }
+    //        if (flush)
+    //        {
+    //            this.CargoWriter.Flush();
+    //        }
+    //    }
 
-        public void Dispose()
-        {
-            if (!_disposed)
-            {
-                _disposed = true;
-                Disconnect();
-            }
-        }
-    }
+    //    public void Dispose()
+    //    {
+    //        if (!_disposed)
+    //        {
+    //            _disposed = true;
+    //            Disconnect();
+    //        }
+    //    }
+    //}
 }

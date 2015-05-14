@@ -11,11 +11,11 @@ namespace unBand.BandHelpers
     class BandSensors
     {
 
-        private CargoClient _client;
+        private ICargoClient _client;
 
         public BandPedometer Pedometer { get; set; }
 
-        public BandSensors(CargoClient client)
+        public BandSensors(ICargoClient client)
         {
             _client = client;
         }

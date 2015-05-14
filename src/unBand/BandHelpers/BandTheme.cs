@@ -35,7 +35,7 @@ namespace unBand.BandHelpers
 
     public class BandTheme : INotifyPropertyChanged
     {
-        private CargoClient _client;
+        private ICargoClient _client;
         private bool _inited;
 
         private WriteableBitmap _background;
@@ -181,7 +181,7 @@ namespace unBand.BandHelpers
             }
         }
 
-        public BandTheme(CargoClient client)
+        public BandTheme(ICargoClient client)
         {
             _client = client;
         }

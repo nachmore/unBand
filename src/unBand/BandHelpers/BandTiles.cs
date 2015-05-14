@@ -11,13 +11,13 @@ namespace unBand.BandHelpers
 {
     class BandTiles
     {
-        private CargoClient _client;
+        private ICargoClient _client;
 
         public ObservableCollection<BandStrapp> Strip { get; private set; }
 
         public List<AdminBandTile> DefaultStrapps { get; private set; }
 
-        public BandTiles(CargoClient client)
+        public BandTiles(ICargoClient client)
         {
             _client = client;
         }

@@ -13,8 +13,7 @@ namespace unBand.BandHelpers.Sensors
 {
     public class BandPedometer: INotifyPropertyChanged
     {
-
-        private CargoClient _client;
+        private ICargoClient _client;
         private uint _totalSteps;
         private uint _totalMovements;
 
@@ -44,7 +43,7 @@ namespace unBand.BandHelpers.Sensors
             }
         }
 
-        public BandPedometer(CargoClient client)
+        public BandPedometer(ICargoClient client)
         {
             _client = client;
         }

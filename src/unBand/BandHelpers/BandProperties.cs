@@ -16,7 +16,7 @@ namespace unBand.BandHelpers
     /// </summary>
     class BandProperties : INotifyPropertyChanged
     {
-        private CargoClient _client;
+        private ICargoClient _client;
 
         private string _deviceName;
         private byte _percentCharge;
@@ -80,7 +80,7 @@ namespace unBand.BandHelpers
 
         #endregion
 
-        internal BandProperties(CargoClient client)
+        internal BandProperties(ICargoClient client)
         {
             _client = client;
         }
