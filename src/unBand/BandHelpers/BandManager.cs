@@ -33,7 +33,7 @@ namespace unBand.BandHelpers
         private bool _isConnected = false;
         private bool _isDesktopSyncAppRunning = false;
         private IBandInfo _deviceInfo;
-        private CargoClient _cargoClient;
+        private ICargoClient _cargoClient;
         private BandProperties _properties;
         private BandTheme _theme;
         private BandSensors _sensors;
@@ -65,7 +65,7 @@ namespace unBand.BandHelpers
             }
         }
 
-        public CargoClient CargoClient
+        public ICargoClient CargoClient
         { 
             get { return _cargoClient; }
             set
@@ -291,7 +291,7 @@ namespace unBand.BandHelpers
             return new IBandInfo[] {};// Temporary BT removal: await CargoClientExtender.BluetoothClient.GetConnectedDevicesAsync();
         }
 
-        private async Task<CargoClient> GetUSBBand()
+        private async Task<ICargoClient> GetUSBBand()
         {
             var devices = await GetConnectedUSBDevicesAsync();
 
@@ -299,13 +299,13 @@ namespace unBand.BandHelpers
             {
                 _deviceInfo = devices[0];
 
-                return (await BandAdminClientManager.Instance.ConnectAsync(_deviceInfo)) as CargoClient;
+                return (await BandAdminClientManager.Instance.ConnectAsync(_deviceInfo)) as ICargoClient;
             }
 
             return null;
         }
 
-        private async Task<CargoClient> GetBluetoothBand()
+        private async Task<ICargoClient> GetBluetoothBand()
         {
             /* temporarily removed until BT can be re-enabled on the new DLLs
             var btDevices = await GetConnectedBluetoothDevicesAsync();

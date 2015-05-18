@@ -62,13 +62,16 @@ namespace unBand.CloudHelpers
         {
             if (!Loaded)
             {
-                var fullData = await _cloud.GetFullEventData(Event.EventID, Event.Expanders);
+                await Task.Run(async () =>
+                {
+                    var fullData = await _cloud.GetFullEventData(Event.EventID, Event.Expanders);
 
-                Event.InitFullEventData(fullData);
+                    Event.InitFullEventData(fullData);
 
-                Loaded = true;
+                    Loaded = true;
 
-                HasGPSPoints = (Event is IBandEventWithMapPoints) && ((IBandEventWithMapPoints)Event).HasGPSPoints;
+                    HasGPSPoints = (Event is IBandEventWithMapPoints) && ((IBandEventWithMapPoints) Event).HasGPSPoints;
+                });
             }
         }
 

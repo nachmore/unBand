@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using unBand.Cloud.Events;
 
 namespace unBand.Cloud
 {
     public interface IBandEventWithMapPoints
     {
         bool HasGPSPoints { get; set; }
-
-        List<BandMapPoint> MapPoints { get; }
+        IEnumerable<BandMapPoint> MapPoints { get; }
     }
 }

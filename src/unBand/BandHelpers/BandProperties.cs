@@ -16,7 +16,7 @@ namespace unBand.BandHelpers
     /// </summary>
     class BandProperties : INotifyPropertyChanged
     {
-        private CargoClient _client;
+        private ICargoClient _client;
 
         private string _deviceName;
         private byte _percentCharge;
@@ -80,7 +80,7 @@ namespace unBand.BandHelpers
 
         #endregion
 
-        internal BandProperties(CargoClient client)
+        internal BandProperties(ICargoClient client)
         {
             _client = client;
         }
@@ -94,7 +94,7 @@ namespace unBand.BandHelpers
             FirmwareVersions = await _client.GetFirmwareVersionsAsync();
             EphemerisCoverageDates = await _client.GetGpsEphemerisCoverageDatesFromDeviceAsync();
             LogVersion = await _client.GetLogVersionAsync();
-            MaxStrappCount = await _client.GetMaxStrappCountAsync();
+            MaxStrappCount = await _client.GetMaxTileCountAsync();
             
             PendingDeviceDataBytes = await _client.GetPendingDeviceDataBytesAsync();
             // var j = await _client.GetPendingLocalDataBytesAsync(); NullException
