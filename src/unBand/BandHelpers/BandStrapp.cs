@@ -19,7 +19,7 @@ namespace unBand.BandHelpers
         // to others / edit it), so let's detect that
         private static readonly Guid STARBUCKS_GUID = new Guid("{64a29f65-70bb-4f32-99a2-0f250a05d427}");
 
-        public CargoStrapp Strapp { get; private set; }
+        public AdminBandTile Strapp { get; private set; }
 
         public WriteableBitmap TileImage { get; private set; }
 
@@ -29,16 +29,16 @@ namespace unBand.BandHelpers
         {
             get
             {
-                return _tiles.DefaultStrapps.Any(i => i.StrappID == Strapp.StrappID);
+                return _tiles.DefaultStrapps.Any(i => i.TileId == Strapp.TileId);
             }
         }
 
         public bool IsStarbucks
         {
-            get { return Strapp.StrappID == STARBUCKS_GUID; }
+            get { return Strapp.TileId == STARBUCKS_GUID; }
         }
 
-        public BandStrapp(BandTiles tiles, CargoStrapp strapp)
+        public BandStrapp(BandTiles tiles, AdminBandTile strapp)
         {
             Strapp = strapp;
             _tiles = tiles;
@@ -65,7 +65,7 @@ namespace unBand.BandHelpers
 
             var images = new List<BandIcon>() { bmp.ToBandIcon(), bmp.ToBandIcon() };
 
-            Strapp.SetImageList(Strapp.StrappID, images, 0);
+            Strapp.SetImageList(Strapp.TileId, images, 0);
 
             _tiles.UpdateStrapp(Strapp);
 

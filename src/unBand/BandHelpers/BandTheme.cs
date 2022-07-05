@@ -35,11 +35,11 @@ namespace unBand.BandHelpers
 
     public class BandTheme : INotifyPropertyChanged
     {
-        private CargoClient _client;
+        private ICargoClient _client;
         private bool _inited;
 
         private WriteableBitmap _background;
-        private Microsoft.Band.Personalization.BandTheme _themeColor;
+        private Microsoft.Band.BandTheme _themeColor;
 
         private SolidColorBrush _baseColor;
         private SolidColorBrush _highlightColor;
@@ -181,7 +181,7 @@ namespace unBand.BandHelpers
             }
         }
 
-        public BandTheme(CargoClient client)
+        public BandTheme(ICargoClient client)
         {
             _client = client;
         }
@@ -203,6 +203,7 @@ namespace unBand.BandHelpers
 
             if (meTileImage != null)
                 _background = meTileImage.ToWriteableBitmap();
+
 
             _themeColor = await _client.PersonalizationManager.GetThemeAsync();
 

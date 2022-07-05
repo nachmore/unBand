@@ -171,9 +171,12 @@ namespace unBand.pages
             await LoadEvents();
         }
 
-        private async Task LoadEvents() 
+        private async Task LoadEvents()
         {
-            await BandCloudManager.Instance.LoadEvents(ExportSettings.ExportAll ? 1000000 : 100);
+            using (ShowProgress())
+            {
+                await BandCloudManager.Instance.LoadEvents(ExportSettings.ExportAll ? 1000000 : 100);
+            }
         }
 
         private async void lstEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -184,7 +187,10 @@ namespace unBand.pages
 
             if (item != null)
             {
-                await item.LoadFull();
+                using (ShowProgress())
+                {
+                    await item.LoadFull();
+                }
             }
         }
 
@@ -332,5 +338,26 @@ namespace unBand.pages
         }
 
         #endregion
+
+        private IDisposable ShowProgress()
+        {
+            return new ProgressActivity(ActivityBar);
+        }
+
+        private class ProgressActivity : IDisposable
+        {
+            private readonly ProgressBar _progress;
+
+            internal ProgressActivity(ProgressBar progress)
+            {
+                _progress = progress;
+                _progress.Visibility = Visibility.Visible;
+            }
+
+            public void Dispose()
+            {
+                _progress.Visibility = Visibility.Hidden;
+            }
+        }
     }
 }
