@@ -114,56 +114,73 @@ namespace unBand.CloudHelpers
         /// <returns>Nothing. DataBind against Events.</returns>
         public async Task LoadEvents(int? topCount = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            List<BandEventBase> userDailyActivities = null;
+            var events = await LoadEventsAsync(topCount, startDate, endDate);
 
-            // using topCount for dailyEvents makes no sense, since it seems to return (topCount)hours since the Band started
-            // reporting data, which is somewhat useless. So if the dates weren't provided, let's just load up the max range (7 days)
-            // Note: there seems to be a bug in the Health cloud service that lets you pull of the data in one swoop, but I don't
-            //       want to be naughty (and at some point that will be a ton of data for one request)
-            if (startDate == null && endDate == null)
+            Events.Clear();
+            foreach (var evnt in events)
             {
-                var end = DateTime.UtcNow;
-                var start = end.AddDays(-7);
-                userDailyActivities = await _cloud.GetUserActivity(0, start, end);
+                Events.Add(evnt);
             }
+        }
 
-            if (userDailyActivities != null)
+        private async Task<IEnumerable<BandEventViewModel>> LoadEventsAsync(int? topCount = null, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            return await Task.Run<IEnumerable<BandEventViewModel>>(async () =>
             {
-                // userDailyActivities will be a sorted list from earliest to last, but the other activities (below)
-                // are retrieved in reverse order, so reverse the list.
-                userDailyActivities.Reverse();
-            }
+                List<BandEventBase> userDailyActivities = null;
+                var bandEvents = new List<BandEventViewModel>();
 
-            // for now, don't limit the request limit, since we're hitting requests that don't care
-            // topCount = (topCount > MAX_TOP_REQUEST ? MAX_TOP_REQUEST : topCount);
-
-            var events = await _cloud.GetEvents(topCount, startDate, endDate);
-
-            var curDailyActivity = (userDailyActivities == null ? -1 : 0);
-
-            foreach (var cloudEvent in events)
-            {
-                // make sure to intersperse daily activities in the proper location with regular activities
-                // essentially if we hit a curDailyActivity that is more recent (or the same) as the current activity
-                // then dump it to the list. This guarantees that the daily counts are topmost in the list for a given date
-                // and that if you have a bunch of Daily Activity logs with nothing in between (no sleep, exercise etc) then
-                // they will be dumped in one after another
-                while (curDailyActivity > -1 && curDailyActivity < userDailyActivities.Count && userDailyActivities[curDailyActivity].StartTime.Date >= cloudEvent.StartTime.Date)
+                // using topCount for dailyEvents makes no sense, since it seems to return (topCount)hours since the Band started
+                // reporting data, which is somewhat useless. So if the dates weren't provided, let's just load up the max range (7 days)
+                // Note: there seems to be a bug in the Health cloud service that lets you pull of the data in one swoop, but I don't
+                //       want to be naughty (and at some point that will be a ton of data for one request)
+                if (startDate == null && endDate == null)
                 {
-                    Events.Add(new BandEventViewModel(_cloud, userDailyActivities[curDailyActivity]));
-
-                    curDailyActivity++;
+                    var end = DateTime.UtcNow;
+                    var start = end.AddDays(-7);
+                    userDailyActivities = await _cloud.GetUserActivity(0, start, end);
                 }
 
-                Events.Add(new BandEventViewModel(_cloud, cloudEvent));
-            }
+                if (userDailyActivities != null)
+                {
+                    // userDailyActivities will be a sorted list from earliest to last, but the other activities (below)
+                    // are retrieved in reverse order, so reverse the list.
+                    userDailyActivities.Reverse();
+                }
 
-            // if we have left over daily activities, dump them now
-            for (; curDailyActivity < userDailyActivities.Count; curDailyActivity++)
-            {
-                Events.Add(new BandEventViewModel(_cloud, userDailyActivities[curDailyActivity]));
-            }
+                // for now, don't limit the request limit, since we're hitting requests that don't care
+                // topCount = (topCount > MAX_TOP_REQUEST ? MAX_TOP_REQUEST : topCount);
 
+                var events = await _cloud.GetEvents(topCount, startDate, endDate);
+
+                var curDailyActivity = (userDailyActivities == null ? -1 : 0);
+
+                foreach (var cloudEvent in events)
+                {
+                    // make sure to intersperse daily activities in the proper location with regular activities
+                    // essentially if we hit a curDailyActivity that is more recent (or the same) as the current activity
+                    // then dump it to the list. This guarantees that the daily counts are topmost in the list for a given date
+                    // and that if you have a bunch of Daily Activity logs with nothing in between (no sleep, exercise etc) then
+                    // they will be dumped in one after another
+                    while (curDailyActivity > -1 && curDailyActivity < userDailyActivities.Count &&
+                           userDailyActivities[curDailyActivity].StartTime.Date >= cloudEvent.StartTime.Date)
+                    {
+                        bandEvents.Add(new BandEventViewModel(_cloud, userDailyActivities[curDailyActivity]));
+
+                        curDailyActivity++;
+                    }
+
+                    bandEvents.Add(new BandEventViewModel(_cloud, cloudEvent));
+                }
+
+                // if we have left over daily activities, dump them now
+                for (; curDailyActivity < userDailyActivities.Count; curDailyActivity++)
+                {
+                    bandEvents.Add(new BandEventViewModel(_cloud, userDailyActivities[curDailyActivity]));
+                }
+
+                return bandEvents;
+            });
         }
 
         public async Task ExportEventsSummaryToCSV(int? count, CloudDataExporterSettings settings, string fileName, IProgress<BandCloudExportProgress> progress)
