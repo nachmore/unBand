@@ -21,7 +21,7 @@ namespace unBand.CargoClientExtender
         private bool _disposed;
         
         public CargoStreamReader CargoReader { get; private set; }
-        public Stream CargoStream { get; private set; }
+        public ICargoStream CargoStream { get; private set; }
         public CargoStreamWriter CargoWriter { get; private set; }
         public bool IsConnected { get; private set; }
         public int MaxDataPayloadSize { get; private set; }
@@ -48,7 +48,7 @@ namespace unBand.CargoClientExtender
 
             if (deviceService == null)
             {
-                throw new Exception("Failed to create RfcommDeviceService with id: " + _deviceInfo.Id.ToString());
+                throw new Exception("Failed to create RfcommDeviceService with name: " + _deviceInfo.Name.ToString());
             }
 
             var streamSocket = new StreamSocket();
